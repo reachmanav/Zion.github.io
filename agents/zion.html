@@ -6,7 +6,155 @@
   <title>ZION — WhatsApp AI Bot | The Matrix</title>
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏛️</text></svg>">
   <link rel="stylesheet" href="../style.css">
-  <link rel="stylesheet" href="agent-detail.css">
+  <style>
+    .zion-page { position: relative; z-index: 1; }
+
+    /* Hero */
+    .z-hero { text-align: center; padding: 8rem 2rem 2rem; }
+    .z-hero-icon { font-size: 3.5rem; }
+    .z-hero-title {
+      font-family: var(--font-display); font-size: clamp(2.5rem, 6vw, 4rem);
+      font-weight: 900; color: var(--matrix-green); letter-spacing: 5px;
+      text-shadow: 0 0 20px rgba(0,255,65,0.4);
+    }
+    .z-hero-sub { font-family: var(--font-mono); font-size: 1rem; color: var(--accent-gold); margin-top: 0.5rem; }
+    .z-hero-desc { font-size: 1rem; color: var(--text-dim); max-width: 650px; margin: 1rem auto 0; line-height: 1.8; }
+
+    /* ═══ SOLAR SYSTEM DIAGRAM ═══ */
+    .solar-section { padding: 4rem 1rem 2rem; text-align: center; }
+
+    .solar-container {
+      position: relative;
+      width: 100%; max-width: 900px; height: 900px;
+      margin: 2rem auto 0;
+    }
+
+    /* The message flow line from phone to Zion */
+    .msg-flow {
+      position: absolute; left: 0; top: 50%;
+      display: flex; align-items: center; gap: 0;
+      transform: translateY(-50%);
+      z-index: 10;
+    }
+    .msg-phone {
+      background: var(--matrix-bg-card-hover); border: 2px solid var(--matrix-green);
+      border-radius: 12px; padding: 0.75rem 1rem; text-align: center;
+      box-shadow: 0 0 20px rgba(0,255,65,0.15);
+    }
+    .msg-phone-icon { font-size: 2rem; }
+    .msg-phone-label { font-family: var(--font-display); font-size: 0.6rem; color: var(--matrix-green); letter-spacing: 1px; margin-top: 0.25rem; }
+    .msg-bubble {
+      background: rgba(0,255,65,0.08); border: 1px solid rgba(0,255,65,0.3);
+      border-radius: 8px; padding: 0.4rem 0.75rem; margin-left: 0.5rem;
+      font-family: var(--font-mono); font-size: 0.65rem; color: var(--matrix-green);
+      white-space: nowrap; animation: pulse-glow 2s infinite;
+    }
+    @keyframes pulse-glow { 0%,100% { box-shadow: none; } 50% { box-shadow: 0 0 12px rgba(0,255,65,0.2); } }
+    .msg-line {
+      width: 60px; height: 2px;
+      background: linear-gradient(90deg, var(--matrix-green), rgba(0,255,65,0.1));
+      margin-left: 0.25rem;
+      animation: flow-pulse 1.5s infinite;
+    }
+    @keyframes flow-pulse { 0%,100% { opacity: 0.4; } 50% { opacity: 1; } }
+
+    /* ZION — The Sun */
+    .zion-sun {
+      position: absolute;
+      left: 50%; top: 50%;
+      transform: translate(-50%, -50%);
+      width: 160px; height: 160px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(0,255,65,0.15) 0%, rgba(0,255,65,0.02) 70%, transparent 100%);
+      border: 2px solid var(--matrix-green);
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      z-index: 5;
+      box-shadow: 0 0 40px rgba(0,255,65,0.2), 0 0 80px rgba(0,255,65,0.05);
+      animation: sun-pulse 3s infinite;
+    }
+    @keyframes sun-pulse {
+      0%,100% { box-shadow: 0 0 40px rgba(0,255,65,0.2), 0 0 80px rgba(0,255,65,0.05); }
+      50% { box-shadow: 0 0 60px rgba(0,255,65,0.3), 0 0 120px rgba(0,255,65,0.1); }
+    }
+    .zion-sun-icon { font-size: 2.5rem; }
+    .zion-sun-title { font-family: var(--font-display); font-size: 1.2rem; color: var(--matrix-green); letter-spacing: 3px; margin-top: 0.25rem; }
+    .zion-sun-sub { font-family: var(--font-mono); font-size: 0.55rem; color: var(--text-dim); }
+
+    /* Orbit rings */
+    .orbit {
+      position: absolute; left: 50%; top: 50%;
+      border-radius: 50%;
+      border: 1px solid rgba(0,255,65,0.08);
+      transform: translate(-50%, -50%);
+    }
+    .orbit-1 { width: 360px; height: 360px; }
+    .orbit-2 { width: 560px; height: 560px; }
+    .orbit-3 { width: 760px; height: 760px; }
+
+    /* Planet nodes orbiting Zion */
+    .planet {
+      position: absolute;
+      transform: translate(-50%, -50%);
+      text-align: center;
+      z-index: 3;
+      transition: all 0.3s;
+    }
+    .planet:hover { z-index: 20; transform: translate(-50%, -50%) scale(1.15); }
+
+    .planet-circle {
+      width: 70px; height: 70px; border-radius: 50%;
+      background: var(--matrix-bg-card-hover);
+      border: 1px solid rgba(0,255,65,0.25);
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      margin: 0 auto;
+      transition: all 0.3s;
+    }
+    .planet:hover .planet-circle {
+      border-color: var(--matrix-green);
+      box-shadow: 0 0 20px rgba(0,255,65,0.2);
+    }
+    .planet-icon { font-size: 1.4rem; }
+    .planet-label {
+      font-family: var(--font-mono); font-size: 0.55rem; color: var(--text-dim);
+      margin-top: 0.3rem; white-space: nowrap; letter-spacing: 0.5px;
+    }
+    .planet:hover .planet-label { color: var(--matrix-green); }
+
+    /* Connection lines from sun to planets */
+    .conn-line {
+      position: absolute; left: 50%; top: 50%;
+      height: 1px; transform-origin: 0 0;
+      background: rgba(0,255,65,0.08);
+      z-index: 1;
+    }
+
+    /* API nodes (outer ring — different color) */
+    .planet.api .planet-circle { border-color: rgba(255,215,0,0.25); }
+    .planet.api:hover .planet-circle { border-color: var(--accent-gold); box-shadow: 0 0 20px rgba(255,215,0,0.2); }
+    .planet.api .planet-label { color: var(--accent-gold); opacity: 0.7; }
+    .planet.api:hover .planet-label { color: var(--accent-gold); opacity: 1; }
+
+    /* ═══ Tech Stack ═══ */
+    .stack-section { padding: 2rem 2rem 6rem; max-width: 800px; margin: 0 auto; }
+    .stack-table { width: 100%; }
+    .stack-row { display: flex; border-bottom: 1px solid rgba(0,255,65,0.08); padding: 0.6rem 0; }
+    .stack-label { font-family: var(--font-display); font-size: 0.65rem; color: var(--matrix-green); letter-spacing: 1px; min-width: 110px; }
+    .stack-value { font-family: var(--font-mono); font-size: 0.7rem; color: var(--text-dim); }
+
+    /* Responsive */
+    @media (max-width: 900px) {
+      .solar-container { height: 700px; max-width: 700px; }
+      .orbit-1 { width: 280px; height: 280px; }
+      .orbit-2 { width: 430px; height: 430px; }
+      .orbit-3 { width: 600px; height: 600px; }
+      .zion-sun { width: 120px; height: 120px; }
+      .planet-circle { width: 55px; height: 55px; }
+      .planet-icon { font-size: 1.1rem; }
+      .msg-flow { display: none; }
+    }
+  </style>
 </head>
 <body>
 
@@ -24,274 +172,208 @@
   </div>
 </nav>
 
-<!-- Hero -->
-<section class="agent-hero">
-  <div class="agent-hero-icon">🏛️</div>
-  <h1 class="agent-hero-title">ZION</h1>
-  <p class="agent-hero-role">The Last Human City — WhatsApp AI Bot</p>
-  <p class="agent-hero-desc">The central intelligence of The Matrix. Zion receives messages from Neo and friends via WhatsApp, processes them through a sophisticated routing pipeline, and responds using AI, web search, real-time APIs, and 12+ sub-constructs.</p>
-</section>
+<div class="zion-page">
 
-<!-- Internal Architecture -->
-<section>
-  <h2 class="section-title">Internal Architecture</h2>
-  <p class="section-desc">How a WhatsApp message flows through Zion</p>
+  <!-- Hero -->
+  <div class="z-hero">
+    <div class="z-hero-icon">🏛️</div>
+    <h1 class="z-hero-title">ZION</h1>
+    <p class="z-hero-sub">The Last Human City — WhatsApp AI Bot</p>
+    <p class="z-hero-desc">The central brain of The Matrix. Every message from Neo's phone flows into Zion, gets routed to the right handler, and a response flows back — all in seconds.</p>
+  </div>
 
-  <div class="flow-diagram">
+  <!-- Solar System -->
+  <div class="solar-section">
+    <h2 class="section-title">How It Works</h2>
+    <p class="section-desc">Zion sits at the center. Everything connects to it.</p>
 
-    <!-- Step 1: Message In -->
-    <div class="flow-step">
-      <div class="flow-step-num">1</div>
-      <div class="flow-step-content">
-        <div class="flow-step-title">MESSAGE ARRIVES</div>
-        <div class="flow-step-desc">User sends <code>@zion weather in Pune</code> on WhatsApp</div>
-        <div class="flow-step-tech">WhatsApp Bridge (Go) → SQLite messages.db → Zion polls every 2s</div>
-      </div>
-    </div>
+    <div class="solar-container" id="solar">
 
-    <div class="flow-arrow">▼</div>
+      <!-- Orbit rings -->
+      <div class="orbit orbit-1"></div>
+      <div class="orbit orbit-2"></div>
+      <div class="orbit orbit-3"></div>
 
-    <!-- Step 2: Parse -->
-    <div class="flow-step">
-      <div class="flow-step-num">2</div>
-      <div class="flow-step-content">
-        <div class="flow-step-title">PARSE & CLASSIFY</div>
-        <div class="flow-step-desc">Strip <code>@zion</code> tag, detect media type (text/image/voice/document), check permissions</div>
-        <div class="flow-step-tech">Group approval gate • Owner check • Context window • Follow-up detection</div>
-      </div>
-    </div>
-
-    <div class="flow-arrow">▼</div>
-
-    <!-- Step 3: Route -->
-    <div class="flow-step highlight-step">
-      <div class="flow-step-num">3</div>
-      <div class="flow-step-content">
-        <div class="flow-step-title">SMART ROUTER</div>
-        <div class="flow-step-desc">Priority-ordered handler chain — first match wins</div>
-        <div class="handler-chain">
-          <div class="handler">🔺 @trinity → Trinity Queue</div>
-          <div class="handler">🖼️ Image → Gemini Vision</div>
-          <div class="handler">🎤 Voice → STT → Text pipeline</div>
-          <div class="handler">📄 Document → Summary/Review</div>
-          <div class="handler">🔗 Link → Auto-summarize</div>
-          <div class="handler">🏋️ Strava → Fitness data</div>
-          <div class="handler">🎯 Trivia → Game engine</div>
-          <div class="handler">📅 Reminder → Calendar</div>
-          <div class="handler">📝 Summarize → LLM summary</div>
-          <div class="handler">✉️ Send → Message relay</div>
-          <div class="handler">👥 Contact → Google Contacts</div>
-          <div class="handler">🌤️ Weather → Open-Meteo API (direct, no LLM)</div>
-          <div class="handler fallback">🤖 Default → Groq LLM (Llama 3.3 70B)</div>
+      <!-- Neo's phone + message flow -->
+      <div class="msg-flow">
+        <div class="msg-phone">
+          <div class="msg-phone-icon">📱</div>
+          <div class="msg-phone-label">NEO</div>
         </div>
+        <div class="msg-bubble">@zion weather in Pune</div>
+        <div class="msg-line"></div>
       </div>
-    </div>
 
-    <div class="flow-arrow">▼</div>
-
-    <!-- Step 4: Process -->
-    <div class="flow-step">
-      <div class="flow-step-num">4</div>
-      <div class="flow-step-content">
-        <div class="flow-step-title">PROCESS & ENRICH</div>
-        <div class="flow-step-desc">Handler fetches data, calls APIs, generates response</div>
-        <div class="flow-step-tech">Web search (DDG + Google News) • Weather API • LLM with chat history • Image analysis</div>
+      <!-- ZION — The Sun -->
+      <div class="zion-sun">
+        <div class="zion-sun-icon">🏛️</div>
+        <div class="zion-sun-title">ZION</div>
+        <div class="zion-sun-sub">AI Brain</div>
       </div>
+
+      <!-- Inner ring: Core features -->
+      <div class="planet" style="left:50%; top:10%;">
+        <div class="planet-circle"><div class="planet-icon">🌤️</div></div>
+        <div class="planet-label">Weather</div>
+      </div>
+      <div class="planet" style="left:82%; top:20%;">
+        <div class="planet-circle"><div class="planet-icon">🖼️</div></div>
+        <div class="planet-label">Image Vision</div>
+      </div>
+      <div class="planet" style="left:93%; top:50%;">
+        <div class="planet-circle"><div class="planet-icon">🎤</div></div>
+        <div class="planet-label">Voice Notes</div>
+      </div>
+      <div class="planet" style="left:82%; top:80%;">
+        <div class="planet-circle"><div class="planet-icon">🔗</div></div>
+        <div class="planet-label">Link Summary</div>
+      </div>
+      <div class="planet" style="left:50%; top:90%;">
+        <div class="planet-circle"><div class="planet-icon">📄</div></div>
+        <div class="planet-label">Documents</div>
+      </div>
+      <div class="planet" style="left:18%; top:80%;">
+        <div class="planet-circle"><div class="planet-icon">🎯</div></div>
+        <div class="planet-label">Trivia</div>
+      </div>
+      <div class="planet" style="left:18%; top:20%;">
+        <div class="planet-circle"><div class="planet-icon">👥</div></div>
+        <div class="planet-label">Contacts</div>
+      </div>
+
+      <!-- Middle ring: TheBoss constructs -->
+      <div class="planet" style="left:50%; top:2%;">
+        <div class="planet-circle"><div class="planet-icon">📰</div></div>
+        <div class="planet-label">AI News</div>
+      </div>
+      <div class="planet" style="left:75%; top:5%;">
+        <div class="planet-circle"><div class="planet-icon">📈</div></div>
+        <div class="planet-label">Stocks</div>
+      </div>
+      <div class="planet" style="left:97%; top:35%;">
+        <div class="planet-circle"><div class="planet-icon">✈️</div></div>
+        <div class="planet-label">Vacation</div>
+      </div>
+      <div class="planet" style="left:97%; top:65%;">
+        <div class="planet-circle"><div class="planet-icon">💊</div></div>
+        <div class="planet-label">MedTracker</div>
+      </div>
+      <div class="planet" style="left:75%; top:95%;">
+        <div class="planet-circle"><div class="planet-icon">🏃</div></div>
+        <div class="planet-label">Fitbit</div>
+      </div>
+      <div class="planet" style="left:25%; top:95%;">
+        <div class="planet-circle"><div class="planet-icon">👨‍👦</div></div>
+        <div class="planet-label">Dad Reply</div>
+      </div>
+      <div class="planet" style="left:3%; top:65%;">
+        <div class="planet-circle"><div class="planet-icon">📅</div></div>
+        <div class="planet-label">Calendar</div>
+      </div>
+      <div class="planet" style="left:3%; top:35%;">
+        <div class="planet-circle"><div class="planet-icon">📖</div></div>
+        <div class="planet-label">Word Daily</div>
+      </div>
+      <div class="planet" style="left:25%; top:5%;">
+        <div class="planet-circle"><div class="planet-icon">🏋️</div></div>
+        <div class="planet-label">Strava</div>
+      </div>
+
+      <!-- Outer ring: External APIs -->
+      <div class="planet api" style="left:50%; top:-4%;">
+        <div class="planet-circle"><div class="planet-icon">⚡</div></div>
+        <div class="planet-label">Groq API</div>
+      </div>
+      <div class="planet api" style="left:104%; top:50%;">
+        <div class="planet-circle"><div class="planet-icon">💎</div></div>
+        <div class="planet-label">Gemini API</div>
+      </div>
+      <div class="planet api" style="left:50%; top:104%;">
+        <div class="planet-circle"><div class="planet-icon">🔍</div></div>
+        <div class="planet-label">Web Search</div>
+      </div>
+      <div class="planet api" style="left:-4%; top:50%;">
+        <div class="planet-circle"><div class="planet-icon">📡</div></div>
+        <div class="planet-label">WA Bridge</div>
+      </div>
+
     </div>
+  </div>
 
-    <div class="flow-arrow">▼</div>
-
-    <!-- Step 5: Reply -->
-    <div class="flow-step">
-      <div class="flow-step-num">5</div>
-      <div class="flow-step-content">
-        <div class="flow-step-title">REPLY</div>
-        <div class="flow-step-desc">Formatted response sent back via WhatsApp Bridge</div>
-        <div class="flow-step-tech">send_reply() → Bridge API :8080 → WhatsApp → User's phone</div>
+  <!-- Tech Stack -->
+  <div class="stack-section">
+    <h2 class="section-title">Tech Stack</h2>
+    <div class="stack-table">
+      <div class="stack-row">
+        <span class="stack-label">Runtime</span>
+        <span class="stack-value">Python 3 — systemd (always on)</span>
+      </div>
+      <div class="stack-row">
+        <span class="stack-label">LLM</span>
+        <span class="stack-value">Groq — Llama 3.3 70B (free)</span>
+      </div>
+      <div class="stack-row">
+        <span class="stack-label">Vision</span>
+        <span class="stack-value">Gemini Flash + Groq (fallback)</span>
+      </div>
+      <div class="stack-row">
+        <span class="stack-label">Speech</span>
+        <span class="stack-value">Gemini STT + Whisper (fallback)</span>
+      </div>
+      <div class="stack-row">
+        <span class="stack-label">Weather</span>
+        <span class="stack-value">Open-Meteo + wttr.in (direct API, no LLM)</span>
+      </div>
+      <div class="stack-row">
+        <span class="stack-label">Search</span>
+        <span class="stack-value">Google News RSS + DuckDuckGo</span>
+      </div>
+      <div class="stack-row">
+        <span class="stack-label">Flights</span>
+        <span class="stack-value">Playwright + fast-flights (headless scraping)</span>
+      </div>
+      <div class="stack-row">
+        <span class="stack-label">Database</span>
+        <span class="stack-value">SQLite (messages, contacts, cache, subscriptions)</span>
+      </div>
+      <div class="stack-row">
+        <span class="stack-label">Cost</span>
+        <span class="stack-value">$0 — all free tier</span>
       </div>
     </div>
   </div>
-</section>
 
-<!-- TheBoss Constructs -->
-<section>
-  <h2 class="section-title">TheBoss — Daily Briefs Engine</h2>
-  <p class="section-desc">Scheduled constructs that deliver daily updates to subscribers</p>
+  <footer>
+    <div class="footer-content">
+      <p><a href="../index.html" style="color:var(--matrix-green);text-decoration:none">← Back to The Matrix</a></p>
+      <p class="footer-small">ZION — The heart of The Matrix</p>
+    </div>
+  </footer>
 
-  <div class="boss-grid">
-    <div class="boss-card">
-      <div class="boss-icon">📰</div>
-      <h3>AI News Brief</h3>
-      <p>Daily AI/tech news digest curated from multiple sources. Delivered every morning.</p>
-      <div class="boss-meta">
-        <span class="boss-schedule">⏰ Daily 7:00 AM</span>
-        <span class="boss-api">Gemini + Google Search</span>
-      </div>
-    </div>
-
-    <div class="boss-card">
-      <div class="boss-icon">📈</div>
-      <h3>Stock Brief</h3>
-      <p>Indian & US market summary — Nifty, Sensex, S&P 500, top movers, analysis.</p>
-      <div class="boss-meta">
-        <span class="boss-schedule">⏰ Daily 7:30 AM</span>
-        <span class="boss-api">Gemini + Market APIs</span>
-      </div>
-    </div>
-
-    <div class="boss-card">
-      <div class="boss-icon">📖</div>
-      <h3>Word Daily</h3>
-      <p>Learn a new English word every day — definition, usage, etymology.</p>
-      <div class="boss-meta">
-        <span class="boss-schedule">⏰ Daily 8:00 AM</span>
-        <span class="boss-api">Groq LLM</span>
-      </div>
-    </div>
-
-    <div class="boss-card">
-      <div class="boss-icon">✈️</div>
-      <h3>Vacation Deals</h3>
-      <p>Cheapest international flights from Mumbai/Pune. Real prices scraped from Google Flights via headless Chromium (Playwright).</p>
-      <div class="boss-meta">
-        <span class="boss-schedule">⏰ Daily 10:00 PM</span>
-        <span class="boss-api">Playwright + fast-flights + TinyURL</span>
-      </div>
-    </div>
-
-    <div class="boss-card">
-      <div class="boss-icon">💊</div>
-      <h3>MedTracker</h3>
-      <p>Medicine reminders and dose tracking. Email polling for pharmacy notifications.</p>
-      <div class="boss-meta">
-        <span class="boss-schedule">⏰ Multiple daily</span>
-        <span class="boss-api">Cron + Email IMAP</span>
-      </div>
-    </div>
-
-    <div class="boss-card">
-      <div class="boss-icon">🏃</div>
-      <h3>Fitbit Brief</h3>
-      <p>Daily fitness summary — steps, sleep quality, heart rate, activity minutes.</p>
-      <div class="boss-meta">
-        <span class="boss-schedule">⏰ Daily 9:00 AM</span>
-        <span class="boss-api">Fitbit OAuth API</span>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- Interactive Features -->
-<section>
-  <h2 class="section-title">Interactive Features</h2>
-  <p class="section-desc">Real-time capabilities beyond daily briefs</p>
-
-  <div class="features-grid">
-    <div class="feature-item">
-      <span class="feature-icon">🌤️</span>
-      <div>
-        <strong>Weather</strong>
-        <p>Real-time weather from Open-Meteo API. Direct data — no LLM hallucination. wttr.in fallback.</p>
-      </div>
-    </div>
-    <div class="feature-item">
-      <span class="feature-icon">🖼️</span>
-      <div>
-        <strong>Image Vision</strong>
-        <p>Send a photo → Gemini Flash analyzes it → describes content, reads text, answers questions.</p>
-      </div>
-    </div>
-    <div class="feature-item">
-      <span class="feature-icon">🎤</span>
-      <div>
-        <strong>Voice Notes</strong>
-        <p>Send a voice note → Gemini/Whisper transcribes → processes as text command.</p>
-      </div>
-    </div>
-    <div class="feature-item">
-      <span class="feature-icon">🔗</span>
-      <div>
-        <strong>Link Summary</strong>
-        <p>Drop a URL → Zion fetches and summarizes the article in 3-4 bullet points.</p>
-      </div>
-    </div>
-    <div class="feature-item">
-      <span class="feature-icon">📄</span>
-      <div>
-        <strong>Document Analysis</strong>
-        <p>Send a PDF/document → extracts text → summarizes or reviews code.</p>
-      </div>
-    </div>
-    <div class="feature-item">
-      <span class="feature-icon">🎯</span>
-      <div>
-        <strong>Trivia Games</strong>
-        <p>Multi-player trivia in group chats. Scores, leaderboards, topic selection.</p>
-      </div>
-    </div>
-    <div class="feature-item">
-      <span class="feature-icon">👥</span>
-      <div>
-        <strong>Contacts</strong>
-        <p>Search Google Contacts by name. Smart relevance scoring, clean formatting.</p>
-      </div>
-    </div>
-    <div class="feature-item">
-      <span class="feature-icon">📅</span>
-      <div>
-        <strong>Calendar</strong>
-        <p>Create Google Calendar events and get daily reminders via WhatsApp.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- Tech Stack -->
-<section>
-  <h2 class="section-title">Tech Stack</h2>
-  <div class="zion-stack">
-    <div class="stack-row">
-      <span class="stack-label">Runtime</span>
-      <span class="stack-value">Python 3 — systemd service (always on)</span>
-    </div>
-    <div class="stack-row">
-      <span class="stack-label">Primary LLM</span>
-      <span class="stack-value">Groq — Llama 3.3 70B (free tier)</span>
-    </div>
-    <div class="stack-row">
-      <span class="stack-label">Vision / STT</span>
-      <span class="stack-value">Gemini Flash (primary) + Groq Whisper (fallback)</span>
-    </div>
-    <div class="stack-row">
-      <span class="stack-label">Search</span>
-      <span class="stack-value">Weather: Open-Meteo + wttr.in | News: Google RSS | Web: DuckDuckGo</span>
-    </div>
-    <div class="stack-row">
-      <span class="stack-label">Messaging</span>
-      <span class="stack-value">WhatsApp Bridge (Go, whatsmeow) on port 8080</span>
-    </div>
-    <div class="stack-row">
-      <span class="stack-label">Database</span>
-      <span class="stack-value">SQLite — messages.db, zion_data.db, contacts.db, search_cache.db</span>
-    </div>
-    <div class="stack-row">
-      <span class="stack-label">Scraping</span>
-      <span class="stack-value">Playwright (headless Chromium) for Google Flights</span>
-    </div>
-    <div class="stack-row">
-      <span class="stack-label">Cost</span>
-      <span class="stack-value">$0 — all free tier APIs + Oracle Cloud Free Tier</span>
-    </div>
-  </div>
-</section>
-
-<footer>
-  <div class="footer-content">
-    <p><a href="../index.html" style="color:var(--matrix-green);text-decoration:none">← Back to The Matrix</a></p>
-    <p class="footer-small">ZION — The heart of The Matrix</p>
-  </div>
-</footer>
+</div>
 
 <script src="../script.js"></script>
+<script>
+// Draw connection lines from sun to each planet
+(function drawLines() {
+  const container = document.getElementById('solar');
+  if (!container) return;
+  const cx = container.offsetWidth / 2;
+  const cy = container.offsetHeight / 2;
+  document.querySelectorAll('.planet').forEach(p => {
+    const px = p.offsetLeft + 35;
+    const py = p.offsetTop + 35;
+    const dx = px - cx;
+    const dy = py - cy;
+    const len = Math.sqrt(dx*dx + dy*dy) - 80;
+    const angle = Math.atan2(dy, dx) * 180 / Math.PI;
+    const line = document.createElement('div');
+    line.className = 'conn-line';
+    line.style.width = Math.max(0, len) + 'px';
+    line.style.transform = `rotate(${angle}deg)`;
+    container.appendChild(line);
+  });
+})();
+</script>
 </body>
 </html>
