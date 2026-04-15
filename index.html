@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Matrix — KeyMaker Project</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔑</text></svg>">
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- Matrix rain canvas -->
+<canvas id="matrix-rain"></canvas>
+
+<!-- Navigation -->
+<nav id="navbar">
+  <div class="nav-brand">
+    <span class="key-icon">🔑</span> THE KEYMAKER PROJECT
+  </div>
+  <div class="nav-links">
+    <a href="#hero">Home</a>
+    <a href="#architecture">Architecture</a>
+    <a href="#agents">Agents</a>
+    <a href="#projects">Projects</a>
+    <a href="#about">About</a>
+  </div>
+</nav>
+
+<!-- Hero Section -->
+<section id="hero">
+  <div class="hero-content">
+    <h1 class="glitch" data-text="THE MATRIX">THE MATRIX</h1>
+    <p class="hero-subtitle typewriter">A Personal AI Ecosystem</p>
+    <p class="hero-desc">
+      An interconnected network of AI agents — running 24/7 on cloud infrastructure — 
+      that automates daily life, monitors systems, answers questions, and builds itself.
+    </p>
+    <div class="hero-stats">
+      <div class="stat">
+        <span class="stat-num">7</span>
+        <span class="stat-label">AI Agents</span>
+      </div>
+      <div class="stat">
+        <span class="stat-num">12+</span>
+        <span class="stat-label">Sub-Projects</span>
+      </div>
+      <div class="stat">
+        <span class="stat-num">24/7</span>
+        <span class="stat-label">Uptime</span>
+      </div>
+      <div class="stat">
+        <span class="stat-num">$0</span>
+        <span class="stat-label">Cost</span>
+      </div>
+    </div>
+    <a href="#architecture" class="cta-btn">Enter The Matrix ↓</a>
+  </div>
+</section>
+
+<!-- Architecture Diagram -->
+<section id="architecture">
+  <h2 class="section-title">System Architecture</h2>
+  <p class="section-desc">"You've been living in a dream world, Neo. This is the world as it is."</p>
+  
+  <div class="diagram-container">
+    <div class="mermaid">
+graph TB
+    subgraph HUMAN["🧑 NEO — The One"]
+        PHONE["📱 Phone<br/><small>WhatsApp • Email</small>"]
+        LAPTOP["💻 Laptop<br/><small>Cursor IDE</small>"]
+    end
+
+    subgraph CLOUD["☁️ ORACLE CLOUD VM — Free Tier"]
+        ZION["🏛️ ZION<br/><small>WhatsApp AI Bot</small><br/><small>Groq • Llama 3.3 70B</small>"]
+        BRIDGE["📡 WhatsApp Bridge<br/><small>Go Service</small>"]
+        ANDERSON["🕵️ ANDERSON<br/><small>SRE Health Monitor</small><br/><small>Cron: every 5 min</small>"]
+        MORPHEUS["📧 MORPHEUS<br/><small>Email Bot</small><br/><small>Cron: every 2 min</small>"]
+        BOSS["📋 TheBoss<br/><small>Daily Briefs Engine</small>"]
+        DAD["👨‍👦 Dad Auto-Reply<br/><small>Smart Gujarati Replies</small>"]
+    end
+
+    subgraph LOCAL["🖥️ NEO'S LAPTOP"]
+        TRINITY["🔺 TRINITY<br/><small>Cursor + Claude Opus</small><br/><small>Code • Deploy • Debug</small>"]
+        CORTEX["🧠 CORTEX (@neo)<br/><small>Corporate AI</small><br/><small>MS Teams • RAG</small>"]
+    end
+
+    subgraph EXTERNAL["🌐 EXTERNAL APIs"]
+        GROQ["⚡ Groq API"]
+        GEMINI["💎 Gemini API"]
+        LOBO["🐺 LOBO<br/><small>Architecture Advisor</small>"]
+    end
+
+    PHONE -->|"@zion ..."| BRIDGE
+    BRIDGE -->|messages| ZION
+    ZION -->|replies| BRIDGE
+    BRIDGE -->|"[Zion] ..."| PHONE
+    
+    PHONE -->|"@morpheus ..."| MORPHEUS
+    MORPHEUS -->|email reply| PHONE
+    
+    ANDERSON -->|"🚨 alerts"| BRIDGE
+    ANDERSON -->|"auto-fix"| ZION
+    
+    LAPTOP -->|code & deploy| TRINITY
+    TRINITY -->|SSH| CLOUD
+    TRINITY -->|"consult"| LOBO
+    
+    ZION --> GROQ
+    ZION --> GEMINI
+    ZION --> BOSS
+    MORPHEUS --> GROQ
+
+    classDef human fill:#1a1a2e,stroke:#00ff41,stroke-width:2px,color:#00ff41
+    classDef cloud fill:#0d1117,stroke:#00ff41,stroke-width:2px,color:#00ff41
+    classDef local fill:#0d1117,stroke:#58a6ff,stroke-width:2px,color:#58a6ff
+    classDef external fill:#0d1117,stroke:#ffd700,stroke-width:2px,color:#ffd700
+    classDef agent fill:#161b22,stroke:#00ff41,stroke-width:1px,color:#c9d1d9
+
+    class HUMAN human
+    class CLOUD cloud
+    class LOCAL local
+    class EXTERNAL external
+    class ZION,BRIDGE,ANDERSON,MORPHEUS,BOSS,DAD,TRINITY,CORTEX,GROQ,GEMINI,LOBO,PHONE,LAPTOP agent
+    </div>
+  </div>
+</section>
+
+<!-- Agents Section -->
+<section id="agents">
+  <h2 class="section-title">The Agents</h2>
+  <p class="section-desc">Each agent has a role. Each role serves The One.</p>
+  
+  <div class="agents-grid">
+    <div class="agent-card" data-agent="trinity">
+      <div class="agent-icon">🔺</div>
+      <h3>TRINITY</h3>
+      <p class="agent-role">The Partner</p>
+      <p>Cursor IDE + Claude Opus 4.6. Writes code, deploys to cloud, debugs issues. The real brain behind every construct.</p>
+      <div class="agent-tech">Anthropic Claude • SSH • Python</div>
+    </div>
+
+    <div class="agent-card" data-agent="zion">
+      <div class="agent-icon">🏛️</div>
+      <h3>ZION</h3>
+      <p class="agent-role">The Last City</p>
+      <p>WhatsApp AI assistant. Answers questions, searches the web, reads voice notes, analyzes images, summarizes links and documents.</p>
+      <div class="agent-tech">Groq • Llama 3.3 70B • Gemini Flash</div>
+    </div>
+
+    <div class="agent-card" data-agent="anderson">
+      <div class="agent-icon">🕵️</div>
+      <h3>ANDERSON</h3>
+      <p class="agent-role">The System</p>
+      <p>SRE health monitor. Watches CPU, RAM, disk, services. Auto-restarts crashed processes. Sends WhatsApp alerts when things break.</p>
+      <div class="agent-tech">Cron • systemctl • WhatsApp Alerts</div>
+    </div>
+
+    <div class="agent-card" data-agent="morpheus">
+      <div class="agent-icon">📧</div>
+      <h3>MORPHEUS</h3>
+      <p class="agent-role">The Guide</p>
+      <p>Email bot. Neo's remote control when away from the laptop. Reads @morpheus emails, can restart services, answer questions.</p>
+      <div class="agent-tech">Gmail IMAP/SMTP • Groq • Gemini</div>
+    </div>
+
+    <div class="agent-card" data-agent="lobo">
+      <div class="agent-icon">🐺</div>
+      <h3>LOBO</h3>
+      <p class="agent-role">The Oracle's Advisor</p>
+      <p>Senior architecture consultant. Trinity MUST consult Lobo before building any new feature. Reviews design, finds bugs, suggests clean approaches.</p>
+      <div class="agent-tech">WhatsApp AI • Architecture Review</div>
+    </div>
+
+    <div class="agent-card" data-agent="cortex">
+      <div class="agent-icon">🧠</div>
+      <h3>CORTEX (@neo)</h3>
+      <p class="agent-role">The Corporate Brain</p>
+      <p>AI assistant for a 20-person corporate team. Searches indexed documents, answers questions via Microsoft Teams and web UI.</p>
+      <div class="agent-tech">LlamaIndex • ChromaDB • MS Teams • Flask</div>
+    </div>
+  </div>
+</section>
+
+<!-- Projects Section -->
+<section id="projects">
+  <h2 class="section-title">Constructs</h2>
+  <p class="section-desc">Sub-projects running inside The Matrix. Each one built, tested, and deployed by Trinity.</p>
+
+  <div class="projects-grid">
+    <div class="project-card">
+      <div class="project-icon">📰</div>
+      <h3>AI News Brief</h3>
+      <p>Daily AI/tech news digest delivered to WhatsApp every morning.</p>
+      <span class="project-status live">LIVE</span>
+    </div>
+
+    <div class="project-card">
+      <div class="project-icon">📈</div>
+      <h3>Stock Brief</h3>
+      <p>Daily stock market summary with top movers and analysis.</p>
+      <span class="project-status live">LIVE</span>
+    </div>
+
+    <div class="project-card">
+      <div class="project-icon">📖</div>
+      <h3>Word Daily</h3>
+      <p>Learn a new vocabulary word every day on WhatsApp.</p>
+      <span class="project-status live">LIVE</span>
+    </div>
+
+    <div class="project-card">
+      <div class="project-icon">✈️</div>
+      <h3>Vacation Deals</h3>
+      <p>Cheapest international flights from India. Real prices scraped from Google Flights via headless browser.</p>
+      <span class="project-status live">LIVE</span>
+    </div>
+
+    <div class="project-card">
+      <div class="project-icon">💊</div>
+      <h3>MedTracker</h3>
+      <p>Medicine reminders and tracking. Never miss a dose.</p>
+      <span class="project-status live">LIVE</span>
+    </div>
+
+    <div class="project-card">
+      <div class="project-icon">🏃</div>
+      <h3>Fitbit Brief</h3>
+      <p>Daily fitness summary from Fitbit — steps, sleep, heart rate.</p>
+      <span class="project-status live">LIVE</span>
+    </div>
+
+    <div class="project-card">
+      <div class="project-icon">👨‍👦</div>
+      <h3>Dad Auto-Reply</h3>
+      <p>Smart WhatsApp replies to Dad in romanized Gujarati. Understands text, images, videos, and PDFs.</p>
+      <span class="project-status live">LIVE</span>
+    </div>
+
+    <div class="project-card">
+      <div class="project-icon">📅</div>
+      <h3>Calendar</h3>
+      <p>Google Calendar integration — create events and get daily reminders via WhatsApp.</p>
+      <span class="project-status live">LIVE</span>
+    </div>
+
+    <div class="project-card">
+      <div class="project-icon">👥</div>
+      <h3>Contacts</h3>
+      <p>Google Contacts search and management. Ask "do you know Sandeep?" and get instant results.</p>
+      <span class="project-status live">LIVE</span>
+    </div>
+
+    <div class="project-card">
+      <div class="project-icon">🏋️</div>
+      <h3>Strava</h3>
+      <p>Strava fitness data integration for workout tracking.</p>
+      <span class="project-status live">LIVE</span>
+    </div>
+
+    <div class="project-card">
+      <div class="project-icon">🌤️</div>
+      <h3>Weather</h3>
+      <p>Real-time weather from Open-Meteo API. No LLM hallucination — direct API data.</p>
+      <span class="project-status live">LIVE</span>
+    </div>
+
+    <div class="project-card">
+      <div class="project-icon">🎯</div>
+      <h3>Trivia</h3>
+      <p>Interactive trivia games in WhatsApp group chats.</p>
+      <span class="project-status live">LIVE</span>
+    </div>
+  </div>
+</section>
+
+<!-- About / Tech Stack -->
+<section id="about">
+  <h2 class="section-title">The Stack</h2>
+  <p class="section-desc">Built on free tiers. Runs on zero budget. Powered by open source.</p>
+  
+  <div class="stack-grid">
+    <div class="stack-item">
+      <h4>☁️ Infrastructure</h4>
+      <p>Oracle Cloud Free Tier<br>Ampere A1 (4 CPU, 24GB RAM)<br>Always Free — $0/month</p>
+    </div>
+    <div class="stack-item">
+      <h4>🤖 AI Models</h4>
+      <p>Groq (Llama 3.3 70B) — Free<br>Google Gemini Flash — Free<br>Anthropic Claude (via Cursor)</p>
+    </div>
+    <div class="stack-item">
+      <h4>💬 Messaging</h4>
+      <p>WhatsApp via Go Bridge<br>Gmail IMAP/SMTP<br>Microsoft Teams (Graph API)</p>
+    </div>
+    <div class="stack-item">
+      <h4>🛠️ Languages</h4>
+      <p>Python (agents, bots)<br>Go (WhatsApp bridge)<br>JavaScript (this site)<br>SQL (SQLite, ChromaDB)</p>
+    </div>
+    <div class="stack-item">
+      <h4>📊 Data</h4>
+      <p>SQLite (all agent data)<br>ChromaDB (vector search)<br>LlamaIndex (RAG pipeline)</p>
+    </div>
+    <div class="stack-item">
+      <h4>🔧 DevOps</h4>
+      <p>systemd services<br>Cron scheduling<br>SSH deployments<br>Health monitoring</p>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer>
+  <div class="footer-content">
+    <p class="footer-quote">"I know kung fu." — Neo</p>
+    <p>The KeyMaker Project — Built by <strong>Manav Shah</strong></p>
+    <p class="footer-small">Every agent, every construct, every line of code — built with AI, running for free, 24/7.</p>
+  </div>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>
