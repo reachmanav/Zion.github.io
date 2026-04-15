@@ -431,6 +431,7 @@ section {
   color: inherit;
   cursor: pointer;
   position: relative;
+  display: block;
 }
 
 .click-hint {
