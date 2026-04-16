@@ -401,14 +401,9 @@ function startProgress() {
     setTimeout(function() { addStep(step.text, step.color); }, step.delay * 1000);
   });
 
-  // Poll for live.html every 5 seconds — cache-bust with timestamp
-  var liveUrl = 'https://reachmanav.github.io/Zion.github.io/live.html';
+  // Poll for live.html every 5 seconds (same-origin — no CORS issues)
   liveCheckInterval = setInterval(function() {
-    fetch(liveUrl + '?t=' + Date.now(), { method: 'HEAD', mode: 'no-cors' })
-      .then(function() {
-        // no-cors always "succeeds" — we need to check with a real fetch
-        return fetch(liveUrl + '?t=' + Date.now(), { mode: 'cors' });
-      })
+    fetch('live.html?t=' + Date.now())
       .then(function(r) {
         if (r.ok) { deployDone(); }
       })
