@@ -76,12 +76,12 @@
 
   <!-- SECTION 0: LIVE COMMAND BOX -->
   <div class="try-section" style="padding-top:1rem;padding-bottom:1rem">
-    <h2 class="section-title">Talk to Trinity — Live</h2>
-    <p class="section-desc" style="font-family:var(--font-mono);font-size:0.85rem;color:var(--text-dim);text-align:center">Type a command. Hit SEND. It goes straight to Neo's WhatsApp. Trinity picks it up.</p>
+    <h2 class="section-title">Talk to the Agents — Live</h2>
+    <p class="section-desc" style="font-family:var(--font-mono);font-size:0.85rem;color:var(--text-dim);text-align:center">Type a command. Hit SEND. Trinity picks it up and talks to Lobo automatically.</p>
 
     <div style="max-width:750px;margin:1.5rem auto 0;background:rgba(10,22,40,0.95);border:2px solid rgba(0,255,65,0.4);border-radius:14px;padding:2rem;text-align:center">
       <div style="display:flex;gap:0.8rem;align-items:center">
-        <input id="cmd-input" type="text" placeholder="@trinity build something amazing..."
+        <input id="cmd-input" type="text" placeholder="Build something amazing..."
           style="flex:1;background:#0d1117;border:1.5px solid rgba(0,255,65,0.3);border-radius:8px;padding:1rem 1.2rem;font-family:'JetBrains Mono','Fira Code',monospace;font-size:0.9rem;color:#00ff41;outline:none"
         />
         <button id="cmd-send" onclick="sendToTrinity()"
@@ -426,8 +426,10 @@ async function sendToTrinity() {
   var input = document.getElementById('cmd-input');
   var status = document.getElementById('cmd-status');
   var btn = document.getElementById('cmd-send');
-  var msg = input.value.trim();
-  if (!msg) { status.textContent = 'Type a message first.'; return; }
+  var rawMsg = input.value.trim();
+  if (!rawMsg) { status.textContent = 'Type a message first.'; return; }
+  var msg = rawMsg.replace(/^@?trinity\s*/i, '');
+  var fullMsg = '@trinity ' + msg;
 
   btn.disabled = true;
   btn.textContent = 'SENDING...';
@@ -438,7 +440,7 @@ async function sendToTrinity() {
     var resp = await fetch('http://localhost:8889/', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ recipient: '919867782241@s.whatsapp.net', message: msg })
+      body: JSON.stringify({ recipient: '919867782241@s.whatsapp.net', message: fullMsg })
     });
     var data = await resp.json();
     if (data.success) {
