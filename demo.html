@@ -74,6 +74,28 @@
     <p class="d-hero-desc">Everything you saw on this site — every agent, every construct — is live on an Oracle Cloud VM, 24/7. You can talk to it. Right now. From your phone.</p>
   </div>
 
+  <!-- SECTION 0: LIVE COMMAND BOX (first thing they see) -->
+  <div class="try-section" style="padding-top:1rem;padding-bottom:1rem">
+    <h2 class="section-title">Talk to Trinity — Live</h2>
+    <p class="section-desc" style="font-family:var(--font-mono);font-size:0.85rem;color:var(--text-dim);text-align:center">Type a command below. Hit SEND. It appears on Neo's phone. Trinity responds.</p>
+
+    <div style="max-width:750px;margin:1.5rem auto 0;background:rgba(10,22,40,0.95);border:2px solid rgba(0,255,65,0.4);border-radius:14px;padding:2rem;text-align:center">
+      <div style="display:flex;gap:0.8rem;align-items:center">
+        <input id="cmd-input" type="text" placeholder="@trinity No one knows about the KeyMaker Project..." 
+          style="flex:1;background:#0d1117;border:1.5px solid rgba(0,255,65,0.3);border-radius:8px;padding:1rem 1.2rem;font-family:'JetBrains Mono','Fira Code',monospace;font-size:0.9rem;color:#00ff41;outline:none"
+          value="@trinity No one knows about the KeyMaker Project. Create a new link — show to the group team."
+        />
+        <button id="cmd-send" onclick="sendToTrinity()" 
+          style="background:#00ff41;color:#0d1117;border:none;border-radius:8px;padding:1rem 2rem;font-family:'Orbitron','JetBrains Mono',monospace;font-size:0.85rem;font-weight:bold;letter-spacing:1px;cursor:pointer;white-space:nowrap;transition:all 0.3s"
+          onmouseover="this.style.background='#33ff66';this.style.transform='scale(1.05)'" 
+          onmouseout="this.style.background='#00ff41';this.style.transform='scale(1)'"
+        >SEND ⚡</button>
+      </div>
+      <div id="cmd-status" style="margin-top:1rem;font-family:'JetBrains Mono',monospace;font-size:0.8rem;color:#8b949e;min-height:1.5rem"></div>
+      <div id="cmd-log" style="margin-top:0.8rem;text-align:left;font-family:'JetBrains Mono',monospace;font-size:0.75rem;color:#8b949e;max-height:200px;overflow-y:auto"></div>
+    </div>
+  </div>
+
   <!-- SECTION 1: How This Website Was Born -->
   <div class="diagram-wrap">
     <h2 class="section-title">How This Website Was Born</h2>
@@ -183,28 +205,6 @@
       <!-- Timeline -->
       <text x="450" y="600" class="svg-label" fill="#8b949e" font-size="10" text-anchor="middle" opacity="0.4">Total time: Neo said 1 sentence → website deployed in under 1 hour. Zero clicks. Zero hosting cost.</text>
     </svg>
-  </div>
-
-  <!-- SECTION: LIVE COMMAND BOX -->
-  <div class="try-section" style="padding-bottom:1rem">
-    <h2 class="section-title">Talk to Trinity — Live</h2>
-    <p class="section-desc" style="font-family:var(--font-mono);font-size:0.85rem;color:var(--text-dim);text-align:center">Type a command below. It will appear on Neo's WhatsApp. Trinity will respond.</p>
-
-    <div style="max-width:700px;margin:1.5rem auto 0;background:rgba(10,22,40,0.9);border:2px solid rgba(0,255,65,0.3);border-radius:14px;padding:2rem;text-align:center">
-      <div style="display:flex;gap:0.8rem;align-items:center">
-        <input id="cmd-input" type="text" placeholder="@trinity No one knows about the KeyMaker Project..." 
-          style="flex:1;background:#0d1117;border:1.5px solid rgba(0,255,65,0.2);border-radius:8px;padding:0.9rem 1.2rem;font-family:'JetBrains Mono','Fira Code',monospace;font-size:0.85rem;color:#00ff41;outline:none"
-          value="@trinity No one knows about the KeyMaker Project. Create a new link — show to the group team."
-        />
-        <button id="cmd-send" onclick="sendToTrinity()" 
-          style="background:#00ff41;color:#0d1117;border:none;border-radius:8px;padding:0.9rem 1.8rem;font-family:'Orbitron','JetBrains Mono',monospace;font-size:0.8rem;font-weight:bold;letter-spacing:1px;cursor:pointer;white-space:nowrap;transition:all 0.3s"
-          onmouseover="this.style.background='#33ff66';this.style.transform='scale(1.05)'" 
-          onmouseout="this.style.background='#00ff41';this.style.transform='scale(1)'"
-        >SEND ⚡</button>
-      </div>
-      <div id="cmd-status" style="margin-top:1rem;font-family:'JetBrains Mono',monospace;font-size:0.8rem;color:#8b949e;min-height:1.5rem"></div>
-      <div id="cmd-log" style="margin-top:0.8rem;text-align:left;font-family:'JetBrains Mono',monospace;font-size:0.75rem;color:#8b949e;max-height:200px;overflow-y:auto"></div>
-    </div>
   </div>
 
   <!-- SECTION 2: The Story -->
