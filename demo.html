@@ -93,6 +93,21 @@
       </div>
       <div id="cmd-status" style="margin-top:1rem;font-family:'JetBrains Mono',monospace;font-size:0.8rem;color:#8b949e;min-height:1.5rem"></div>
     </div>
+
+    <!-- PROGRESS TRACKER (hidden until SEND) -->
+    <div id="progress-box" style="display:none;max-width:750px;margin:1.5rem auto 0;background:rgba(10,22,40,0.95);border:2px solid rgba(255,107,107,0.3);border-radius:14px;padding:2rem">
+      <div style="display:flex;align-items:center;gap:1rem;margin-bottom:1.2rem">
+        <div id="progress-spinner" style="width:20px;height:20px;border:3px solid rgba(0,255,65,0.2);border-top:3px solid #00ff41;border-radius:50%;animation:spin 1s linear infinite"></div>
+        <span style="font-family:var(--font-display);color:#ff6b6b;font-size:1rem;letter-spacing:2px">IN PROGRESS</span>
+        <span id="progress-timer" style="font-family:var(--font-mono);color:#8b949e;font-size:0.8rem;margin-left:auto">0:00</span>
+      </div>
+      <div id="progress-steps" style="font-family:'JetBrains Mono',monospace;font-size:0.8rem;line-height:2.2"></div>
+      <div id="progress-result" style="display:none;margin-top:1.5rem;text-align:center">
+        <a id="live-link" href="live.html" target="_blank"
+          style="display:inline-block;background:#00ff41;color:#0d1117;font-family:var(--font-display);font-size:1rem;padding:1rem 2.5rem;border-radius:10px;text-decoration:none;letter-spacing:2px;font-weight:bold;animation:pulse-glow 2s ease-in-out infinite">SEE THE RESULT — LIVE</a>
+      </div>
+    </div>
+    <style>@keyframes spin { to { transform: rotate(360deg); } }</style>
   </div>
 
   <!-- SECTION 1: How This Website Was Born -->
@@ -343,6 +358,74 @@
   if (c) qrGenerate(c, 'https://wa.me/919867782241?text=Hi%20Zion!', 180);
 })();
 
+var progressSteps = [
+  { text: 'Message sent to Neo\'s WhatsApp', color: '#00ff41', delay: 0 },
+  { text: 'Zion received it — routing to Trinity...', color: '#ffd740', delay: 8 },
+  { text: 'Trinity picked it up — reading the request...', color: '#ff6b6b', delay: 15 },
+  { text: 'Trinity consulting Lobo via WhatsApp...', color: '#ffd740', delay: 25 },
+  { text: 'Lobo thinking — architecture options...', color: '#ffd740', delay: 40 },
+  { text: 'Lobo replied with 3 options — Trinity auto-selecting best...', color: '#ffd740', delay: 70 },
+  { text: 'Trinity building live.html — HTML + CSS + SVG...', color: '#ff6b6b', delay: 90 },
+  { text: 'Pushing to GitHub Pages...', color: '#58a6ff', delay: 150 }
+];
+var progressTimer = null;
+var progressStart = 0;
+var liveCheckInterval = null;
+
+function addStep(text, color) {
+  var el = document.getElementById('progress-steps');
+  var line = document.createElement('div');
+  line.innerHTML = '<span style="color:' + color + '">&#9656;</span> <span style="color:' + color + '">' + text + '</span>';
+  el.appendChild(line);
+  el.scrollTop = el.scrollHeight;
+}
+
+function startProgress() {
+  var box = document.getElementById('progress-box');
+  var timerEl = document.getElementById('progress-timer');
+  box.style.display = 'block';
+  document.getElementById('progress-steps').innerHTML = '';
+  document.getElementById('progress-result').style.display = 'none';
+  progressStart = Date.now();
+
+  // Timer
+  progressTimer = setInterval(function() {
+    var sec = Math.floor((Date.now() - progressStart) / 1000);
+    var m = Math.floor(sec / 60);
+    var s = sec % 60;
+    timerEl.textContent = m + ':' + (s < 10 ? '0' : '') + s;
+  }, 1000);
+
+  // Scheduled steps (simulated timeline matching real Trinity flow)
+  progressSteps.forEach(function(step) {
+    setTimeout(function() { addStep(step.text, step.color); }, step.delay * 1000);
+  });
+
+  // Poll for live.html every 5 seconds — cache-bust with timestamp
+  var liveUrl = 'https://reachmanav.github.io/Zion.github.io/live.html';
+  liveCheckInterval = setInterval(function() {
+    fetch(liveUrl + '?t=' + Date.now(), { method: 'HEAD', mode: 'no-cors' })
+      .then(function() {
+        // no-cors always "succeeds" — we need to check with a real fetch
+        return fetch(liveUrl + '?t=' + Date.now(), { mode: 'cors' });
+      })
+      .then(function(r) {
+        if (r.ok) { deployDone(); }
+      })
+      .catch(function() { /* not ready yet */ });
+  }, 5000);
+}
+
+function deployDone() {
+  clearInterval(liveCheckInterval);
+  clearInterval(progressTimer);
+  addStep('DEPLOYED — live.html is live!', '#00ff41');
+  document.getElementById('progress-spinner').style.animation = 'none';
+  document.getElementById('progress-spinner').style.borderColor = '#00ff41';
+  document.getElementById('progress-result').style.display = 'block';
+  document.querySelector('#progress-box').style.borderColor = 'rgba(0,255,65,0.5)';
+}
+
 async function sendToTrinity() {
   var input = document.getElementById('cmd-input');
   var status = document.getElementById('cmd-status');
@@ -365,17 +448,17 @@ async function sendToTrinity() {
     if (data.success) {
       btn.textContent = 'SENT';
       btn.style.background = '#00ff41';
-      status.innerHTML = '<span style="color:#00ff41">Delivered to Neo\'s WhatsApp. Watch the phone screen.</span>';
+      status.innerHTML = '<span style="color:#00ff41">Delivered. Watch Neo\'s phone + laptop screen.</span>';
+      startProgress();
     } else {
       throw new Error(data.error || 'Failed');
     }
   } catch (e) {
     btn.textContent = 'SEND';
     btn.style.background = '#ff6b6b';
+    btn.disabled = false;
     status.innerHTML = '<span style="color:#ff6b6b">Relay not running. Start: python demo_relay_local.py</span>';
   }
-  btn.disabled = false;
-  setTimeout(function(){ btn.textContent = 'SEND'; btn.style.background = '#00ff41'; }, 5000);
 }
 
 document.getElementById('cmd-input').addEventListener('keydown', function(e) {

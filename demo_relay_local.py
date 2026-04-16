@@ -1,23 +1,31 @@
 """
 Demo Relay — runs on Neo's laptop during live demo.
-Receives POST from demo.html (localhost:8889) and sends to WhatsApp via SSH to VM.
+
+Receives POST from demo.html (localhost:8889), queues a @trinity task
+directly on the VM via SSH + trinity_queue.py, AND sends the message
+to Neo's WhatsApp so it appears on his phone screen.
 
 Start before the meeting:
     python demo_relay_local.py
-
-Then open https://reachmanav.github.io/Zion.github.io/demo.html
-Hit SEND — message goes to WhatsApp.
 """
 
 import http.server
 import json
 import subprocess
 import os
-import tempfile
 
 PORT = 8889
 VM = "opc@80.225.205.232"
 KEY = os.path.expanduser("~") + "\\.ssh\\oracle_cloud_nopass"
+CHAT_JID = "919867782241@s.whatsapp.net"
+SENDER = "919867782241"
+
+
+def ssh_cmd(command):
+    return subprocess.run(
+        ["ssh", "-i", KEY, "-o", "StrictHostKeyChecking=no", VM, command],
+        capture_output=True, text=True, timeout=20
+    )
 
 
 class RelayHandler(http.server.BaseHTTPRequestHandler):
@@ -32,47 +40,44 @@ class RelayHandler(http.server.BaseHTTPRequestHandler):
     def do_POST(self):
         length = int(self.headers.get("Content-Length", 0))
         body = json.loads(self.rfile.read(length))
-        recipient = body.get("recipient", "")
         message = body.get("message", "")
 
-        script = (
-            "import urllib.request, json\n"
-            "data = json.dumps({'recipient': %s, 'message': %s}).encode()\n"
-            "req = urllib.request.Request('http://localhost:8080/api/send', data=data,\n"
-            "    headers={'Content-Type': 'application/json; charset=utf-8'})\n"
-            "resp = urllib.request.urlopen(req)\n"
-            "print(resp.read().decode())\n"
-        ) % (repr(recipient), repr(message))
-
-        tmp = os.path.join(tempfile.gettempdir(), "demo_send.py")
-        with open(tmp, "w", encoding="utf-8") as f:
-            f.write(script)
-
-        scp = subprocess.run(
-            ["scp", "-i", KEY, "-o", "StrictHostKeyChecking=no", tmp, f"{VM}:/tmp/demo_send.py"],
-            capture_output=True, text=True, timeout=15
+        # 1. Queue @trinity task on VM (so Trinity picks it up)
+        safe_msg = message.replace("'", "'\\''")
+        queue_cmd = (
+            f"python3 /home/opc/PROJECT/ZION/trinity_queue.py add "
+            f"'{CHAT_JID}' '{safe_msg}' '{SENDER}'"
         )
-        if scp.returncode != 0:
-            self._reply(False, "SCP failed: " + scp.stderr)
+        result = ssh_cmd(queue_cmd)
+
+        if result.returncode != 0:
+            self._reply(False, "Queue failed: " + result.stderr)
+            print("[RELAY] Queue failed:", result.stderr)
             return
 
-        ssh = subprocess.run(
-            ["ssh", "-i", KEY, "-o", "StrictHostKeyChecking=no", VM, "python3 /tmp/demo_send.py"],
-            capture_output=True, text=True, timeout=15
+        task_info = result.stdout.strip()
+        print(f"[RELAY] Task queued: {task_info}")
+
+        # 2. Also send the message to Neo's WhatsApp so it shows on phone
+        send_cmd = (
+            f"python3 -c \""
+            f"import urllib.request, json; "
+            f"data = json.dumps({{'recipient': '{CHAT_JID}', 'message': '{safe_msg}'}}).encode(); "
+            f"req = urllib.request.Request('http://localhost:8080/api/send', data=data, "
+            f"headers={{'Content-Type': 'application/json; charset=utf-8'}}); "
+            f"urllib.request.urlopen(req)"
+            f"\""
         )
-        if ssh.returncode == 0:
-            self._reply(True, "Sent")
-            print("[RELAY] Message delivered to WhatsApp")
-        else:
-            self._reply(False, ssh.stderr or "SSH failed")
-            print("[RELAY] Error:", ssh.stderr)
+        ssh_cmd(send_cmd)
+
+        self._reply(True, task_info)
 
     def _reply(self, success, msg):
         self.send_response(200)
         self.send_header("Content-Type", "application/json")
         self.send_header("Access-Control-Allow-Origin", "*")
         self.end_headers()
-        self.wfile.write(json.dumps({"success": success, "error": "" if success else msg}).encode())
+        self.wfile.write(json.dumps({"success": success, "info": msg}).encode())
 
     def log_message(self, fmt, *args):
         pass
@@ -80,6 +85,6 @@ class RelayHandler(http.server.BaseHTTPRequestHandler):
 
 if __name__ == "__main__":
     server = http.server.HTTPServer(("127.0.0.1", PORT), RelayHandler)
-    print(f"[RELAY] Demo relay running on http://localhost:{PORT}")
-    print("[RELAY] Open demo.html and hit SEND")
+    print(f"[RELAY] Demo relay on http://localhost:{PORT}")
+    print("[RELAY] Hit SEND on demo.html - queues task + shows on WhatsApp")
     server.serve_forever()
