@@ -74,40 +74,6 @@
     <p class="d-hero-desc">Everything you saw on this site — every agent, every construct — is live on an Oracle Cloud VM, 24/7. You can talk to it. Right now. From your phone.</p>
   </div>
 
-  <!-- SECTION 0: LIVE COMMAND BOX (first thing they see) -->
-  <div class="try-section" style="padding-top:1rem;padding-bottom:1rem">
-    <h2 class="section-title">Talk to Trinity — Live</h2>
-    <p class="section-desc" style="font-family:var(--font-mono);font-size:0.85rem;color:var(--text-dim);text-align:center">Type a command below. Hit SEND. It appears on Neo's phone. Trinity responds.</p>
-
-    <div style="max-width:750px;margin:1.5rem auto 0;background:rgba(10,22,40,0.95);border:2px solid rgba(0,255,65,0.4);border-radius:14px;padding:2rem;text-align:center">
-      <div style="display:flex;gap:0.8rem;align-items:center">
-        <input id="cmd-input" type="text" placeholder="@trinity No one knows about the KeyMaker Project..." 
-          style="flex:1;background:#0d1117;border:1.5px solid rgba(0,255,65,0.3);border-radius:8px;padding:1rem 1.2rem;font-family:'JetBrains Mono','Fira Code',monospace;font-size:0.9rem;color:#00ff41;outline:none"
-          value="@trinity No one knows about the KeyMaker Project. Create a new link — show to the group team."
-        />
-        <button id="cmd-send" onclick="sendToTrinity()" 
-          style="background:#00ff41;color:#0d1117;border:none;border-radius:8px;padding:1rem 2rem;font-family:'Orbitron','JetBrains Mono',monospace;font-size:0.85rem;font-weight:bold;letter-spacing:1px;cursor:pointer;white-space:nowrap;transition:all 0.3s"
-          onmouseover="this.style.background='#33ff66';this.style.transform='scale(1.05)'" 
-          onmouseout="this.style.background='#00ff41';this.style.transform='scale(1)'"
-        >SEND ⚡</button>
-      </div>
-      <div id="cmd-status" style="margin-top:1rem;font-family:'JetBrains Mono',monospace;font-size:0.8rem;color:#8b949e;min-height:1.5rem"></div>
-      <div id="cmd-log" style="margin-top:0.8rem;text-align:left;font-family:'JetBrains Mono',monospace;font-size:0.75rem;color:#8b949e;max-height:200px;overflow-y:auto"></div>
-    </div>
-  </div>
-
-  <!-- COUNTDOWN + LIVE REVEAL (hidden until SEND clicked) -->
-  <div id="live-reveal" style="display:none;text-align:center;padding:2rem 1rem">
-    <div style="background:rgba(10,22,40,0.95);border:2px solid rgba(255,107,107,0.4);border-radius:14px;padding:2rem;max-width:600px;margin:0 auto">
-      <p style="font-family:var(--font-mono);color:#ff6b6b;font-size:0.9rem;margin:0" id="countdown-text">Trinity is working... Watch the laptop screen.</p>
-      <p style="font-family:var(--font-display);color:var(--matrix-green);font-size:3rem;margin:0.5rem 0;letter-spacing:5px;text-shadow:0 0 20px rgba(0,255,65,0.4)" id="countdown">5:00</p>
-      <p style="font-family:var(--font-mono);color:#8b949e;font-size:0.8rem;margin:0">Lobo advises → Neo picks → Trinity builds → deployed</p>
-      <div id="live-link" style="display:none;margin-top:1.5rem">
-        <a href="live.html" style="display:inline-block;background:#00ff41;color:#0d1117;font-family:var(--font-display);font-size:1rem;padding:1rem 2.5rem;border-radius:10px;text-decoration:none;letter-spacing:2px;font-weight:bold;animation:pulse-glow 2s ease-in-out infinite">🌐 SEE THE RESULT — LIVE</a>
-      </div>
-    </div>
-  </div>
-
   <!-- SECTION 1: How This Website Was Born -->
   <div class="diagram-wrap">
     <h2 class="section-title">How This Website Was Born</h2>
@@ -340,7 +306,6 @@
 
 <script src="script.js"></script>
 <script>
-// QR Code generator
 (function(){
   function qrGenerate(canvas, text, size) {
     const img = new Image();
@@ -356,94 +321,6 @@
   const c = document.getElementById('qr-canvas');
   if (c) qrGenerate(c, 'https://wa.me/919867782241?text=Hi%20Zion!', 180);
 })();
-
-// Send command to Trinity via local relay → SSH → VM Bridge → WhatsApp
-async function sendToTrinity() {
-  const input = document.getElementById('cmd-input');
-  const status = document.getElementById('cmd-status');
-  const btn = document.getElementById('cmd-send');
-  const log = document.getElementById('cmd-log');
-  const msg = input.value.trim();
-
-  if (!msg) { status.textContent = 'Type a message first.'; return; }
-
-  function addLog(text, color) {
-    const line = document.createElement('div');
-    line.style.color = color || '#8b949e';
-    line.style.padding = '0.2rem 0';
-    line.textContent = `[${new Date().toLocaleTimeString()}] ${text}`;
-    log.appendChild(line);
-    log.scrollTop = log.scrollHeight;
-  }
-
-  btn.disabled = true;
-  btn.textContent = 'SENDING...';
-  btn.style.background = '#ffd740';
-  status.innerHTML = '<span style="color:#ffd740">⚡ Sending to WhatsApp via Oracle Cloud VM...</span>';
-  addLog('Sending: ' + msg, '#00ff41');
-
-  try {
-    const resp = await fetch('http://localhost:8889/', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        recipient: '919867782241@s.whatsapp.net',
-        message: msg
-      })
-    });
-    const data = await resp.json();
-
-    if (data.success) {
-      btn.textContent = 'SENT ✓';
-      btn.style.background = '#00ff41';
-      status.innerHTML = '<span style="color:#00ff41">✓ Message delivered to Neo\'s WhatsApp!</span>';
-      addLog('Delivered to WhatsApp ✓', '#00ff41');
-      addLog('Trinity will pick it up → consult Lobo → reply on WhatsApp', '#ffd740');
-      addLog('Watch Neo\'s phone + laptop — two AIs talking live...', '#58a6ff');
-      startCountdown();
-    } else {
-      throw new Error(data.error || 'Unknown error');
-    }
-  } catch (e) {
-    btn.textContent = 'RETRY ⚡';
-    btn.style.background = '#ff6b6b';
-    status.innerHTML = '<span style="color:#ff6b6b">Local relay not running. Start: python demo_relay_local.py</span>';
-    addLog('Error: ' + e.message, '#ff6b6b');
-    addLog('Make sure demo_relay_local.py is running on the laptop', '#ffd740');
-  }
-
-  btn.disabled = false;
-  setTimeout(function() { btn.textContent = 'SEND ⚡'; btn.style.background = '#00ff41'; }, 5000);
-}
-
-// 5-minute countdown → reveals the live showcase link
-function startCountdown() {
-  const reveal = document.getElementById('live-reveal');
-  const timer = document.getElementById('countdown');
-  if (!reveal || !timer) return;
-
-  reveal.style.display = 'block';
-  let seconds = 300; // 5 minutes
-
-  const interval = setInterval(function() {
-    seconds--;
-    const m = Math.floor(seconds / 60);
-    const s = seconds % 60;
-    timer.textContent = `${m}:${s.toString().padStart(2, '0')}`;
-
-    if (seconds <= 0) {
-      clearInterval(interval);
-      timer.textContent = '0:00';
-      document.getElementById('live-link').style.display = 'block';
-      document.getElementById('countdown-text').textContent = 'Ready.';
-    }
-  }, 1000);
-}
-
-// Allow Enter key to send
-document.getElementById('cmd-input').addEventListener('keydown', function(e) {
-  if (e.key === 'Enter') sendToTrinity();
-});
 </script>
 </body>
 </html>
