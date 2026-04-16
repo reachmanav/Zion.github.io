@@ -3,8 +3,10 @@ Demo Relay — runs on Neo's laptop during live demo.
 
 SEND on demo.html -> relay does:
   1. Deletes live.html from GitHub (fresh start)
-  2. SCPs a Python script to VM that queues the task + sends WhatsApp ack
-  3. demo.html polls for live.html to appear
+  2. Queues @trinity task (trinity_queue.py add) — same as zion.py does
+  3. Sends [Trinity] Received on WhatsApp — same as zion.py does
+
+To Zion and Trinity, this is indistinguishable from typing @trinity in WhatsApp.
 
 Start before the meeting:
     python demo_relay_local.py
@@ -16,7 +18,6 @@ import subprocess
 import os
 import re
 import tempfile
-import sys
 
 PORT = 8889
 VM = "opc@80.225.205.232"
@@ -43,9 +44,9 @@ def run_on_vm(script_content):
          VM, "python3 /tmp/demo_action.py"],
         capture_output=True, text=True, timeout=30
     )
-    print(f"[RELAY] VM stdout: {ssh.stdout.strip()}", flush=True)
+    print(f"[RELAY] VM: {ssh.stdout.strip()}", flush=True)
     if ssh.returncode != 0:
-        print(f"[RELAY] VM stderr: {ssh.stderr.strip()}", flush=True)
+        print(f"[RELAY] VM err: {ssh.stderr.strip()}", flush=True)
     return ssh
 
 
@@ -61,10 +62,8 @@ def delete_live_html():
         r = subprocess.run(
             ["git", "push"], capture_output=True, text=True, cwd=SITE_DIR, timeout=30
         )
-        if r.returncode == 0:
-            print("[RELAY] live.html deleted from GitHub", flush=True)
-        else:
-            print(f"[RELAY] git push issue: {r.stderr}", flush=True)
+        print("[RELAY] live.html deleted from GitHub" if r.returncode == 0
+              else f"[RELAY] git push issue: {r.stderr}", flush=True)
     else:
         print("[RELAY] live.html already absent", flush=True)
 
@@ -83,48 +82,46 @@ class RelayHandler(http.server.BaseHTTPRequestHandler):
         body = json.loads(self.rfile.read(length))
         message = body.get("message", "")
 
+        # Strip @trinity prefix (same as zion.py line 1506)
         task_text = re.sub(r'^@?trinity\s*', '', message, flags=re.IGNORECASE).strip()
         if not task_text:
             task_text = message.strip()
 
         print(f"\n[RELAY] === NEW REQUEST ===", flush=True)
         print(f"[RELAY] Message: {message}", flush=True)
-        print(f"[RELAY] Task text: {task_text}", flush=True)
+        print(f"[RELAY] Task: {task_text}", flush=True)
 
         # Step 1: Delete live.html
         print("[RELAY] Step 1: Delete live.html...", flush=True)
         delete_live_html()
 
-        # Step 2+3: Queue task AND send WhatsApp (one VM script does both)
-        print("[RELAY] Step 2: Queue + WhatsApp...", flush=True)
+        # Step 2+3: Queue task + send [Trinity] Received (lightweight, no zion import)
+        print("[RELAY] Step 2: Queue + ack...", flush=True)
+
         vm_script = f"""
 import sys, json, urllib.request
 sys.path.insert(0, '/home/opc/PROJECT/ZION')
 from trinity_queue import add_task
 
-# Queue the task (raw_text, chat_jid, sender)
+# 1. Queue the task (same as zion.py handle_trinity_command)
 tid = add_task({repr(task_text)}, {repr(CHAT_JID)}, {repr(SENDER)})
 print(f"QUEUED: {{tid}}")
 
-# Send the original message to WhatsApp (shows on phone)
-def wa_send(msg):
-    data = json.dumps({{"recipient": {repr(CHAT_JID)}, "message": msg}}).encode()
-    req = urllib.request.Request("http://localhost:8080/api/send", data=data,
-        headers={{"Content-Type": "application/json; charset=utf-8"}})
-    urllib.request.urlopen(req)
-
-wa_send({repr(message)})
-wa_send("[Trinity] Received \\u2713")
-print("WHATSAPP: sent")
+# 2. Send [Trinity] Received on WhatsApp (same as zion.py send_reply)
+data = json.dumps({{"recipient": {repr(CHAT_JID)}, "message": "[Trinity] Received \\u2713"}}).encode()
+req = urllib.request.Request("http://localhost:8080/api/send", data=data,
+    headers={{"Content-Type": "application/json; charset=utf-8"}})
+urllib.request.urlopen(req)
+print("ACK: sent")
 """
         result = run_on_vm(vm_script)
 
         if result and result.returncode == 0 and "QUEUED:" in result.stdout:
             tid = result.stdout.split("QUEUED:")[1].split()[0].strip()
-            print(f"[RELAY] Done! Task: {tid}", flush=True)
-            self._reply(True, json.dumps({"task_id": tid, "status": "queued"}))
+            print(f"[RELAY] Done! Task {tid} queued + ack sent", flush=True)
+            self._reply(True, f"Task {tid} queued")
         else:
-            err = result.stderr if result else "VM unreachable"
+            err = (result.stderr if result else "VM unreachable")[:200]
             print(f"[RELAY] FAILED: {err}", flush=True)
             self._reply(False, err)
 
@@ -141,7 +138,6 @@ print("WHATSAPP: sent")
 
 if __name__ == "__main__":
     print(f"[RELAY] Demo relay on http://localhost:{PORT}", flush=True)
-    print("[RELAY] Flow: delete live.html -> queue task -> send WhatsApp", flush=True)
-    print("[RELAY] Type anything in demo.html -> SEND", flush=True)
+    print("[RELAY] Queue + ack (lightweight, no zion.py import)", flush=True)
     server = http.server.HTTPServer(("127.0.0.1", PORT), RelayHandler)
     server.serve_forever()
