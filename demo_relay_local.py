@@ -91,6 +91,21 @@ class RelayHandler(http.server.BaseHTTPRequestHandler):
         print(f"[RELAY] Message: {message}", flush=True)
         print(f"[RELAY] Task: {task_text}", flush=True)
 
+        # Step 0: Kill standby worker so it doesn't steal the task
+        print("[RELAY] Step 0: Stopping standby worker...", flush=True)
+        try:
+            for proc in subprocess.run(
+                ["powershell", "-Command",
+                 "Get-WmiObject Win32_Process -Filter \"name='python.exe'\" | "
+                 "Where-Object { $_.CommandLine -like '*standby_trigger*' } | "
+                 "ForEach-Object { Stop-Process -Id $_.ProcessId -Force; $_.ProcessId }"],
+                capture_output=True, text=True, timeout=10
+            ).stdout.strip().split('\n'):
+                if proc.strip():
+                    print(f"[RELAY] Killed standby PID {proc.strip()}", flush=True)
+        except Exception as e:
+            print(f"[RELAY] Standby kill skipped: {e}", flush=True)
+
         # Step 1: Delete live.html
         print("[RELAY] Step 1: Delete live.html...", flush=True)
         delete_live_html()
