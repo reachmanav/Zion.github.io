@@ -373,22 +373,22 @@
     <div class="ov-title" style="color:#00ff41">📱 Step 7 — Next Morning Brief</div>
     <div class="chat-msg chat-result"><div class="chat-sender">DevOps Security Brief — 04 Apr 2026 — 6:45 AM</div>
     <div class="chat-text">
-    <strong>1) CVE-2026-33105 Azure Kubernetes Privilege Escalation</strong><br>
-    Severity: <span style="color:#ff6b6b">CRITICAL (CVSS 10.0)</span> | Impact: Azure Kubernetes Service<br>
-    Action: Apply vendor patch — NVD<br><br>
-    <strong>2) CVE-2026-34208 SandboxJS Sandbox Escape</strong><br>
-    Severity: <span style="color:#ff6b6b">CRITICAL</span> | Impact: npm @nyariv/sandboxjs &lt; 0.8.36<br>
-    Action: Upgrade to 0.8.36 — GitHub Advisory<br><br>
-    <strong>3) CVE-2026-33950 Signal K Server Privilege Escalation</strong><br>
-    Severity: <span style="color:#ff6b6b">CRITICAL</span> | Impact: npm signalk-server &lt; 2.24.0-beta.4<br>
-    Action: Upgrade to 2.24.0-beta.4<br><br>
-    <strong>4) CVE-2026-31818 Budibase SSRF</strong><br>
-    Severity: <span style="color:#ff6b6b">CRITICAL</span> | Impact: npm @budibase/backend-core &lt; 3.33.4<br>
-    Action: Upgrade to 3.33.4<br><br>
-    <strong>5) CVE-2026-35039 Fast-JWT Cache Confusion</strong><br>
-    Severity: <span style="color:#ff6b6b">CRITICAL</span> | Impact: npm fast-jwt &lt; 6.1.0<br>
-    Action: Upgrade to 6.1.0<br><br>
-    <span style="color:#8b949e">Scanned 74 alerts — NVD: 1, GitHub Advisory: 29, Snyk: 1, Security news: 43</span></div></div>
+    <strong style="color:#ff6b6b">🔴 1) Azure Kubernetes — anyone can become admin</strong><br>
+    If you use Azure K8s, a stranger can get full admin access to your cluster. No password needed.<br>
+    <span style="color:#ffd740">Fix:</span> Apply the Microsoft patch TODAY.<br><br>
+    <strong style="color:#ff6b6b">🔴 2) npm sandboxjs — code can escape the sandbox</strong><br>
+    If your app uses <code>@nyariv/sandboxjs</code>, attackers can break out of the sandbox and run anything on your server.<br>
+    <span style="color:#ffd740">Fix:</span> <code>npm update @nyariv/sandboxjs</code> to 0.8.36+<br><br>
+    <strong style="color:#ff6b6b">🔴 3) npm signalk-server — privilege escalation</strong><br>
+    A normal user can promote themselves to admin. Your IoT/marine server is wide open.<br>
+    <span style="color:#ffd740">Fix:</span> Upgrade to 2.24.0+<br><br>
+    <strong style="color:#ff6b6b">🔴 4) Budibase — your server can be tricked into calling internal APIs</strong><br>
+    Attackers can make your Budibase backend talk to internal services it shouldn't. Data leak risk.<br>
+    <span style="color:#ffd740">Fix:</span> <code>npm update @budibase/backend-core</code> to 3.33.4+<br><br>
+    <strong style="color:#ff6b6b">🔴 5) fast-jwt — login tokens can be faked</strong><br>
+    If you use <code>fast-jwt</code> for auth, attackers can confuse the cache and forge valid tokens. They log in as anyone.<br>
+    <span style="color:#ffd740">Fix:</span> <code>npm update fast-jwt</code> to 6.1.0+<br><br>
+    <span style="color:#8b949e">Scanned 74 alerts from 5 sources — these 5 are the ones that matter today.</span></div></div>
   </div>
 
   <!-- SECTION 3: What Lobo Does -->
