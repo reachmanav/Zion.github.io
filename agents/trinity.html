@@ -26,6 +26,17 @@
     .stack-row { display: flex; border-bottom: 1px solid rgba(255,107,107,0.08); padding: 0.6rem 0; }
     .stack-label { font-family: var(--font-display); font-size: 0.65rem; color: #ff6b6b; letter-spacing: 1px; min-width: 110px; }
     .stack-value { font-family: var(--font-mono); font-size: 0.7rem; color: var(--text-dim); }
+    .flow-node { cursor: pointer; }
+    .flow-node:hover { filter: drop-shadow(0 0 12px rgba(255,107,107,0.4)); }
+    .node-backdrop { display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.7); z-index:999; }
+    .node-backdrop.show { display:block; }
+    .node-overlay { display:none; position:fixed; top:5vh; left:20px; z-index:1000; background:#0a1628; border:3px solid #00ff41; border-radius:20px; padding:1.5rem; box-shadow:0 0 60px rgba(0,255,65,0.3); max-height:88vh; overflow-y:auto; width:420px; scrollbar-width:thin; scrollbar-color:#00ff41 #0a1628; }
+    .node-overlay.show { display:block; animation:ovIn 0.3s ease forwards; }
+    .ov-close { position:absolute; top:10px; right:16px; color:#ff6b6b; font-size:1.3rem; cursor:pointer; font-family:var(--font-display); z-index:1001; }
+    .ov-title { font-family:var(--font-display); font-size:1.1rem; text-align:center; letter-spacing:2px; margin-bottom:1rem; }
+    @keyframes ovIn { from { opacity:0; transform:scale(0.8); } to { opacity:1; transform:scale(1); } }
+    .chat-msg { padding:0.8rem 1rem; border-radius:12px; margin-bottom:0.8rem; font-family:'JetBrains Mono',monospace; font-size:0.8rem; line-height:1.7; border:1px solid rgba(255,255,255,0.06); }
+    .chat-sender { font-family:var(--font-display); font-size:0.7rem; letter-spacing:1px; margin-bottom:0.4rem; opacity:0.7; }
   </style>
 </head>
 <body>
@@ -62,7 +73,7 @@
       </defs>
 
       <!-- Neo's Phone -->
-      <g transform="translate(15, 100)">
+      <g transform="translate(15, 100)" class="flow-node" data-overlay="ov-neo">
         <rect width="120" height="200" rx="16" fill="#0a1628" stroke="#00ff41" stroke-width="2.5"/>
         <rect x="10" y="28" width="100" height="130" rx="5" fill="#0d2137" stroke="#00ff41" stroke-width="0.6" stroke-opacity="0.3"/>
         <text x="60" y="55" class="svg-label" fill="#00ff41" font-size="8" font-weight="bold">@trinity build</text>
@@ -71,6 +82,7 @@
         <text x="60" y="108" class="svg-label" fill="#ff6b6b" font-size="7" opacity="0.8">Lobo for options...</text>
         <text x="60" y="132" class="svg-label" fill="#ff6b6b" font-size="7" opacity="0.8">[Trinity] 3 options:</text>
         <text x="60" y="144" class="svg-label" fill="#ff6b6b" font-size="7" opacity="0.8">1) Open-Meteo 2)...</text>
+        <text x="60" y="170" class="svg-label" fill="#00ff41" font-size="7" text-anchor="middle" opacity="0.5">🔍 click</text>
         <text x="60" y="-14" class="svg-title" fill="#00ff41" font-size="16" text-anchor="middle" letter-spacing="3" filter="url(#gl)">NEO</text>
         <text x="60" y="224" class="svg-label" fill="#8b949e" font-size="9" text-anchor="middle">📱 WhatsApp</text>
       </g>
@@ -249,6 +261,80 @@
     </div>
   </footer>
 </div>
+<div class="node-backdrop" id="node-backdrop"></div>
+
+<div class="node-overlay" id="ov-neo">
+  <span class="ov-close">✕</span>
+  <div class="ov-title" style="color:#00ff41">📱 NEO's WhatsApp — Full Conversation</div>
+
+  <div class="chat-msg" style="background:rgba(0,255,65,0.06);border-color:rgba(0,255,65,0.25)">
+    <div class="chat-sender" style="color:#00ff41">Neo → @trinity</div>
+    <div style="color:#c9d1d9">@trinity build weather construct — I want to ask "what's the weather?" on WhatsApp and get a real answer. No LLM hallucination. Real data.</div>
+  </div>
+
+  <div class="chat-msg" style="background:rgba(255,107,107,0.05);border-color:rgba(255,107,107,0.2)">
+    <div class="chat-sender" style="color:#ff6b6b">[Trinity] — received</div>
+    <div style="color:#c9d1d9">Received. Consulting Lobo on architecture — weather APIs, caching, response format...</div>
+  </div>
+
+  <div class="chat-msg" style="background:rgba(255,215,64,0.05);border-color:rgba(255,215,64,0.2)">
+    <div class="chat-sender" style="color:#ffd740">[Trinity] — Lobo's 3 options</div>
+    <div style="color:#c9d1d9">
+      <strong style="color:#00ff41">Option 1: Open-Meteo API</strong> (recommended)<br>
+      Free, no API key, accurate. Direct HTTP call → parse JSON → format reply.<br>
+      <span style="color:#00ff41">Pros: $0, fast, reliable</span> | <span style="color:#ff6b6b">Cons: no air quality</span><br><br>
+      <strong style="color:#ffd740">Option 2: OpenWeatherMap</strong><br>
+      Free tier 1000 calls/day. Needs API key registration.<br>
+      <span style="color:#00ff41">Pros: well-known</span> | <span style="color:#ff6b6b">Cons: needs key, rate limits</span><br><br>
+      <strong style="color:#58a6ff">Option 3: WeatherAPI.com</strong><br>
+      Free tier. More features (forecast, alerts).<br>
+      <span style="color:#00ff41">Pros: rich data</span> | <span style="color:#ff6b6b">Cons: yet another API key</span><br><br>
+      Reply: @trinity Option 1, 2, or 3
+    </div>
+  </div>
+
+  <div class="chat-msg" style="background:rgba(0,255,65,0.06);border-color:rgba(0,255,65,0.25)">
+    <div class="chat-sender" style="color:#00ff41">Neo</div>
+    <div style="color:#c9d1d9">@trinity Option 1</div>
+  </div>
+
+  <div class="chat-msg" style="background:rgba(255,107,107,0.05);border-color:rgba(255,107,107,0.2)">
+    <div class="chat-sender" style="color:#ff6b6b">[Trinity] — building</div>
+    <div style="color:#c9d1d9">Option 1 approved! Open-Meteo API. Implementing now — geocoding → weather fetch → format → WhatsApp reply. No API key needed.</div>
+  </div>
+
+  <div class="chat-msg" style="background:rgba(0,255,65,0.08);border-color:rgba(0,255,65,0.35)">
+    <div class="chat-sender" style="color:#00ff41">[Trinity] ✅ DEPLOYED</div>
+    <div style="color:#c9d1d9"><strong>Weather construct LIVE!</strong><br>
+    Try: <em>@zion weather</em> or <em>@zion weather mumbai</em><br>
+    Open-Meteo API → real temp, humidity, wind, conditions.<br>
+    Zero hallucination — direct API data only.<br>
+    <span style="color:#8b949e">Deployed to VM → systemctl restart zion → verified active ✓</span></div>
+  </div>
+
+  <div style="text-align:center;padding:0.5rem;font-family:var(--font-mono);color:#8b949e;font-size:0.7rem">
+    Total time: Neo asked → Lobo consulted → option picked → coded → tested → deployed → live
+  </div>
+</div>
+
 <script src="../script.js"></script>
+<script>
+(function(){
+  var backdrop = document.getElementById('node-backdrop');
+  var currentOv = null;
+  function closeOv(){ if(currentOv) currentOv.classList.remove('show'); backdrop.classList.remove('show'); currentOv=null; }
+  document.querySelectorAll('.flow-node').forEach(function(n){
+    n.addEventListener('click', function(e){
+      e.stopPropagation(); closeOv();
+      var ov = document.getElementById(n.getAttribute('data-overlay'));
+      if(!ov) return;
+      ov.classList.add('show'); backdrop.classList.add('show'); currentOv=ov;
+    });
+  });
+  backdrop.addEventListener('click', closeOv);
+  document.querySelectorAll('.ov-close').forEach(function(b){ b.addEventListener('click', closeOv); });
+  document.querySelectorAll('.node-overlay').forEach(function(ov){ ov.addEventListener('mouseleave', closeOv); });
+})();
+</script>
 </body>
 </html>
