@@ -26,6 +26,17 @@
     .stack-row { display: flex; border-bottom: 1px solid rgba(78,205,196,0.08); padding: 0.6rem 0; }
     .stack-label { font-family: var(--font-display); font-size: 0.65rem; color: #4ecdc4; letter-spacing: 1px; min-width: 110px; }
     .stack-value { font-family: var(--font-mono); font-size: 0.7rem; color: var(--text-dim); }
+    .flow-node { cursor: pointer; }
+    .flow-node:hover { filter: drop-shadow(0 0 15px rgba(0,255,65,0.4)); }
+    .node-backdrop { display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.7); z-index:999; }
+    .node-backdrop.show { display:block; }
+    .node-overlay { display:none; position:fixed; top:5vh; left:20px; z-index:1000; background:#0a1628; border:3px solid #00ff41; border-radius:20px; padding:1.5rem; box-shadow:0 0 60px rgba(0,255,65,0.3); max-height:88vh; overflow-y:auto; width:440px; scrollbar-width:thin; scrollbar-color:#00ff41 #0a1628; }
+    .node-overlay.show { display:block; animation:ovIn 0.3s ease forwards; }
+    .ov-close { position:absolute; top:10px; right:16px; color:#ff6b6b; font-size:1.3rem; cursor:pointer; font-family:var(--font-display); z-index:1001; }
+    .ov-title { font-family:var(--font-display); font-size:1.1rem; text-align:center; letter-spacing:2px; margin-bottom:1rem; }
+    @keyframes ovIn { from { opacity:0; transform:scale(0.8); } to { opacity:1; transform:scale(1); } }
+    .chat-msg { padding:0.8rem 1rem; border-radius:12px; margin-bottom:0.8rem; font-family:'JetBrains Mono',monospace; font-size:0.8rem; line-height:1.7; border:1px solid rgba(255,255,255,0.06); }
+    .chat-sender { font-family:var(--font-display); font-size:0.7rem; letter-spacing:1px; margin-bottom:0.4rem; opacity:0.7; }
   </style>
 </head>
 <body>
@@ -39,14 +50,14 @@
   <div class="d-hero">
     <div class="d-hero-icon">🧠</div>
     <h1 class="d-hero-title">CORTEX</h1>
-    <p class="d-hero-sub">The Corporate Brain — @neo for the APRM Team</p>
-    <p class="d-hero-desc">AI assistant for a 20-person team. Ask any question about 20GB+ of corporate documents — Word, Excel, PDF, PowerPoint, source code. Answers via Microsoft Teams and Web UI.</p>
+    <p class="d-hero-sub">The Corporate Brain — @neo for a 20-Person Team</p>
+    <p class="d-hero-desc">AI assistant for a 20-person corporate team. Ask any question about 20GB+ of project documents — Word, Excel, PDF, PowerPoint, source code. Answers via Microsoft Teams and Web UI. Gets smarter over time through The Enrich.</p>
   </div>
 
   <!-- SECTION 1: Real Conversation -->
   <div class="diagram-wrap">
     <h2 class="section-title">A Real Question</h2>
-    <p class="section-desc">Team member asks "@neo what is TurboLive?" — trace the RAG pipeline</p>
+    <p class="section-desc">Team member asks "@neo what is StreamCore?" — trace the RAG pipeline</p>
 
     <svg class="d-svg" viewBox="0 0 1100 440" xmlns="http://www.w3.org/2000/svg">
       <defs>
@@ -63,7 +74,7 @@
         <text x="70" y="50" class="svg-title" fill="#4ecdc4" font-size="12" text-anchor="middle">TEAM MEMBER</text>
         <text x="70" y="70" class="svg-label" fill="#4ecdc4" font-size="10" text-anchor="middle">via Teams or Browser</text>
         <text x="70" y="90" class="svg-label" fill="#ffd740" font-size="10" text-anchor="middle">"@neo what is</text>
-        <text x="70" y="104" class="svg-label" fill="#ffd740" font-size="10" text-anchor="middle">TurboLive?"</text>
+        <text x="70" y="104" class="svg-label" fill="#ffd740" font-size="10" text-anchor="middle">StreamCore?"</text>
       </g>
 
       <!-- Arrow: User → Cortex -->
@@ -108,18 +119,18 @@
       <!-- LLM -->
       <g transform="translate(850, 155)">
         <rect width="170" height="70" rx="10" fill="#0a1628" stroke="#ffd740" stroke-width="2"/>
-        <text x="85" y="22" class="svg-title" fill="#ffd740" font-size="11" text-anchor="middle">GPT-4.1 (AI Framework)</text>
+        <text x="85" y="22" class="svg-title" fill="#ffd740" font-size="11" text-anchor="middle">GPT-4.1 (Corp Framework)</text>
         <text x="85" y="42" class="svg-label" fill="#ffd740" font-size="11" text-anchor="middle">top chunks → answer</text>
         <text x="85" y="58" class="svg-label" fill="#8b949e" font-size="10" text-anchor="middle">~2s response time</text>
       </g>
 
       <!-- Arrow: LLM → back to user -->
       <path d="M850,230 Q700,350 170,250" fill="none" stroke="#00ff41" stroke-width="2.5" stroke-dasharray="10,5" class="anim-dash" style="animation-delay:0.6s" marker-end="url(#ag)"/>
-      <text x="500" y="340" class="svg-label" fill="#00ff41" font-size="12" text-anchor="middle">← "TurboLive is ATT's IPTV business line..." + file sources</text>
+      <text x="500" y="340" class="svg-label" fill="#00ff41" font-size="12" text-anchor="middle">← "StreamCore is the real-time video pipeline..." + file sources</text>
 
       <!-- Docs -->
       <g transform="translate(350, 380)" opacity="0.4">
-        <text x="0" y="0" class="svg-label" fill="#8b949e" font-size="10">📁 Source: 20GB+ docs from \\ntnet — Word, Excel, PDF, PPT, Java, Python, shell scripts</text>
+        <text x="0" y="0" class="svg-label" fill="#8b949e" font-size="10">📁 Source: 20GB+ docs from network share — Word, Excel, PDF, PPT, Java, Python, shell scripts</text>
       </g>
     </svg>
   </div>
@@ -177,6 +188,7 @@
       <text x="910" y="512" class="svg-label" fill="#ff6b6b" font-size="16" text-anchor="middle">🔤 fastembed 384-dim</text>
 
       <!-- 4. THE ENRICH -->
+      <g class="flow-node" data-overlay="ov-enrich">
       <circle cx="870" cy="710" r="110" fill="#0a1628" stroke="#00ff41" stroke-width="2.5" stroke-opacity="0.5"/>
       <text x="870" y="640" class="svg-title" fill="#00ff41" font-size="20" text-anchor="middle" letter-spacing="2">THE ENRICH</text>
       <text x="870" y="668" class="svg-label" fill="#8b949e" font-size="14" text-anchor="middle">knowledge deepening</text>
@@ -184,6 +196,8 @@
       <text x="870" y="724" class="svg-label" fill="#00ff41" font-size="16" text-anchor="middle">🔍 Reads question_log</text>
       <text x="870" y="748" class="svg-label" fill="#00ff41" font-size="16" text-anchor="middle">📊 Finds weak topics</text>
       <text x="870" y="772" class="svg-label" fill="#00ff41" font-size="16" text-anchor="middle">✍️ Writes enrichments</text>
+      <text x="870" y="800" class="svg-label" fill="#00ff41" font-size="12" text-anchor="middle" opacity="0.5">🔍 click to learn more</text>
+      </g>
 
       <!-- 5. INTERFACES -->
       <circle cx="550" cy="750" r="110" fill="#0a1628" stroke="#58a6ff" stroke-width="2.5" stroke-opacity="0.5"/>
@@ -198,10 +212,10 @@
       <circle cx="190" cy="170" r="120" fill="#0a1628" stroke="#4ecdc4" stroke-width="2.5" stroke-opacity="0.5"/>
       <text x="190" y="90" class="svg-title" fill="#4ecdc4" font-size="20" text-anchor="middle" letter-spacing="2">DATA</text>
       <text x="190" y="118" class="svg-label" fill="#8b949e" font-size="14" text-anchor="middle">document sources</text>
-      <text x="190" y="152" class="svg-label" fill="#4ecdc4" font-size="16" text-anchor="middle">📁 ATT — 6,351 files</text>
-      <text x="190" y="176" class="svg-label" fill="#4ecdc4" font-size="16" text-anchor="middle">📁 VF_M2M — 1,611 files</text>
-      <text x="190" y="200" class="svg-label" fill="#4ecdc4" font-size="16" text-anchor="middle">📁 _SYSTEM — 28 files</text>
-      <text x="190" y="224" class="svg-label" fill="#4ecdc4" font-size="16" text-anchor="middle">💾 20GB+ on \\ntnet</text>
+      <text x="190" y="152" class="svg-label" fill="#4ecdc4" font-size="16" text-anchor="middle">📁 Account A — 6,351 files</text>
+      <text x="190" y="176" class="svg-label" fill="#4ecdc4" font-size="16" text-anchor="middle">📁 Account B — 1,611 files</text>
+      <text x="190" y="200" class="svg-label" fill="#4ecdc4" font-size="16" text-anchor="middle">📁 System docs — 28 files</text>
+      <text x="190" y="224" class="svg-label" fill="#4ecdc4" font-size="16" text-anchor="middle">💾 20GB+ on network share</text>
 
       <!-- 7. STORAGE -->
       <circle cx="200" cy="710" r="110" fill="#0a1628" stroke="#fb923c" stroke-width="2.5" stroke-opacity="0.5"/>
@@ -217,14 +231,14 @@
   <div class="stack-section">
     <h2 class="section-title">Tech Stack</h2>
     <div>
-      <div class="stack-row"><span class="stack-label">LLM</span><span class="stack-value">Amdocs AI Framework GPT-4.1 (~2s)</span></div>
+      <div class="stack-row"><span class="stack-label">LLM</span><span class="stack-value">Corporate AI Framework GPT-4.1 (~2s)</span></div>
       <div class="stack-row"><span class="stack-label">Embeddings</span><span class="stack-value">fastembed bge-small-en-v1.5 (384-dim)</span></div>
       <div class="stack-row"><span class="stack-label">Vector DB</span><span class="stack-value">ChromaDB — 349K chunks</span></div>
       <div class="stack-row"><span class="stack-label">Metadata</span><span class="stack-value">SQLite cortex.db + FTS5</span></div>
       <div class="stack-row"><span class="stack-label">Web UI</span><span class="stack-value">Flask — port 5050</span></div>
       <div class="stack-row"><span class="stack-label">Teams</span><span class="stack-value">Microsoft Graph API polling</span></div>
       <div class="stack-row"><span class="stack-label">Parsing</span><span class="stack-value">python-docx, openpyxl, pdfplumber, pptx, OCR</span></div>
-      <div class="stack-row"><span class="stack-label">Documents</span><span class="stack-value">20GB+ from \\ntnet network share</span></div>
+      <div class="stack-row"><span class="stack-label">Documents</span><span class="stack-value">20GB+ from corporate network share</span></div>
       <div class="stack-row"><span class="stack-label">Cost</span><span class="stack-value">~$5/day AI Framework budget</span></div>
     </div>
   </div>
@@ -236,6 +250,69 @@
     </div>
   </footer>
 </div>
+<div class="node-backdrop" id="node-backdrop"></div>
+
+<div class="node-overlay" id="ov-enrich" style="width:460px">
+  <span class="ov-close">✕</span>
+  <div class="ov-title" style="color:#00ff41">🧠 The Enrich — How Cortex Gets Smarter</div>
+
+  <div class="chat-msg" style="background:rgba(255,107,107,0.06);border-color:rgba(255,107,107,0.25)">
+    <div class="chat-sender" style="color:#ff6b6b">The Problem</div>
+    <div style="color:#c9d1d9">A team member asks: <strong style="color:#ffd740">"@neo what is StreamCore?"</strong><br><br>
+    Cortex searches 20GB of documents. Finds some raw chunks — a few sentences from a design doc, a table header from an Excel. Sends it to GPT-4.1.<br><br>
+    GPT gives an answer, but it's <strong style="color:#ff6b6b">thin and fragmented</strong> — bits and pieces stitched together. Not a real explanation. The team member walks away unimpressed.</div>
+  </div>
+
+  <div class="chat-msg" style="background:rgba(255,107,107,0.04);border-color:rgba(255,107,107,0.15)">
+    <div class="chat-sender" style="color:#ff6b6b">Every question is logged</div>
+    <div style="color:#c9d1d9">Cortex logs <strong>every question</strong> in the <code style="color:#4ecdc4">question_log</code> table — who asked, when, what the answer was, and how confident the system was.</div>
+  </div>
+
+  <div class="chat-msg" style="background:rgba(0,255,65,0.06);border-color:rgba(0,255,65,0.25)">
+    <div class="chat-sender" style="color:#00ff41">Trinity steps in — "ENRICH ON"</div>
+    <div style="color:#c9d1d9">Neo says <strong style="color:#ffd740">"ENRICH ON"</strong>. Trinity (Opus 4.6) wakes up and does this:<br><br>
+    <strong>1.</strong> Reads <code style="color:#4ecdc4">question_log</code> — finds questions that got weak answers<br>
+    <strong>2.</strong> Identifies the <strong style="color:#ffd740">weak topics</strong> — "StreamCore got asked 4 times but the answer was always thin"<br>
+    <strong>3.</strong> Goes to the <strong>actual source documents</strong> — reads the full HLD, the design doc, the architecture PowerPoint, not just tiny chunks<br>
+    <strong>4.</strong> Writes a <strong style="color:#00ff41">deep, flowing explanation</strong> — like a senior engineer would explain it to a new joiner<br>
+    <strong>5.</strong> Saves it back into Cortex's database as an <strong style="color:#00ff41">enriched document</strong></div>
+  </div>
+
+  <div class="chat-msg" style="background:rgba(78,205,196,0.06);border-color:rgba(78,205,196,0.25)">
+    <div class="chat-sender" style="color:#4ecdc4">Next time the same question is asked</div>
+    <div style="color:#c9d1d9">Now when someone asks "what is StreamCore?" — Cortex finds the <strong style="color:#00ff41">enriched doc first</strong> (it's scored higher than raw chunks).<br><br>
+    GPT-4.1 gets a <strong>complete, well-written explanation</strong> instead of fragmented pieces. The answer is now <strong style="color:#00ff41">confident, detailed, and accurate</strong>.<br><br>
+    The team member says: "wow, this actually knows our stuff."</div>
+  </div>
+
+  <div class="chat-msg" style="background:rgba(255,215,64,0.05);border-color:rgba(255,215,64,0.2)">
+    <div class="chat-sender" style="color:#ffd740">The learning loop</div>
+    <div style="color:#c9d1d9">
+    <strong style="color:#ff6b6b">Weak answer</strong> → logged → Trinity reads source docs deeply → writes enrichment → <strong style="color:#00ff41">strong answer next time</strong><br><br>
+    Every ENRICH run makes Cortex smarter. It's not retraining the AI — it's giving the AI <strong>better source material</strong> to work with.<br><br>
+    <span style="color:#8b949e">20 enrichments written so far across 3 accounts. Each one transforms a "meh" answer into a "that's exactly what I needed" answer.</span>
+    </div>
+  </div>
+</div>
+
 <script src="../script.js"></script>
+<script>
+(function(){
+  var backdrop = document.getElementById('node-backdrop');
+  var currentOv = null;
+  function closeOv(){ if(currentOv) currentOv.classList.remove('show'); backdrop.classList.remove('show'); currentOv=null; }
+  document.querySelectorAll('.flow-node').forEach(function(n){
+    n.addEventListener('click', function(e){
+      e.stopPropagation(); closeOv();
+      var ov = document.getElementById(n.getAttribute('data-overlay'));
+      if(!ov) return;
+      ov.classList.add('show'); backdrop.classList.add('show'); currentOv=ov;
+    });
+  });
+  backdrop.addEventListener('click', closeOv);
+  document.querySelectorAll('.ov-close').forEach(function(b){ b.addEventListener('click', closeOv); });
+  document.querySelectorAll('.node-overlay').forEach(function(ov){ ov.addEventListener('mouseleave', closeOv); });
+})();
+</script>
 </body>
 </html>
