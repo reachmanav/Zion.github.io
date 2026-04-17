@@ -22,6 +22,19 @@
     .anim-sun { animation: sun-breathe 3s ease-in-out infinite; }
     .svg-label { font-family: 'JetBrains Mono', 'Fira Code', monospace; }
     .svg-title { font-family: 'Orbitron', 'JetBrains Mono', monospace; }
+    .chat-msg { padding: 0.8rem 1rem; border-radius: 12px; margin-bottom: 0.8rem; font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; line-height: 1.7; border: 1px solid rgba(255,255,255,0.06); }
+    .chat-sender { font-family: var(--font-display); font-size: 0.7rem; letter-spacing: 1px; margin-bottom: 0.4rem; opacity: 0.7; }
+    .chat-text { color: #c9d1d9; }
+    .chat-neo { background: rgba(0,255,65,0.04); border-color: rgba(0,255,65,0.2); }
+    .chat-neo .chat-sender { color: #00ff41; }
+    .chat-trinity { background: rgba(255,107,107,0.04); border-color: rgba(255,107,107,0.2); }
+    .chat-trinity .chat-sender { color: #ff6b6b; }
+    .chat-trinity-to-lobo { background: rgba(88,166,255,0.04); border-color: rgba(88,166,255,0.2); }
+    .chat-trinity-to-lobo .chat-sender { color: #58a6ff; }
+    .chat-lobo { background: rgba(255,215,64,0.04); border-color: rgba(255,215,64,0.25); }
+    .chat-lobo .chat-sender { color: #ffd740; }
+    .chat-result { background: rgba(0,255,65,0.06); border-color: rgba(0,255,65,0.3); }
+    .chat-result .chat-sender { color: #00ff41; }
     .stack-section { padding: 2rem 2rem 6rem; max-width: 800px; margin: 0 auto; }
     .stack-row { display: flex; border-bottom: 1px solid rgba(255,215,64,0.08); padding: 0.6rem 0; }
     .stack-label { font-family: var(--font-display); font-size: 0.65rem; color: #ffd740; letter-spacing: 1px; min-width: 110px; }
@@ -123,7 +136,148 @@
     </svg>
   </div>
 
-  <!-- SECTION 2: What Lobo Does -->
+  <!-- SECTION 2: REAL Agent-to-Agent Conversation -->
+  <div class="diagram-wrap">
+    <h2 class="section-title">A Real Conversation — Agent to Agent</h2>
+    <p class="section-desc">N. Thoni asked Neo to upgrade DevOps news. Watch what happened next — two AIs talking.</p>
+
+    <div style="max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:2rem;text-align:left;padding:0 1rem">
+
+      <!-- LEFT: Neo → Trinity → Lobo flow -->
+      <div>
+        <h3 style="font-family:var(--font-display);color:#ff6b6b;font-size:0.85rem;letter-spacing:2px;margin-bottom:1rem">📱 NEO's WhatsApp → TRINITY</h3>
+
+        <div class="chat-msg chat-neo">
+          <div class="chat-sender">Neo — 3:19 PM</div>
+          <div class="chat-text">@trinity — N. Thoni pinged me — "stop sending news about devops and ai. I want news about news like today there was compromised npm proxy axios package"<br><br>Don't work for unsubscribe issue. Plan is you are giving very high level subscription. But we have to train about latest detailed details — npm is just an example. Can you update DevOps? Use Anderson (that means Anderson should talk to Lobo).</div>
+        </div>
+
+        <div class="chat-msg chat-trinity">
+          <div class="chat-sender">[Trinity] — 3:44 PM</div>
+          <div class="chat-text">Received #9e6bbd4f. Neo wants to upgrade DevOps news quality — more detailed, actionable security alerts instead of high-level summaries. Consulting Lobo on architecture for this... standby.</div>
+        </div>
+
+        <div style="text-align:center;margin:1rem 0">
+          <span style="font-family:var(--font-display);color:#58a6ff;font-size:0.75rem;letter-spacing:2px;background:rgba(88,166,255,0.1);padding:0.4rem 1rem;border-radius:8px">⬇️ TRINITY SSH → VM → ask_lobo.py → LOBO</span>
+        </div>
+
+        <h3 style="font-family:var(--font-display);color:#ffd740;font-size:0.85rem;letter-spacing:2px;margin:1.5rem 0 1rem">🐺 TRINITY ↔ LOBO — WhatsApp</h3>
+
+        <div class="chat-msg chat-trinity-to-lobo">
+          <div class="chat-sender">[Zion → Lobo] — 3:44 PM</div>
+          <div class="chat-text">Neo wants to upgrade the DevOps news construct. Current problem: news is too high-level and generic. N. Thoni wants DETAILED, ACTIONABLE security/incident news — like the compromised npm axios proxy package story. How should Anderson update the DevOps news pipeline to:<br>1) Find and curate detailed security incidents<br>2) Include specific CVE IDs, affected versions, mitigation steps<br>3) Make it actionable for developers<br><br>Give 3 architecture options.</div>
+        </div>
+
+        <div class="chat-msg chat-lobo">
+          <div class="chat-sender">[Lobo] — 3:45 PM</div>
+          <div class="chat-text" id="lobo-reply-short">Great upgrade direction. Use one of these 3 architectures...<br><br><span style="color:#00ff41;cursor:pointer;font-size:0.8rem" onclick="document.getElementById('lobo-reply-full').style.display='block';this.parentElement.parentElement.style.display='none'">🔍 Click to see Lobo's full response</span></div>
+        </div>
+
+        <div class="chat-msg chat-lobo" id="lobo-reply-full" style="display:none">
+          <div class="chat-sender">[Lobo] — 3:45 PM</div>
+          <div class="chat-text">Great upgrade direction. Use one of these 3 architectures:<br><br>
+          <strong style="color:#00ff41">1) Security-first feed pipeline (recommended)</strong><br>
+          Sources: CISA KEV, NVD CVE feed, GitHub Security Advisories, npm/PyPI advisories, Snyk blog<br>
+          Classifier filters only: active incidents, exploitable vulns, supply-chain issues<br>
+          Output: CVE, package/tool, affected versions, fixed version, exploit status, patch action<br>
+          Pros: high signal, actionable | Cons: more source integration<br><br>
+          <strong style="color:#ffd740">2) Two-stage enrichment pipeline</strong><br>
+          Stage A: collect + dedupe incident headlines<br>
+          Stage B: enrich each with structured details from advisories<br>
+          Generate "What devs should do today" section<br>
+          Pros: better depth | Cons: slightly slower<br><br>
+          <strong style="color:#58a6ff">3) Risk-scored alerting model</strong><br>
+          Assign severity score (CVSS + exploit-in-wild + package popularity)<br>
+          Only top risk items → daily brief; rest → weekly digest<br>
+          Pros: avoids noise | Cons: needs scoring tuning<br><br>
+          <strong>Output format per alert:</strong> Incident name, Impact, CVE/package/version, Immediate action, Source links</div>
+        </div>
+      </div>
+
+      <!-- RIGHT: Lobo options → Neo picks → Trinity builds → PROD -->
+      <div>
+        <h3 style="font-family:var(--font-display);color:#ff6b6b;font-size:0.85rem;letter-spacing:2px;margin-bottom:1rem">📱 LOBO's OPTIONS → NEO PICKS</h3>
+
+        <div class="chat-msg chat-trinity">
+          <div class="chat-sender">[Trinity] → Neo — 3:46 PM</div>
+          <div class="chat-text"><strong>#9e6bbd4f — DevOps News Upgrade</strong><br><br>Lobo gave 3 options:<br><br>
+          <strong style="color:#00ff41">Option 1: Security-First Feed Pipeline</strong> (recommended)<br>
+          CISA KEV, NVD CVE, GitHub Advisories, npm/PyPI, Snyk<br><br>
+          <strong style="color:#ffd740">Option 2: Two-Stage Enrichment</strong><br>
+          Collect → Enrich → "What devs should do today"<br><br>
+          <strong style="color:#58a6ff">Option 3: Risk-Scored Alerting</strong><br>
+          Score by CVSS + exploit status, daily vs weekly<br><br>
+          Reply: @trinity Option 1, 2, or 3</div>
+        </div>
+
+        <div class="chat-msg chat-neo">
+          <div class="chat-sender">Neo — 5:03 PM</div>
+          <div class="chat-text">@trinity — Option 1</div>
+        </div>
+
+        <div class="chat-msg chat-trinity">
+          <div class="chat-sender">[Trinity] — 5:04 PM</div>
+          <div class="chat-text">Option 1 approved! Security-First Feed Pipeline.<br><br>Starting implementation now. Will pull from: CISA KEV, NVD/CVE, GitHub Security Advisories, npm/PyPI, Snyk. Each alert includes: CVE ID, severity, affected package, fix version, action.<br><br>Will deploy and test before going live.</div>
+        </div>
+
+        <div class="chat-msg chat-trinity" style="border-color:rgba(0,255,65,0.5)">
+          <div class="chat-sender">[Trinity] — 5:15 PM ✅ DEPLOYED</div>
+          <div class="chat-text"><strong>DevOps News UPGRADED!</strong><br><br>
+          OLD: Generic DevOps headlines<br>
+          NEW: Security-first alerts from 5 sources<br><br>
+          Test: 82 alerts scanned (was ~25). Each now includes CVE ID, severity, affected packages, fix version.<br><br>
+          <span style="color:#8b949e">Cron runs 6:45AM IST daily. Tomorrow's brief = new format.</span></div>
+        </div>
+
+        <div style="text-align:center;margin:1rem 0">
+          <span style="font-family:var(--font-display);color:#00ff41;font-size:0.75rem;letter-spacing:2px;background:rgba(0,255,65,0.1);padding:0.4rem 1rem;border-radius:8px">⬇️ NEXT MORNING — 6:45 AM — CRON FIRES</span>
+        </div>
+
+        <div class="chat-msg chat-result" id="result-short">
+          <div class="chat-sender">DevOps Security Brief — 04 Apr 2026 — 6:45 AM</div>
+          <div class="chat-text">1) CVE-2026-33105 Azure Kubernetes Privilege Escalation — CRITICAL (10.0)<br>
+          2) SandboxJS Sandbox Escape — CRITICAL<br>
+          3) Signal K Server Privilege Escalation — CRITICAL<br>
+          ...<br><br>
+          <span style="color:#00ff41;cursor:pointer;font-size:0.8rem" onclick="document.getElementById('result-full').style.display='block';this.parentElement.parentElement.style.display='none'">🔍 Click to see full brief</span></div>
+        </div>
+
+        <div class="chat-msg chat-result" id="result-full" style="display:none">
+          <div class="chat-sender">DevOps Security Brief — 04 Apr 2026 — 6:45 AM</div>
+          <div class="chat-text">
+          <strong>1) CVE-2026-33105 Azure Kubernetes Service Privilege Escalation</strong><br>
+          CVE: CVE-2026-33105 | Severity: <span style="color:#ff6b6b">CRITICAL (CVSS 10.0)</span><br>
+          Impact: Microsoft Azure Kubernetes Service<br>
+          Action: Apply vendor patch — NVD<br><br>
+
+          <strong>2) SandboxJS Sandbox Integrity Escape</strong><br>
+          CVE: CVE-2026-34208 | Severity: <span style="color:#ff6b6b">CRITICAL</span><br>
+          Impact: npm @nyariv/sandboxjs &lt; 0.8.36<br>
+          Action: Upgrade to 0.8.36 — GitHub Advisory<br><br>
+
+          <strong>3) Signal K Server Privilege Escalation</strong><br>
+          CVE: CVE-2026-33950 | Severity: <span style="color:#ff6b6b">CRITICAL</span><br>
+          Impact: npm signalk-server &lt; 2.24.0-beta.4<br>
+          Action: Upgrade to 2.24.0-beta.4 — GitHub Advisory<br><br>
+
+          <strong>4) Budibase Server-Side Request Forgery</strong><br>
+          CVE: CVE-2026-31818 | Severity: <span style="color:#ff6b6b">CRITICAL</span><br>
+          Impact: npm @budibase/backend-core &lt; 3.33.4<br>
+          Action: Upgrade to 3.33.4 — GitHub Advisory<br><br>
+
+          <strong>5) Fast-JWT Cache Confusion</strong><br>
+          CVE: CVE-2026-35039 | Severity: <span style="color:#ff6b6b">CRITICAL</span><br>
+          Impact: npm fast-jwt &gt;= 0.0.1, &lt; 6.1.0<br>
+          Action: Upgrade to 6.1.0 — GitHub Advisory<br><br>
+
+          <span style="color:#8b949e">Scanned 74 alerts from: NVD: 1, GitHub Advisory: 29, Snyk: 1, Security news: 43<br>
+          Sources: CISA KEV, NVD, GitHub Advisories, Snyk, security news</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 3: What Lobo Does -->
   <div class="diagram-wrap">
     <h2 class="section-title">What Lobo Reviews</h2>
     <p class="section-desc">Lobo is the sun — every construct passes through architectural review</p>
