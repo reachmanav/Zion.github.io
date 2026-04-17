@@ -373,44 +373,74 @@
 
 <div class="node-overlay" id="ov-enrich" style="width:460px">
   <span class="ov-close">✕</span>
-  <div class="ov-title" style="color:#00ff41">🧠 The Enrich — How Cortex Gets Smarter</div>
+  <div class="ov-title" style="color:#00ff41">🧠 The Enrich — Before & After</div>
 
-  <div class="chat-msg" style="background:rgba(255,107,107,0.06);border-color:rgba(255,107,107,0.25)">
-    <div class="chat-sender" style="color:#ff6b6b">The Problem</div>
-    <div style="color:#c9d1d9">A team member asks: <strong style="color:#ffd740">"@neo what is KYC Gateway?"</strong><br><br>
-    Cortex searches 20GB of documents. Finds some raw chunks — a few sentences from a design doc, a table header from an Excel. Sends it to GPT-4.1.<br><br>
-    GPT gives an answer, but it's <strong style="color:#ff6b6b">thin and fragmented</strong> — bits and pieces from random docs. Not a real explanation. The team member walks away unimpressed.</div>
+  <!-- ═══ PART 1: BAD ANSWER ON MS TEAMS ═══ -->
+  <div style="text-align:center;padding:0.4rem;margin-bottom:0.3rem"><span style="font-family:var(--font-display);font-size:0.75rem;color:#ff6b6b;letter-spacing:2px;background:rgba(255,107,107,0.1);padding:4px 14px;border-radius:20px">❌ BEFORE ENRICH</span></div>
+
+  <div class="chat-msg" style="background:rgba(88,166,255,0.06);border-color:rgba(88,166,255,0.3)">
+    <div class="chat-sender" style="color:#58a6ff">💬 MS Teams — Team Member asks</div>
+    <div style="color:#ffd740;font-size:0.85rem"><strong>@neo what is the KYC Gateway?</strong></div>
+  </div>
+
+  <div class="chat-msg" style="background:rgba(255,107,107,0.08);border-color:rgba(255,107,107,0.3)">
+    <div class="chat-sender" style="color:#ff6b6b">💬 MS Teams — @neo replies</div>
+    <div style="color:#c9d1d9">
+    <em style="color:#8b949e">"KYC Gateway is mentioned in the compliance document. It appears to be related to identity verification. The system processes customer data through various modules..."</em><br><br>
+    <strong style="color:#ff6b6b">😐 Thin. Vague. Useless.</strong><br>
+    <span style="color:#8b949e">GPT-4.1 only got random chunks — a table header from Excel, half a sentence from a design doc. Not enough context to give a real answer.</span>
+    </div>
+  </div>
+
+  <!-- ═══ PART 2: THE ENRICH HAPPENS ═══ -->
+  <div style="text-align:center;padding:0.6rem;margin:0.3rem 0">
+    <span style="font-family:var(--font-display);font-size:0.75rem;color:#ffd740;letter-spacing:2px;background:rgba(255,215,64,0.1);padding:4px 14px;border-radius:20px">⚡ ENRICH RUNS</span>
   </div>
 
   <div class="chat-msg" style="background:rgba(255,107,107,0.04);border-color:rgba(255,107,107,0.15)">
-    <div class="chat-sender" style="color:#ff6b6b">Every question is logged</div>
-    <div style="color:#c9d1d9">Cortex logs <strong>every question</strong> in the <code style="color:#4ecdc4">question_log</code> table — who asked, when, what the answer was, and how confident the system was.</div>
+    <div class="chat-sender" style="color:#ff6b6b">📝 Step 1 — Spot the weakness</div>
+    <div style="color:#c9d1d9">Cortex logs every question. Trinity scans the log and sees:<br>
+    <strong style="color:#ffd740">"KYC Gateway — asked 4 times, answer always thin"</strong></div>
   </div>
 
   <div class="chat-msg" style="background:rgba(0,255,65,0.06);border-color:rgba(0,255,65,0.25)">
-    <div class="chat-sender" style="color:#00ff41">Trinity steps in — "ENRICH ON"</div>
-    <div style="color:#c9d1d9">Neo says <strong style="color:#ffd740">"ENRICH ON"</strong>. Trinity (Opus 4.6) wakes up and does this:<br><br>
-    <strong>1.</strong> Reads <code style="color:#4ecdc4">question_log</code> — finds questions that got weak answers<br>
-    <strong>2.</strong> Identifies the <strong style="color:#ffd740">weak topics</strong> — "KYC Gateway got asked 4 times but the answer was always thin"<br>
-    <strong>3.</strong> Goes to the <strong>actual source documents</strong> — reads the full HLD, the design doc, the architecture PowerPoint, not just tiny chunks<br>
-    <strong>4.</strong> Writes a <strong style="color:#00ff41">deep, flowing explanation</strong> — like a senior engineer would explain it to a new joiner<br>
-    <strong>5.</strong> Saves it back into Cortex's database as an <strong style="color:#00ff41">enriched document</strong></div>
+    <div class="chat-sender" style="color:#00ff41">🔺 Step 2 — Trinity deep-reads the source</div>
+    <div style="color:#c9d1d9">Trinity (Opus 4.6) doesn't just read chunks — she reads the <strong>full documents</strong>:<br><br>
+    📄 KYC_Architecture_HLD.docx — all 40 pages<br>
+    📊 Gateway_Flow_Diagram.xlsx — every tab<br>
+    📽️ Compliance_Overview.pptx — slide by slide<br><br>
+    Then writes a <strong style="color:#00ff41">complete, flowing explanation</strong> — like a senior engineer would explain to a new joiner.</div>
   </div>
 
-  <div class="chat-msg" style="background:rgba(78,205,196,0.06);border-color:rgba(78,205,196,0.25)">
-    <div class="chat-sender" style="color:#4ecdc4">Next time the same question is asked</div>
-    <div style="color:#c9d1d9">Now when someone asks "what is KYC Gateway?" — Cortex finds the <strong style="color:#00ff41">enriched doc first</strong> (it's scored higher than raw chunks).<br><br>
-    GPT-4.1 gets a <strong>complete, well-written explanation</strong> instead of fragmented pieces. The answer is now <strong style="color:#00ff41">confident, detailed, and accurate</strong>.<br><br>
-    The team member says: "wow, this actually knows our stuff."</div>
+  <div class="chat-msg" style="background:rgba(192,132,252,0.06);border-color:rgba(192,132,252,0.25)">
+    <div class="chat-sender" style="color:#c084fc">💎 Step 3 — Load into ChromaDB + FTS</div>
+    <div style="color:#c9d1d9">The enriched explanation is:<br><br>
+    <strong style="color:#c084fc">→ Chunked</strong> into proper sections<br>
+    <strong style="color:#c084fc">→ Embedded</strong> as vectors into ChromaDB (384-dim)<br>
+    <strong style="color:#58a6ff">→ Indexed</strong> as keywords into SQLite FTS5<br>
+    <strong style="color:#ffd740">→ Scored 1.2× higher</strong> than raw document chunks<br><br>
+    <span style="color:#8b949e">Next time someone searches, enriched content surfaces FIRST.</span></div>
   </div>
 
-  <div class="chat-msg" style="background:rgba(255,215,64,0.05);border-color:rgba(255,215,64,0.2)">
-    <div class="chat-sender" style="color:#ffd740">The learning loop</div>
+  <!-- ═══ PART 3: GOOD ANSWER ON MS TEAMS ═══ -->
+  <div style="text-align:center;padding:0.6rem;margin:0.3rem 0"><span style="font-family:var(--font-display);font-size:0.75rem;color:#00ff41;letter-spacing:2px;background:rgba(0,255,65,0.1);padding:4px 14px;border-radius:20px">✅ AFTER ENRICH</span></div>
+
+  <div class="chat-msg" style="background:rgba(88,166,255,0.06);border-color:rgba(88,166,255,0.3)">
+    <div class="chat-sender" style="color:#58a6ff">💬 MS Teams — Same question, next day</div>
+    <div style="color:#ffd740;font-size:0.85rem"><strong>@neo what is the KYC Gateway?</strong></div>
+  </div>
+
+  <div class="chat-msg" style="background:rgba(0,255,65,0.08);border-color:rgba(0,255,65,0.35)">
+    <div class="chat-sender" style="color:#00ff41">💬 MS Teams — @neo replies</div>
     <div style="color:#c9d1d9">
-    <strong style="color:#ff6b6b">Weak answer</strong> → logged → Trinity reads source docs deeply → writes enrichment → <strong style="color:#00ff41">strong answer next time</strong><br><br>
-    Every ENRICH run makes Cortex smarter. It's not retraining the AI — it's giving the AI <strong>better source material</strong> to work with.<br><br>
-    <span style="color:#8b949e">20 enrichments written so far across 3 accounts. Each one transforms a "meh" answer into a "that's exactly what I needed" answer.</span>
+    <em style="color:#00ff41">"KYC Gateway is the identity verification pipeline used by tier-2 banks for customer onboarding. It validates government-issued IDs against the national registry, performs facial matching via the biometric API, and flags high-risk profiles for manual review. The system processes ~12,000 verifications daily across 3 regions..."</em><br><br>
+    <strong style="color:#00ff41">🎯 Detailed. Confident. Actually useful.</strong><br>
+    <span style="color:#8b949e">Same GPT-4.1 model. Same question. But now it has enriched source material to work with — that's the difference.</span>
     </div>
+  </div>
+
+  <div style="text-align:center;padding:0.5rem;border-radius:8px;background:rgba(255,215,64,0.04);border:1px solid rgba(255,215,64,0.15);margin-top:0.5rem;font-family:var(--font-mono);font-size:0.7rem;color:#ffd740">
+    ↺ Every ENRICH run makes Cortex smarter · 20 enrichments written so far · Not retraining the AI — giving it <strong>better source material</strong>
   </div>
 </div>
 
