@@ -481,12 +481,58 @@
     </div>
   </div>
 
-  <div class="chat-msg" style="background:rgba(0,255,65,0.04);border-color:rgba(0,255,65,0.15)">
-    <div class="chat-sender" style="color:#00ff41">This is exactly how Cortex works</div>
-    <div style="color:#c9d1d9">A team member asks: <strong style="color:#ffd740">"@neo how does the F1 pit stop work?"</strong><br><br>
-    ChromaDB finds docs about <strong style="color:#c084fc">"tyre change procedure"</strong>, <strong style="color:#c084fc">"pneumatic wheel gun specs"</strong>, <strong style="color:#c084fc">"race crew positioning"</strong> — none use the exact phrase "F1 pit stop", but they're all <strong style="color:#00ff41">about the same thing</strong>.<br><br>
-    <span style="color:#8b949e">Model: bge-small-en-v1.5 · 384 dimensions · ONNX runtime · runs locally (no cloud API)</span>
+  <div class="chat-msg" style="background:rgba(255,107,107,0.06);border-color:rgba(255,107,107,0.25)">
+    <div class="chat-sender" style="color:#ff6b6b">😐 Problem — GPT gets these chunks and gives a thin answer</div>
+    <div style="color:#c9d1d9">With only 0.78 and 0.71 scores, GPT-4.1 gets <strong style="color:#ff6b6b">vague, indirect chunks</strong>. None of them are actually ABOUT F1 pit stops. GPT stitches together a generic answer:<br><br>
+    <em style="color:#8b949e">"A pit stop is when a race car stops. The crew changes the tyres..."</em><br><br>
+    <strong style="color:#ff6b6b">Not good enough.</strong> The team member walks away unimpressed.
     </div>
+  </div>
+
+  <div style="text-align:center;padding:0.5rem;margin:0.2rem 0"><span style="font-family:var(--font-display);font-size:0.7rem;color:#ffd740;letter-spacing:2px;background:rgba(255,215,64,0.1);padding:4px 14px;border-radius:20px">⚡ THE ENRICH — Trinity steps in</span></div>
+
+  <div class="chat-msg" style="background:rgba(0,255,65,0.06);border-color:rgba(0,255,65,0.25)">
+    <div class="chat-sender" style="color:#00ff41">🔺 Trinity (Opus 4.6) reads the FULL source docs</div>
+    <div style="color:#c9d1d9">Trinity sees "F1 pit stop" was asked 4 times with weak answers. She reads:<br><br>
+    📄 F1_Technical_Regulations.pdf — all 80 pages<br>
+    📊 Pit_Stop_Crew_Roles.xlsx — every crew position<br>
+    📽️ Race_Strategy.pptx — slide by slide<br><br>
+    Writes a <strong style="color:#00ff41">deep, complete explanation</strong> → saves it back into ChromaDB as an enriched chunk.
+    </div>
+  </div>
+
+  <div class="chat-msg" style="background:rgba(192,132,252,0.08);border-color:rgba(192,132,252,0.3)">
+    <div class="chat-sender" style="color:#c084fc">🔮 AFTER Enrich — same search, new scores</div>
+    <div style="color:#c9d1d9">
+    Now search "Formula 1 race" again:<br><br>
+    <table style="width:100%;border-collapse:collapse;font-family:var(--font-mono);font-size:0.75rem;margin:0.5rem 0">
+      <tr style="border-bottom:1px solid rgba(255,255,255,0.1)">
+        <td style="padding:6px 8px;color:#00ff41">💎 <strong>"F1 pit stop: 20 crew, 4 tyres in 1.8s..."</strong></td>
+        <td style="padding:6px 8px;color:#00ff41;text-align:right;white-space:nowrap"><strong>0.94</strong></td>
+      </tr>
+      <tr style="border-bottom:1px solid rgba(255,255,255,0.1)">
+        <td style="padding:6px 8px;color:#c084fc">📄 "Vehicle maintenance for high-performance cars..."</td>
+        <td style="padding:6px 8px;color:#ffd740;text-align:right;white-space:nowrap">0.78</td>
+      </tr>
+      <tr style="border-bottom:1px solid rgba(255,255,255,0.1)">
+        <td style="padding:6px 8px;color:#c084fc">📄 "The automobile engine burns fuel at 15,000 RPM..."</td>
+        <td style="padding:6px 8px;color:#ffd740;text-align:right;white-space:nowrap">0.71</td>
+      </tr>
+    </table>
+    The <strong style="color:#00ff41">enriched doc jumps to #1 at 0.94</strong> — it's scored 1.2× higher because Trinity wrote it specifically about this topic. GPT-4.1 now gets a <strong>perfect source</strong> to build its answer from.
+    </div>
+  </div>
+
+  <div class="chat-msg" style="background:rgba(0,255,65,0.08);border-color:rgba(0,255,65,0.35)">
+    <div class="chat-sender" style="color:#00ff41">🎯 Now GPT gives a great answer</div>
+    <div style="color:#c9d1d9">
+    <em style="color:#00ff41">"An F1 pit stop uses 20 crew who change 4 tyres in under 2 seconds. Each wheel has 3 crew — pneumatic gun at 10,000 RPM, one removes, one fits. Refuelling banned since 2010. World record: 1.80s (Red Bull, 2019)..."</em><br><br>
+    <strong style="color:#00ff41">Same model. Same question. Better source material = better answer.</strong>
+    </div>
+  </div>
+
+  <div style="text-align:center;padding:0.4rem;border-radius:8px;background:rgba(255,215,64,0.04);border:1px solid rgba(255,215,64,0.12);font-family:var(--font-mono);font-size:0.65rem;color:#8b949e">
+    Model: bge-small-en-v1.5 · 384 dimensions · ONNX runtime · runs locally (no cloud API)
   </div>
 </div>
 
