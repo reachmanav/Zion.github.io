@@ -87,7 +87,7 @@
     <div class="d-hero-icon">💊</div>
     <h1 class="d-hero-title">MEDTRACKER</h1>
     <p class="d-hero-sub">Medicine Reminders — 8:30 AM IST</p>
-    <p class="d-hero-desc">Morpheus is the brain — reads <strong>medicines.xlsx</strong> (12 medicines, kidney transplant + diabetes), calculates refill windows, and sends dual-channel reminders: <strong>WhatsApp</strong> buy list to Neo + Puja AND <strong>Email with xlsx attachment</strong> to Neo. Reply "bought medicine" on either channel to stop all reminders.</p>
+    <p class="d-hero-desc">Morpheus is the brain — reads <strong>medicines.xlsx</strong> (15 medicines, kidney transplant + diabetes), calculates refill windows, and sends dual-channel reminders: <strong>WhatsApp</strong> buy list to family AND <strong>Email with xlsx attachment</strong> to Neo. Reply "bought medicine" on either channel to stop all reminders.</p>
   </div>
 
   <div class="diagram-wrap">
@@ -175,7 +175,7 @@
       <g transform="translate(675, 290)">
         <rect width="148" height="52" rx="8" fill="#0a1628" stroke="#00ff41" stroke-width="1.5"/>
         <text x="74" y="20" class="svg-label" fill="#00ff41" font-size="11" text-anchor="middle">💬 WhatsApp</text>
-        <text x="74" y="38" class="svg-label" fill="#8b949e" font-size="9" text-anchor="middle">Neo + Puja — buy list</text>
+        <text x="74" y="38" class="svg-label" fill="#8b949e" font-size="9" text-anchor="middle">Neo + family — buy list</text>
       </g>
 
       <path d="M675,316 Q525,350 350,310" fill="none" stroke="#00ff41" stroke-width="2.5" stroke-dasharray="10,5" class="anim-dash" style="animation-delay:0.35s" marker-end="url(#ag)"/>
@@ -186,7 +186,7 @@
         <rect width="200" height="72" rx="10" fill="#0a1628" stroke="#f472b6" stroke-width="2"/>
         <text x="100" y="20" class="svg-label" fill="#f472b6" font-size="12" text-anchor="middle">📧 Email + 📊 .xlsx</text>
         <text x="100" y="38" class="svg-label" fill="#f472b6" font-size="9" text-anchor="middle">[MedTracker] Buy medicine</text>
-        <text x="100" y="52" class="svg-label" fill="#8b949e" font-size="8" text-anchor="middle">for Puja Shah — 12 items</text>
+        <text x="100" y="52" class="svg-label" fill="#8b949e" font-size="8" text-anchor="middle">for family — 15 medicines</text>
         <text x="100" y="66" class="svg-label" fill="#8b949e" font-size="8" text-anchor="middle">🔍 click to see medicines</text>
       </g>
 
@@ -253,7 +253,7 @@
       <circle cx="880" cy="570" r="110" fill="#0a1628" stroke="#58a6ff" stroke-width="2.5" stroke-opacity="0.5"/>
       <text x="880" y="495" class="svg-title" fill="#58a6ff" font-size="20" text-anchor="middle" letter-spacing="2">DUAL CHANNEL</text>
       <text x="880" y="523" class="svg-label" fill="#8b949e" font-size="14" text-anchor="middle">Morpheus sends both</text>
-      <text x="880" y="553" class="svg-label" fill="#00ff41" font-size="15" text-anchor="middle">💬 WhatsApp — Neo + Puja</text>
+      <text x="880" y="553" class="svg-label" fill="#00ff41" font-size="15" text-anchor="middle">💬 WhatsApp — Neo + family</text>
       <text x="880" y="575" class="svg-label" fill="#f472b6" font-size="15" text-anchor="middle">📧 Email — [MedTracker]</text>
       <text x="880" y="597" class="svg-label" fill="#f472b6" font-size="15" text-anchor="middle">📊 xlsx attached (buy list)</text>
       <text x="880" y="619" class="svg-label" fill="#58a6ff" font-size="15" text-anchor="middle">Reply "bought" → stops all</text>
@@ -285,7 +285,7 @@
     <div>
       <div class="stack-row"><span class="stack-label">Brain</span><span class="stack-value">Morpheus — medtracker_daily.py (cron 8:30 AM IST)</span></div>
       <div class="stack-row"><span class="stack-label">Data</span><span class="stack-value">medicines.xlsx — 12 meds, dosage, strips, refill calc</span></div>
-      <div class="stack-row"><span class="stack-label">WhatsApp</span><span class="stack-value">Buy list → Neo + Puja via Bridge</span></div>
+      <div class="stack-row"><span class="stack-label">WhatsApp</span><span class="stack-value">Buy list → Neo + family via Bridge</span></div>
       <div class="stack-row"><span class="stack-label">Email</span><span class="stack-value">[MedTracker] email + xlsx attachment → Neo (SMTP)</span></div>
       <div class="stack-row"><span class="stack-label">Confirm</span><span class="stack-value">Reply "bought medicine" on WA or email → stops all</span></div>
       <div class="stack-row"><span class="stack-label">Poller</span><span class="stack-value">medtracker_email_poll.py — every 10 min (IMAP)</span></div>
@@ -304,37 +304,43 @@
 </div>
 <div class="node-overlay" id="ov-xlsx">
   <span class="ov-close">✕</span>
-  <div class="ov-title" style="color:#f472b6">📊 medicines.xlsx — Puja Shah</div>
+  <div class="ov-title" style="color:#f472b6">📊 medicines.xlsx</div>
   <div style="text-align:center;color:#8b949e;font-family:var(--font-mono);font-size:0.75rem;margin-bottom:1rem">
-    3-month cycle (93 days) · Kidney transplant + Diabetes<br>
-    <span style="color:#ffd740">This is the real spreadsheet that Morpheus reads every morning</span>
+    Patient ID: 10174 · 3 Months Supply (93 days)<br>
+    <span style="color:#ffd740">Real spreadsheet — Morpheus reads this every morning</span>
   </div>
   <table class="med-table">
-    <tr><td colspan="3" class="cat">💊 Kidney Transplant</td></tr>
-    <tr><th>#</th><th>Medicine</th><th>Strips (3 mo)</th></tr>
-    <tr><td>1</td><td>Tacrolimus 1mg</td><td class="strips">19 strips</td></tr>
-    <tr><td>2</td><td>Mycophenolate 500mg</td><td class="strips">28 strips</td></tr>
-    <tr><td>3</td><td>Prednisolone 5mg</td><td class="strips">10 strips</td></tr>
-    <tr><td>4</td><td>Omeprazole 20mg</td><td class="strips">10 strips</td></tr>
-    <tr><td>5</td><td>Vitamin D3 60K</td><td class="strips">3 strips</td></tr>
-    <tr><td>6</td><td>Calcium 500mg</td><td class="strips">19 strips</td></tr>
-    <tr><td>7</td><td>Iron (Ferrous Ascorbate)</td><td class="strips">10 strips</td></tr>
-    <tr><td>8</td><td>Bactrim DS (Mon/Wed/Fri)</td><td class="strips">4 strips</td></tr>
-    <tr><td>9</td><td>Diltiazem 30mg</td><td class="strips">19 strips</td></tr>
-    <tr><td colspan="3" class="cat">💉 Diabetes</td></tr>
-    <tr><td>10</td><td>Metformin 500mg</td><td class="strips">19 strips</td></tr>
-    <tr><td>11</td><td>Glimepiride 1mg</td><td class="strips">10 strips</td></tr>
-    <tr><td>12</td><td>Vildagliptin 50mg</td><td class="strips">10 strips</td></tr>
+    <tr><td colspan="5" class="cat">🏥 KIDNEY TRANSPLANT MEDICINES</td></tr>
+    <tr><th>#</th><th>Medicine</th><th>Morn</th><th>Night</th><th>Buy 3 Mo</th></tr>
+    <tr><td>6</td><td>T. Prednisone 5 mg (Wysolone)</td><td>1</td><td></td><td class="strips">5 strips</td></tr>
+    <tr><td>7</td><td>T. Prograf 1 mg</td><td>2</td><td>1</td><td class="strips">28 strips</td></tr>
+    <tr><td>8</td><td>T. Prograf 0.5 mg</td><td></td><td>1</td><td class="strips">5 strips</td></tr>
+    <tr><td>9</td><td>C. Cellcept 500 mg</td><td>1</td><td>1</td><td class="strips">9 strips</td></tr>
+    <tr><td>10</td><td>T. Bactrim 480 mg</td><td></td><td>1</td><td class="strips" style="color:#8b949e">2 strips <span style="font-size:0.65rem">(Mon/Wed/Fri)</span></td></tr>
+    <tr><td>11</td><td>T. Atormac 10 mg</td><td></td><td>1</td><td class="strips">3 strips</td></tr>
+    <tr><td>12</td><td>T. Eltroxi 150 mcg</td><td>1</td><td></td><td style="color:#ff6b6b">N/A</td></tr>
+    <tr><td>13</td><td>T. Niftas 100 mg</td><td></td><td>1</td><td class="strips">5 strips</td></tr>
+    <tr><td>14</td><td>T. Zevity / Supradyn</td><td>1</td><td></td><td class="strips">5 strips</td></tr>
+    <tr><td>15</td><td>Keraglo Eva</td><td></td><td></td><td class="strips">2 strips</td></tr>
+    <tr><td colspan="5" class="cat" style="color:#fb923c">💉 DIABETES MEDICINES</td></tr>
+    <tr><td>18</td><td>T. Afoglip M 20/1000 mg</td><td>1</td><td>1</td><td class="strips">8 strips</td></tr>
+    <tr><td>19</td><td>Inj. Xsulin 30/70</td><td></td><td></td><td style="color:#ff6b6b">N/A <span style="font-size:0.65rem">(Insulin)</span></td></tr>
+    <tr><td>20</td><td>T. EuRepa 0.5 mg</td><td></td><td>1</td><td class="strips">3 strips</td></tr>
+    <tr><td>21</td><td>T. Volix M 0.3/500 mg</td><td>1</td><td></td><td class="strips">7 strips</td></tr>
+    <tr><td>22</td><td>Inj. Xsulin R</td><td></td><td></td><td style="color:#ff6b6b">N/A <span style="font-size:0.65rem">(Insulin)</span></td></tr>
   </table>
-  <div style="margin-top:1rem;padding:0.8rem;border-radius:10px;background:rgba(255,215,64,0.05);border:1px solid rgba(255,215,64,0.2);font-family:var(--font-mono);font-size:0.75rem">
-    <div style="color:#ffd740;font-weight:bold;margin-bottom:0.4rem">How it works:</div>
+  <div style="margin-top:1rem;padding:0.8rem;border-radius:10px;background:rgba(255,215,64,0.05);border:1px solid rgba(255,215,64,0.2);font-family:var(--font-mono);font-size:0.72rem">
+    <div style="color:#ff6b6b;font-weight:bold;margin-bottom:0.4rem">⚠️ IMPORTANT INSTRUCTIONS</div>
     <div style="color:#c9d1d9;line-height:1.7">
-      Morpheus reads this Excel every morning at <strong style="color:#f472b6">8:30 AM</strong><br>
-      Calculates strips needed for 93-day cycle<br>
-      When day 63+ → sends <strong style="color:#00ff41">WhatsApp reminder</strong> to Neo + Puja<br>
-      Sends <strong style="color:#f472b6">email with this Excel attached</strong> to Neo<br>
-      Reply "bought medicine" on either channel → stops all reminders
+      • Boiled water only · No raw food · Daily walk<br>
+      • DO NOT MISS — especially immunosuppressants<br>
+      • Blood tests every 30 days: CBC, Urine, Creatinine, RBS, K+, Mg++<br>
+      • Tacrolimus trough level monitoring<br>
+      • Vaccines: Pneumococcal (every 5 yrs) · Influenza (yearly)
     </div>
+  </div>
+  <div style="margin-top:0.8rem;padding:0.6rem;border-radius:8px;background:rgba(0,255,65,0.04);border:1px solid rgba(0,255,65,0.15);font-family:var(--font-mono);font-size:0.7rem;color:#8b949e;text-align:center">
+    Morpheus reads this at <strong style="color:#f472b6">8:30 AM daily</strong> · Calculates refill countdown · Sends WhatsApp + Email when day 63+
   </div>
 </div>
 
