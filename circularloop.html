@@ -15,7 +15,7 @@
     .d-hero-desc { font-size: 0.9rem; color: var(--text-dim); max-width: 600px; margin: 1.5rem auto 0; line-height: 1.9; font-family: var(--font-mono); }
 
     .loop-wrap { padding: 2rem 1rem 4rem; text-align: center; overflow-x: auto; }
-    .loop-svg { width: 100%; max-width: 960px; height: auto; margin: 0 auto; display: block; }
+    .loop-svg { width: 100%; max-width: 1050px; height: auto; margin: 0 auto; display: block; }
 
     @keyframes dash-flow { to { stroke-dashoffset: -20; } }
     @keyframes dash-reverse { to { stroke-dashoffset: 20; } }
@@ -50,157 +50,144 @@
 
   <div class="binary-line">01001100 01101111 01101111 01110000 00100000 01101110 01100101 01110110 01100101 01110010 00100000 01100101 01101110 01100100 01110011</div>
 
-  <!-- THE LOOP DIAGRAM -->
+  <!-- THE INFINITY DIAGRAM -->
   <div class="loop-wrap">
-    <svg class="loop-svg" viewBox="0 0 960 880" xmlns="http://www.w3.org/2000/svg">
+    <svg class="loop-svg" viewBox="0 0 1050 560" xmlns="http://www.w3.org/2000/svg">
       <defs>
         <marker id="ag" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto"><path d="M0,0 L10,3.5 L0,7" fill="#00ff41" opacity="0.7"/></marker>
         <marker id="ay" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto"><path d="M0,0 L10,3.5 L0,7" fill="#ffd740" opacity="0.7"/></marker>
         <marker id="ar" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto"><path d="M0,0 L10,3.5 L0,7" fill="#ff6b6b" opacity="0.7"/></marker>
         <marker id="ac" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto"><path d="M0,0 L10,3.5 L0,7" fill="#c084fc" opacity="0.7"/></marker>
-        <marker id="ab" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto"><path d="M0,0 L10,3.5 L0,7" fill="#58a6ff" opacity="0.7"/></marker>
         <filter id="gl"><feGaussianBlur stdDeviation="2" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
         <filter id="gl2"><feGaussianBlur stdDeviation="3" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
-        <clipPath id="clip-bar-2006"><rect x="5" y="10" width="80" height="80" rx="8"/></clipPath>
-        <clipPath id="clip-bar-gift"><rect x="15" y="10" width="200" height="90" rx="8"/></clipPath>
       </defs>
 
-      <!-- ═══════════════════════════════════════════
-           LEFT LOOP — THE PAST
-           ═══════════════════════════════════════════ -->
+      <!-- ═══════════════════════════════════════════════════════
+           THE INFINITY SHAPE — two ellipse loops crossing at center
+           Left loop center: ~260,280   Right loop center: ~760,280
+           ═══════════════════════════════════════════════════════ -->
 
-      <!-- Left loop path -->
-      <path d="M480,30 Q240,-20 80,200 Q-20,380 80,560 Q200,720 480,740"
-        fill="none" stroke="#00ff41" stroke-width="1.5" stroke-dasharray="10,6" class="anim-dash" opacity="0.2"/>
+      <!-- LEFT LOOP (the past — Hershey's lives here) -->
+      <ellipse cx="270" cy="280" rx="245" ry="230" fill="none" stroke="#c084fc" stroke-width="2" stroke-dasharray="12,6" class="anim-dash" opacity="0.2"/>
 
-      <!-- ══ NODE 1: 2006 — LOBO + ZION (top of left loop) ══ -->
-      <g transform="translate(140, 20)">
-        <rect width="240" height="100" rx="12" fill="#0a1628" stroke="#ffd740" stroke-width="2"/>
-        <text x="35" y="35" class="svg-label" fill="#ffd740" font-size="28">🐺</text>
-        <text x="65" y="35" class="svg-label" fill="#00ff41" font-size="28">⬡</text>
-        <text x="165" y="35" class="svg-title" fill="#ffd740" font-size="14" text-anchor="middle" letter-spacing="2">2006</text>
-        <text x="165" y="55" class="svg-label" fill="#8b949e" font-size="9" text-anchor="middle">software engineered</text>
-        <text x="165" y="72" class="svg-label" fill="#c084fc" font-size="8" text-anchor="middle"></text>
-        <text x="165" y="88" class="svg-label" fill="#8b949e" font-size="7" text-anchor="middle">Mumbai</text>
-      </g>
+      <!-- RIGHT LOOP (the build — Zion & Lobo live here) -->
+      <ellipse cx="780" cy="280" rx="245" ry="230" fill="none" stroke="#00ff41" stroke-width="2" stroke-dasharray="12,6" class="anim-dash" opacity="0.2" style="animation-delay:-0.5s"/>
 
-      <!-- Arrow 1 → 2 (curves down-left) -->
-      <path d="M260,125 Q200,180 160,240" fill="none" stroke="#ffd740" stroke-width="2" stroke-dasharray="8,4" class="anim-dash" style="animation-delay:0.2s" marker-end="url(#ay)"/>
+      <!-- CROSSOVER X at center (~515,280) -->
+      <line x1="495" y1="260" x2="535" y2="300" stroke="#ffd740" stroke-width="1.5" opacity="0.3"/>
+      <line x1="535" y1="260" x2="495" y2="300" stroke="#ffd740" stroke-width="1.5" opacity="0.3"/>
 
-      <!-- ══ NODE 2: 19-APR-2010 — HERSHEY'S BAR ONLY (center-left) ══ -->
-      <g transform="translate(30, 240)">
-        <rect width="230" height="170" rx="12" fill="#0a1628" stroke="#c084fc" stroke-width="2"/>
-        <!-- Hershey's photo — CROPPED to show ONLY the chocolate bar, no faces -->
-        <svg x="15" y="8" width="200" height="90" viewBox="230 340 560 270">
-          <image href="img/hersheys.jpg" x="0" y="0" width="1024" height="768" preserveAspectRatio="xMidYMid slice"/>
+      <!-- ═══════════════════════════════════════
+           LEFT LOOP NODES
+           ═══════════════════════════════════════ -->
+
+      <!-- ── HERSHEY'S (center of left loop) ── -->
+      <g transform="translate(155, 200)">
+        <rect width="220" height="160" rx="14" fill="#0a1628" stroke="#c084fc" stroke-width="2.5"/>
+        <!-- Cropped to show ONLY the chocolate bar — no faces visible -->
+        <svg x="10" y="8" width="200" height="85" viewBox="230 340 560 270">
+          <image href="img/hersheys.jpg" x="0" y="0" width="1024" height="768"/>
         </svg>
-        <rect x="15" y="8" width="200" height="90" rx="8" fill="none" stroke="#c084fc" stroke-width="1.5" opacity="0.5"/>
-        <text x="115" y="118" class="svg-title" fill="#c084fc" font-size="12" text-anchor="middle" letter-spacing="1">19-APR-2010</text>
-        <text x="115" y="136" class="svg-label" fill="#ffd740" font-size="10" text-anchor="middle">03:15 AM</text>
-        <text x="78" y="160" class="svg-label" fill="#c084fc" font-size="18">🍫</text>
-        <text x="105" y="160" class="svg-label" fill="#c084fc" font-size="18">🎁</text>
-        <text x="132" y="160" class="svg-label" fill="#c084fc" font-size="18">🔌</text>
+        <rect x="10" y="8" width="200" height="85" rx="6" fill="none" stroke="#c084fc" stroke-width="1" opacity="0.4"/>
+        <text x="110" y="112" class="svg-title" fill="#c084fc" font-size="12" text-anchor="middle" letter-spacing="1">19-APR-2010</text>
+        <text x="110" y="130" class="svg-label" fill="#ffd740" font-size="10" text-anchor="middle">03:15 AM</text>
+        <text x="78" y="152" fill="#c084fc" font-size="18">🍫</text>
+        <text x="105" y="152" fill="#c084fc" font-size="18">🎁</text>
+        <text x="132" y="152" fill="#c084fc" font-size="18">🔌</text>
       </g>
 
-      <!-- Arrow 2 → 3 (curves down) -->
-      <path d="M145,415 Q145,480 180,540" fill="none" stroke="#c084fc" stroke-width="2" stroke-dasharray="8,4" class="anim-dash" style="animation-delay:0.4s" marker-end="url(#ac)"/>
-
-      <!-- ══ NODE 3: MATRIX MOVIE (bottom of left loop) ══ -->
-      <g transform="translate(80, 540)">
-        <rect width="220" height="110" rx="12" fill="#0a1628" stroke="#00ff41" stroke-width="2"/>
-        <text x="110" y="28" class="svg-label" fill="#00ff41" font-size="24" text-anchor="middle">🎬</text>
-        <text x="110" y="50" class="svg-title" fill="#00ff41" font-size="13" text-anchor="middle" letter-spacing="2">MATRIX MOVIE</text>
-        <text x="110" y="68" class="svg-label" fill="#8b949e" font-size="9" text-anchor="middle">2000 · after 10th standard</text>
-        <text x="110" y="84" class="svg-label" fill="#ffd740" font-size="9" text-anchor="middle">"She typed on a black screen.</text>
-        <text x="110" y="96" class="svg-label" fill="#ffd740" font-size="9" text-anchor="middle">I decided: I'll do that too."</text>
-      </g>
-      <text x="190" y="668" class="svg-label" fill="#00ff41" font-size="8" text-anchor="middle" opacity="0.5">the terminal scene</text>
-
-      <!-- ═══════════════════════════════════════════
-           CROSSOVER — Left to Right
-           ═══════════════════════════════════════════ -->
-
-      <!-- Arrow: Matrix Movie → crosses to right loop → System Crash -->
-      <path d="M305,610 Q480,720 580,610" fill="none" stroke="#ff6b6b" stroke-width="2" stroke-dasharray="8,4" class="anim-dash" style="animation-delay:0.6s" marker-end="url(#ar)"/>
-
-      <!-- Center ∞ -->
-      <text x="480" y="445" class="svg-title" fill="#00ff41" font-size="60" text-anchor="middle" opacity="0.06" filter="url(#gl2)">∞</text>
-
-      <!-- ═══════════════════════════════════════════
-           RIGHT LOOP — THE BUILD
-           ═══════════════════════════════════════════ -->
-
-      <!-- Right loop path -->
-      <path d="M480,740 Q720,720 880,560 Q980,380 880,200 Q720,-20 480,30"
-        fill="none" stroke="#00ff41" stroke-width="1.5" stroke-dasharray="10,6" class="anim-dash" opacity="0.2" style="animation-delay:-0.5s"/>
-
-      <!-- ══ NODE 4: SYSTEM CRASH (bottom of right loop) ══ -->
-      <g transform="translate(560, 520)">
-        <rect width="260" height="130" rx="12" fill="#0a1628" stroke="#ff6b6b" stroke-width="2.5"/>
-        <circle cx="130" cy="65" r="80" fill="none" stroke="#ff6b6b" stroke-width="0.5" class="anim-ring"/>
-        <!-- Zion icon (not flash) -->
-        <text x="100" y="30" class="svg-label" fill="#00ff41" font-size="22" text-anchor="middle">⬡</text>
-        <text x="160" y="30" class="svg-label" fill="#ff6b6b" font-size="22" text-anchor="middle">⚡</text>
-        <text x="130" y="52" class="svg-title" fill="#ff6b6b" font-size="13" text-anchor="middle" letter-spacing="2">SYSTEM CRASHED</text>
-        <text x="130" y="72" class="svg-label" fill="#8b949e" font-size="9" text-anchor="middle">2019 · April 19</text>
-        <text x="130" y="90" class="svg-label" fill="#ff6b6b" font-size="9" text-anchor="middle">"There is no spoon."</text>
-        <text x="130" y="106" class="svg-label" fill="#ff6b6b" font-size="9" text-anchor="middle">"It is not the spoon that bends.</text>
-        <text x="130" y="118" class="svg-label" fill="#ff6b6b" font-size="9" text-anchor="middle">It is yourself."</text>
+      <!-- ── 2006 (top of left loop) ── -->
+      <g transform="translate(175, 25)">
+        <rect width="180" height="75" rx="12" fill="#0a1628" stroke="#ffd740" stroke-width="2"/>
+        <text x="30" y="30" fill="#ffd740" font-size="26">🐺</text>
+        <text x="60" y="30" fill="#00ff41" font-size="26">⬡</text>
+        <text x="130" y="30" class="svg-title" fill="#ffd740" font-size="13" text-anchor="middle" letter-spacing="2">2006</text>
+        <text x="130" y="50" class="svg-label" fill="#8b949e" font-size="9" text-anchor="middle">software engineered</text>
       </g>
 
-      <!-- Arrow 4 → 5 (curves up-right) -->
-      <path d="M820,560 Q870,480 870,410" fill="none" stroke="#ff6b6b" stroke-width="2" stroke-dasharray="8,4" class="anim-dash" style="animation-delay:0.8s" marker-end="url(#ar)"/>
-      <text x="880" y="490" class="svg-label" fill="#ff6b6b" font-size="9" text-anchor="middle">punarjanma</text>
-
-      <!-- ══ NODE 5: RELOAD WEBSITE (right side) ══ -->
-      <g transform="translate(720, 280)">
-        <rect width="220" height="120" rx="12" fill="#0a1628" stroke="#ffd740" stroke-width="2"/>
-        <!-- Lobo → plugs into → Zion -->
-        <text x="60" y="30" class="svg-label" fill="#ffd740" font-size="22" text-anchor="middle">🐺</text>
-        <text x="110" y="30" class="svg-label" fill="#00ff41" font-size="14" text-anchor="middle">→🔌→</text>
-        <text x="160" y="30" class="svg-label" fill="#00ff41" font-size="22" text-anchor="middle">⬡</text>
-        <text x="110" y="54" class="svg-title" fill="#ffd740" font-size="12" text-anchor="middle" letter-spacing="2">RELOAD</text>
+      <!-- ── MATRIX MOVIE (bottom of left loop) ── -->
+      <g transform="translate(175, 460)">
+        <rect width="180" height="70" rx="12" fill="#0a1628" stroke="#00ff41" stroke-width="2"/>
+        <text x="90" y="24" fill="#00ff41" font-size="22" text-anchor="middle">🎬</text>
+        <text x="90" y="44" class="svg-title" fill="#00ff41" font-size="11" text-anchor="middle" letter-spacing="2">MATRIX MOVIE</text>
+        <text x="90" y="60" class="svg-label" fill="#8b949e" font-size="8" text-anchor="middle">2000</text>
       </g>
 
-      <!-- Arrow 5 → 6 (curves up) -->
-      <path d="M830,278 Q830,220 780,175" fill="none" stroke="#ffd740" stroke-width="2" stroke-dasharray="8,4" class="anim-dash" style="animation-delay:1.0s" marker-end="url(#ay)"/>
-
-      <!-- ══ NODE 6: 2026 LOBO BIRTH (top-right area) ══ -->
-      <g transform="translate(650, 85)">
-        <circle cx="80" cy="55" r="65" fill="#0a1628" stroke="#ffd740" stroke-width="2.5" class="anim-breathe"/>
-        <text x="80" y="35" class="svg-label" fill="#ffd740" font-size="28" text-anchor="middle">🐺</text>
-        <text x="80" y="58" class="svg-title" fill="#ffd740" font-size="12" text-anchor="middle" letter-spacing="2" filter="url(#gl)">LOBO</text>
-        <text x="80" y="74" class="svg-label" fill="#ffd740" font-size="9" text-anchor="middle">2026 · birth</text>
+      <!-- ── SYSTEM CRASHED (bottom of right loop) ── -->
+      <g transform="translate(665, 440)">
+        <rect width="220" height="95" rx="12" fill="#0a1628" stroke="#ff6b6b" stroke-width="2.5"/>
+        <circle cx="110" cy="48" r="55" fill="none" stroke="#ff6b6b" stroke-width="0.5" class="anim-ring"/>
+        <text x="80" y="28" fill="#00ff41" font-size="20" text-anchor="middle">⬡</text>
+        <text x="140" y="28" fill="#ff6b6b" font-size="20" text-anchor="middle">⚡</text>
+        <text x="110" y="50" class="svg-title" fill="#ff6b6b" font-size="11" text-anchor="middle" letter-spacing="2">SYSTEM CRASHED</text>
+        <text x="110" y="68" class="svg-label" fill="#8b949e" font-size="9" text-anchor="middle">2019 · April 19</text>
+        <text x="110" y="84" class="svg-label" fill="#ff6b6b" font-size="8" text-anchor="middle">reload required</text>
       </g>
 
-      <!-- Arrow 6 → 7 (curves left) -->
-      <path d="M650,130 Q570,120 530,130" fill="none" stroke="#00ff41" stroke-width="2.5" stroke-dasharray="8,4" class="anim-dash" style="animation-delay:1.2s" marker-end="url(#ag)"/>
+      <!-- ═══════════════════════════════════════
+           RIGHT LOOP NODES (Zion + Lobo inside)
+           Matching your sketch exactly
+           ═══════════════════════════════════════ -->
 
-      <!-- ══ NODE 7: 2026 ZION BIRTH (center-right, center of right loop) ══ -->
-      <g transform="translate(420, 85)">
-        <rect width="130" height="100" rx="14" fill="#0a1628" stroke="#00ff41" stroke-width="3"/>
-        <text x="65" y="30" class="svg-label" fill="#00ff41" font-size="28" text-anchor="middle">⬡</text>
-        <text x="65" y="55" class="svg-title" fill="#00ff41" font-size="14" text-anchor="middle" letter-spacing="3" filter="url(#gl)">ZION</text>
-        <text x="65" y="74" class="svg-label" fill="#00ff41" font-size="9" text-anchor="middle">2026 · birth</text>
+      <!-- ── RELOAD (left side of right loop, near crossover) ── -->
+      <g transform="translate(555, 230)">
+        <rect width="150" height="100" rx="12" fill="#0a1628" stroke="#ffd740" stroke-width="2"/>
+        <text x="40" y="30" fill="#ffd740" font-size="20" text-anchor="middle">🐺</text>
+        <text x="75" y="30" fill="#00ff41" font-size="12" text-anchor="middle">→🔌→</text>
+        <text x="110" y="30" fill="#00ff41" font-size="20" text-anchor="middle">⬡</text>
+        <text x="75" y="54" class="svg-title" fill="#ffd740" font-size="11" text-anchor="middle" letter-spacing="2">RELOAD</text>
       </g>
 
-      <!-- ═══════════════════════════════════════════
-           THE BIG LOOP BACK — Zion → 2006 (top)
-           The loop closes!
-           ═══════════════════════════════════════════ -->
-      <path d="M420,135 Q390,140 380,70" fill="none" stroke="#ffd740" stroke-width="2.5" stroke-dasharray="10,5" class="anim-reverse" marker-end="url(#ay)" opacity="0.6"/>
+      <!-- ── ZION (center of right loop — matching your sketch) ── -->
+      <g transform="translate(755, 215)">
+        <circle cx="55" cy="55" r="58" fill="#0a1628" stroke="#00ff41" stroke-width="3" filter="url(#gl)"/>
+        <text x="55" y="38" fill="#00ff41" font-size="28" text-anchor="middle">⬡</text>
+        <text x="55" y="62" class="svg-title" fill="#00ff41" font-size="13" text-anchor="middle" letter-spacing="3">ZION</text>
+        <text x="55" y="80" class="svg-label" fill="#00ff41" font-size="8" text-anchor="middle">2026 · birth</text>
+      </g>
 
-      <!-- Outer faint loop connecting left bottom to right bottom -->
-      <path d="M80,540 Q-20,380 80,200 Q200,-20 480,30 Q720,-20 880,200 Q980,380 880,560 Q720,720 480,740 Q240,720 80,540"
-        fill="none" stroke="#00ff41" stroke-width="0.5" stroke-dasharray="4,8" opacity="0.08"/>
+      <!-- ── LOBO (right side of right loop — matching your sketch) ── -->
+      <g transform="translate(895, 215)">
+        <circle cx="55" cy="55" r="58" fill="#0a1628" stroke="#ffd740" stroke-width="2.5" class="anim-breathe"/>
+        <text x="55" y="38" fill="#ffd740" font-size="28" text-anchor="middle">🐺</text>
+        <text x="55" y="62" class="svg-title" fill="#ffd740" font-size="13" text-anchor="middle" letter-spacing="2" filter="url(#gl)">LOBO</text>
+        <text x="55" y="80" class="svg-label" fill="#ffd740" font-size="8" text-anchor="middle">2026 · birth</text>
+      </g>
 
-      <!-- Faint outer loop label -->
-      <text x="15" y="440" class="svg-label" fill="#00ff41" font-size="8" text-anchor="middle" opacity="0.15" transform="rotate(-90, 15, 440)">the loop never ends</text>
+      <!-- ═══════════════════════════════════════
+           ARROWS connecting the flow
+           ═══════════════════════════════════════ -->
+
+      <!-- 2006 → Hershey's (down) -->
+      <path d="M265,102 Q265,150 265,198" fill="none" stroke="#ffd740" stroke-width="2" stroke-dasharray="8,4" class="anim-dash" marker-end="url(#ay)"/>
+
+      <!-- Hershey's → Matrix Movie (down) -->
+      <path d="M265,362 Q265,410 265,458" fill="none" stroke="#c084fc" stroke-width="2" stroke-dasharray="8,4" class="anim-dash" style="animation-delay:0.2s" marker-end="url(#ac)"/>
+
+      <!-- Matrix Movie → System Crashed (crosses to right) -->
+      <path d="M357,500 Q500,540 665,500" fill="none" stroke="#ff6b6b" stroke-width="2" stroke-dasharray="8,4" class="anim-dash" style="animation-delay:0.4s" marker-end="url(#ar)"/>
+
+      <!-- System Crashed → Reload (up-left) -->
+      <path d="M665,470 Q620,400 630,332" fill="none" stroke="#ff6b6b" stroke-width="2" stroke-dasharray="8,4" class="anim-dash" style="animation-delay:0.6s" marker-end="url(#ar)"/>
+
+      <!-- Reload → Zion (right) -->
+      <path d="M707,280 Q730,280 755,275" fill="none" stroke="#00ff41" stroke-width="2" stroke-dasharray="8,4" class="anim-dash" style="animation-delay:0.8s" marker-end="url(#ag)"/>
+
+      <!-- Zion ← → Lobo (dashed connection) -->
+      <path d="M868,270 Q882,270 895,270" fill="none" stroke="#ffd740" stroke-width="2" stroke-dasharray="6,3" class="anim-dash" style="animation-delay:1s" marker-end="url(#ay)"/>
+
+      <!-- Lobo/Zion → loops back to 2006 (the big return, top) -->
+      <path d="M810,215 Q750,100 500,50 Q400,40 357,55" fill="none" stroke="#ffd740" stroke-width="2.5" stroke-dasharray="10,5" class="anim-reverse" opacity="0.4" marker-end="url(#ay)"/>
+
+      <!-- ═══════════════════════════════════════
+           Center faint ∞
+           ═══════════════════════════════════════ -->
+      <text x="525" y="295" class="svg-title" fill="#00ff41" font-size="50" text-anchor="middle" opacity="0.04" filter="url(#gl2)">∞</text>
 
     </svg>
   </div>
 
-  <p class="loop-caption">April 19 appears twice. The terminal scene appeared once. Everything else followed.</p>
+  <p class="loop-caption">April 19 appears twice. Everything else followed.</p>
 
   <!-- END -->
   <div class="end-section">
