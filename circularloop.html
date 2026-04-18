@@ -50,9 +50,13 @@
 
   <div class="binary-line">01001100 01101111 01101111 01110000 00100000 01101110 01100101 01110110 01100101 01110010 00100000 01100101 01101110 01100100 01110011</div>
 
-  <!-- THE INFINITY DIAGRAM -->
+  <!-- THE INFINITY DIAGRAM — Matching Neo's sketch exactly
+       2010 (THE GIFT) = CENTER crossing point
+       Left loop:  2006(top-left) → 2010(center) → 2000(bottom-left) → back to 2006
+       Right loop: 2010(center) → ZION(top-right) → LOBO(far right) → 2020(bottom-right) → 2019(bottom) → back to 2010
+  -->
   <div class="loop-wrap">
-    <svg class="loop-svg" viewBox="0 0 1100 520" xmlns="http://www.w3.org/2000/svg">
+    <svg class="loop-svg" viewBox="0 0 1100 580" xmlns="http://www.w3.org/2000/svg">
       <defs>
         <marker id="ag" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto"><path d="M0,0 L10,3.5 L0,7" fill="#00ff41" opacity="0.7"/></marker>
         <marker id="ay" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto"><path d="M0,0 L10,3.5 L0,7" fill="#ffd740" opacity="0.7"/></marker>
@@ -63,34 +67,44 @@
       </defs>
 
       <!-- ══════════════════════════════════════════════════════════
-           TRUE FIGURE-8 / INFINITY PATH (Bézier lemniscate)
-           Center crossing: 550, 260
-           Left lobe center: ~260   Right lobe center: ~840
-           Flow: clockwise left, clockwise right
-           Nodes sit ON this path.
+           TRUE FIGURE-8 — Center = 500, 280
+           Left lobe ~240,280    Right lobe ~760,280
+           2010 sits at the crossing (500,280)
            ══════════════════════════════════════════════════════════ -->
 
-      <!-- The actual infinity path — LEFT lobe (purple) -->
-      <path d="M550,260 C550,60 30,60 30,260 C30,460 550,460 550,260"
+      <!-- LEFT LOBE (purple, the past) -->
+      <path d="M500,280 C500,50 20,50 20,280 C20,510 500,510 500,280"
             fill="none" stroke="#c084fc" stroke-width="1.8" stroke-dasharray="10,5"
-            class="anim-dash" opacity="0.18"/>
+            class="anim-dash" opacity="0.15"/>
 
-      <!-- The actual infinity path — RIGHT lobe (green) -->
-      <path d="M550,260 C550,60 1070,60 1070,260 C1070,460 550,460 550,260"
+      <!-- RIGHT LOBE (green, the build) -->
+      <path d="M500,280 C500,50 980,50 980,280 C980,510 500,510 500,280"
             fill="none" stroke="#00ff41" stroke-width="1.8" stroke-dasharray="10,5"
-            class="anim-dash" opacity="0.18" style="animation-delay:-0.5s"/>
+            class="anim-dash" opacity="0.15" style="animation-delay:-0.5s"/>
 
-      <!-- Faint glow at crossing point -->
-      <circle cx="550" cy="260" r="12" fill="none" stroke="#ffd740" stroke-width="1" opacity="0.2" class="anim-ring"/>
-      <circle cx="550" cy="260" r="4" fill="#ffd740" opacity="0.15"/>
+      <!-- ══════════════════════════════════════
+           CENTER NODE: 2010 — THE GIFT
+           The pivot of the entire infinity
+           ══════════════════════════════════════ -->
+      <g transform="translate(390, 190)">
+        <rect width="220" height="180" rx="16" fill="#0a1628" stroke="#c084fc" stroke-width="2.5"/>
+        <circle cx="110" cy="90" r="95" fill="none" stroke="#c084fc" stroke-width="0.4" class="anim-ring" opacity="0.3"/>
+        <image href="img/hersheys_bar.jpg" x="10" y="8" width="200" height="85" preserveAspectRatio="xMidYMid slice"/>
+        <rect x="10" y="8" width="200" height="85" rx="6" fill="none" stroke="#c084fc" stroke-width="1" opacity="0.4"/>
+        <text x="110" y="112" class="svg-title" fill="#c084fc" font-size="12" text-anchor="middle" letter-spacing="1">2010</text>
+        <text x="110" y="130" class="svg-label" fill="#ffd740" font-size="9" text-anchor="middle">19-APR · 03:15 AM</text>
+        <text x="75" y="155" fill="#c084fc" font-size="16">🍫</text>
+        <text x="105" y="155" fill="#c084fc" font-size="16">🎁</text>
+        <text x="135" y="155" fill="#c084fc" font-size="16">🔌</text>
+        <text x="110" y="174" class="svg-label" fill="#8b949e" font-size="7" text-anchor="middle">$0 · $1</text>
+      </g>
 
       <!-- ══════════════════════════════════════
            LEFT LOOP NODES (on the path)
-           Positions: top(260,60) left(30,260) bottom(260,460)
            ══════════════════════════════════════ -->
 
-      <!-- ── 2006 · TOP of left loop ── -->
-      <g transform="translate(200, 30)">
+      <!-- ── 2006 · TOP-LEFT of left loop ── -->
+      <g transform="translate(135, 35)">
         <rect width="160" height="68" rx="12" fill="#0a1628" stroke="#ffd740" stroke-width="2"/>
         <text x="28" y="28" fill="#ffd740" font-size="22">🐺</text>
         <text x="55" y="28" fill="#00ff41" font-size="22">⬡</text>
@@ -98,22 +112,9 @@
         <text x="115" y="46" class="svg-label" fill="#8b949e" font-size="8" text-anchor="middle">software engineered</text>
       </g>
 
-      <!-- ── THE GIFT · LEFT of left loop (Hershey's) ── -->
-      <g transform="translate(15, 165)">
-        <rect width="210" height="190" rx="14" fill="#0a1628" stroke="#c084fc" stroke-width="2.5"/>
-        <image href="img/hersheys_bar.jpg" x="8" y="8" width="194" height="90" preserveAspectRatio="xMidYMid slice"/>
-        <rect x="8" y="8" width="194" height="90" rx="6" fill="none" stroke="#c084fc" stroke-width="1" opacity="0.4"/>
-        <text x="105" y="117" class="svg-title" fill="#c084fc" font-size="11" text-anchor="middle" letter-spacing="1">THE GIFT</text>
-        <text x="105" y="134" class="svg-label" fill="#ffd740" font-size="9" text-anchor="middle">19-APR-2010 · 03:15 AM</text>
-        <text x="72" y="160" fill="#c084fc" font-size="16">🍫</text>
-        <text x="100" y="160" fill="#c084fc" font-size="16">🎁</text>
-        <text x="128" y="160" fill="#c084fc" font-size="16">🔌</text>
-        <text x="105" y="182" class="svg-label" fill="#8b949e" font-size="7" text-anchor="middle">$0 · $1</text>
-      </g>
-
-      <!-- ── MATRIX MOVIE · BOTTOM of left loop ── -->
-      <g transform="translate(200, 435)">
-        <rect width="160" height="60" rx="12" fill="#0a1628" stroke="#00ff41" stroke-width="2"/>
+      <!-- ── 2000 MATRIX MOVIE · BOTTOM-LEFT of left loop ── -->
+      <g transform="translate(155, 475)">
+        <rect width="160" height="65" rx="12" fill="#0a1628" stroke="#00ff41" stroke-width="2"/>
         <text x="80" y="20" fill="#00ff41" font-size="18" text-anchor="middle">🎬</text>
         <text x="80" y="38" class="svg-title" fill="#00ff41" font-size="10" text-anchor="middle" letter-spacing="2">MATRIX MOVIE</text>
         <text x="80" y="52" class="svg-label" fill="#8b949e" font-size="7" text-anchor="middle">2000</text>
@@ -121,94 +122,91 @@
 
       <!-- ══════════════════════════════════════
            RIGHT LOOP NODES (on the path)
-           Flow: Crashed(bottom) → Reload(right) → Lobo(top-right) → Zion(top-left)
+           Flow from center: → ZION → LOBO → 2020 → 2019 → back to center
            ══════════════════════════════════════ -->
 
-      <!-- ── SYSTEM CRASHED · BOTTOM of right loop ── -->
-      <g transform="translate(690, 420)">
-        <rect width="200" height="80" rx="12" fill="#0a1628" stroke="#ff6b6b" stroke-width="2.5"/>
-        <circle cx="100" cy="40" r="45" fill="none" stroke="#ff6b6b" stroke-width="0.5" class="anim-ring"/>
-        <text x="70" y="24" fill="#00ff41" font-size="18" text-anchor="middle">⬡</text>
-        <text x="130" y="24" fill="#ff6b6b" font-size="18" text-anchor="middle">⚡</text>
-        <text x="100" y="44" class="svg-title" fill="#ff6b6b" font-size="10" text-anchor="middle" letter-spacing="2">SYSTEM CRASHED</text>
-        <text x="100" y="62" class="svg-label" fill="#8b949e" font-size="8" text-anchor="middle">2019 · April 19</text>
+      <!-- ── ZION · TOP-RIGHT of right loop ── -->
+      <g transform="translate(625, 35)">
+        <circle cx="42" cy="38" r="42" fill="#0a1628" stroke="#00ff41" stroke-width="3" filter="url(#gl)"/>
+        <text x="42" y="26" fill="#00ff41" font-size="24" text-anchor="middle">⬡</text>
+        <text x="42" y="46" class="svg-title" fill="#00ff41" font-size="10" text-anchor="middle" letter-spacing="3">ZION</text>
+        <text x="42" y="62" class="svg-label" fill="#00ff41" font-size="7" text-anchor="middle">2026 · birth</text>
       </g>
 
-      <!-- ── RELOAD · RIGHT of right loop ── -->
-      <g transform="translate(940, 165)">
-        <rect width="140" height="190" rx="12" fill="#0a1628" stroke="#ffd740" stroke-width="2"/>
-        <text x="70" y="32" fill="#ffd740" font-size="28" text-anchor="middle">🌐</text>
-        <text x="70" y="58" class="svg-title" fill="#ffd740" font-size="11" text-anchor="middle" letter-spacing="2">RELOAD</text>
-        <text x="70" y="78" class="svg-label" fill="#8b949e" font-size="8" text-anchor="middle">2020</text>
-        <text x="70" y="105" class="svg-label" fill="#ffd740" font-size="9" text-anchor="middle">🐺 → 🔌 → ⬡</text>
-        <text x="70" y="125" class="svg-label" fill="#8b949e" font-size="7" text-anchor="middle">website built</text>
-        <rect x="15" y="135" width="110" height="42" rx="6" fill="#0d1117" stroke="#ffd740" stroke-width="1" opacity="0.5"/>
-        <text x="70" y="152" class="svg-label" fill="#ffd740" font-size="7" text-anchor="middle" opacity="0.7">manav.athonlab.com</text>
-        <text x="70" y="168" class="svg-label" fill="#8b949e" font-size="6" text-anchor="middle">A → B → C → D...</text>
+      <!-- ── LOBO · FAR RIGHT of right loop ── -->
+      <g transform="translate(880, 35)">
+        <circle cx="42" cy="38" r="42" fill="#0a1628" stroke="#ffd740" stroke-width="2.5" class="anim-breathe"/>
+        <text x="42" y="26" fill="#ffd740" font-size="24" text-anchor="middle">🐺</text>
+        <text x="42" y="46" class="svg-title" fill="#ffd740" font-size="10" text-anchor="middle" letter-spacing="2" filter="url(#gl)">LOBO</text>
+        <text x="42" y="62" class="svg-label" fill="#ffd740" font-size="7" text-anchor="middle">2026 · birth</text>
       </g>
 
-      <!-- ── LOBO · TOP-RIGHT of right loop ── -->
-      <g transform="translate(800, 30)">
-        <circle cx="45" cy="38" r="42" fill="#0a1628" stroke="#ffd740" stroke-width="2.5" class="anim-breathe"/>
-        <text x="45" y="26" fill="#ffd740" font-size="24" text-anchor="middle">🐺</text>
-        <text x="45" y="46" class="svg-title" fill="#ffd740" font-size="10" text-anchor="middle" letter-spacing="2" filter="url(#gl)">LOBO</text>
-        <text x="45" y="62" class="svg-label" fill="#ffd740" font-size="7" text-anchor="middle">2026 · birth</text>
+      <!-- ── 2020 RELOAD · BOTTOM-RIGHT (small circle with website) ── -->
+      <g transform="translate(830, 420)">
+        <circle cx="55" cy="55" r="58" fill="#0a1628" stroke="#ffd740" stroke-width="2"/>
+        <text x="55" y="30" fill="#ffd740" font-size="22" text-anchor="middle">🌐</text>
+        <text x="55" y="50" class="svg-title" fill="#ffd740" font-size="9" text-anchor="middle" letter-spacing="1">RELOAD</text>
+        <text x="55" y="64" class="svg-label" fill="#8b949e" font-size="7" text-anchor="middle">2020</text>
+        <text x="55" y="80" class="svg-label" fill="#ffd740" font-size="7" text-anchor="middle">🐺→🔌→⬡</text>
+        <text x="55" y="95" class="svg-label" fill="#8b949e" font-size="6" text-anchor="middle">manav.athonlab.com</text>
       </g>
 
-      <!-- ── ZION · TOP-LEFT of right loop (near crossing) ── -->
-      <g transform="translate(605, 30)">
-        <circle cx="45" cy="38" r="42" fill="#0a1628" stroke="#00ff41" stroke-width="3" filter="url(#gl)"/>
-        <text x="45" y="26" fill="#00ff41" font-size="24" text-anchor="middle">⬡</text>
-        <text x="45" y="46" class="svg-title" fill="#00ff41" font-size="10" text-anchor="middle" letter-spacing="3">ZION</text>
-        <text x="45" y="62" class="svg-label" fill="#00ff41" font-size="7" text-anchor="middle">2026 · birth</text>
+      <!-- ── 2019 SYSTEM CRASHED · BOTTOM-CENTER of right loop ── -->
+      <g transform="translate(575, 460)">
+        <rect width="190" height="75" rx="12" fill="#0a1628" stroke="#ff6b6b" stroke-width="2.5"/>
+        <circle cx="95" cy="38" r="42" fill="none" stroke="#ff6b6b" stroke-width="0.4" class="anim-ring"/>
+        <text x="65" y="22" fill="#00ff41" font-size="16" text-anchor="middle">⬡</text>
+        <text x="125" y="22" fill="#ff6b6b" font-size="16" text-anchor="middle">⚡</text>
+        <text x="95" y="42" class="svg-title" fill="#ff6b6b" font-size="10" text-anchor="middle" letter-spacing="2">SYSTEM CRASHED</text>
+        <text x="95" y="60" class="svg-label" fill="#8b949e" font-size="8" text-anchor="middle">2019 · April 19</text>
       </g>
 
       <!-- ══════════════════════════════════════
-           FLOW ARROWS (along the infinity path)
-           Left loop: 2006 → Gift → Matrix Movie
-           Right loop: Crashed → Reload → Lobo → Zion → back to 2006
+           FLOW ARROWS (matching sketch directions)
+           Left:  2006 ↘ 2010 ↙ 2000 ↗ back to 2006
+           Right: 2010 ↗ ZION → LOBO ↘ 2020 ↙ 2019 ↗ back to 2010
            ══════════════════════════════════════ -->
 
-      <!-- LEFT LOOP FLOW -->
+      <!-- LEFT LOOP -->
 
-      <!-- 2006 → Gift (curves down-left along left lobe) -->
-      <path d="M200,75 C130,100 50,140 50,170" fill="none" stroke="#ffd740" stroke-width="2"
-            stroke-dasharray="8,4" class="anim-dash" marker-end="url(#ay)"/>
+      <!-- 2006 → 2010 center (down-right) -->
+      <path d="M270,105 C310,140 360,175 390,200"
+            fill="none" stroke="#ffd740" stroke-width="2" stroke-dasharray="8,4" class="anim-dash" marker-end="url(#ay)"/>
 
-      <!-- Gift → Matrix Movie (curves down along left lobe) -->
-      <path d="M120,355 C120,390 160,420 200,435" fill="none" stroke="#c084fc" stroke-width="2"
-            stroke-dasharray="8,4" class="anim-dash" style="animation-delay:0.15s" marker-end="url(#ac)"/>
+      <!-- 2010 center → 2000 (down-left) -->
+      <path d="M420,370 C380,410 330,445 315,470"
+            fill="none" stroke="#c084fc" stroke-width="2" stroke-dasharray="8,4" class="anim-dash" style="animation-delay:0.15s" marker-end="url(#ac)"/>
 
-      <!-- Matrix Movie → crossing (curves right toward center along bottom) -->
-      <path d="M360,470 C420,490 480,460 530,380" fill="none" stroke="#00ff41" stroke-width="1.5"
-            stroke-dasharray="6,4" class="anim-dash" style="animation-delay:0.3s" opacity="0.3"/>
+      <!-- 2000 → back to 2006 (up-left, along the left lobe edge) -->
+      <path d="M175,475 C80,430 25,340 35,260 C45,160 100,100 140,80"
+            fill="none" stroke="#00ff41" stroke-width="1.8" stroke-dasharray="8,4" class="anim-dash" style="animation-delay:0.3s" marker-end="url(#ag)"/>
 
-      <!-- RIGHT LOOP FLOW -->
+      <!-- RIGHT LOOP -->
 
-      <!-- Crossing → Crashed (curves down-right into right lobe bottom) -->
-      <path d="M570,340 C620,420 660,440 690,450" fill="none" stroke="#ff6b6b" stroke-width="1.5"
-            stroke-dasharray="6,4" class="anim-dash" style="animation-delay:0.4s" opacity="0.3"/>
+      <!-- 2010 center → ZION (up-right) -->
+      <path d="M560,200 C580,150 610,100 635,80"
+            fill="none" stroke="#00ff41" stroke-width="2" stroke-dasharray="8,4" class="anim-dash" style="animation-delay:0.4s" marker-end="url(#ag)"/>
 
-      <!-- Crashed → Reload (curves up-right along right lobe) -->
-      <path d="M890,460 C950,440 1000,380 1010,355" fill="none" stroke="#ff6b6b" stroke-width="2"
-            stroke-dasharray="8,4" class="anim-dash" style="animation-delay:0.5s" marker-end="url(#ar)"/>
+      <!-- ZION → LOBO (right along top) -->
+      <path d="M710,60 C750,50 810,45 880,55"
+            fill="none" stroke="#ffd740" stroke-width="2" stroke-dasharray="8,4" class="anim-dash" style="animation-delay:0.55s" marker-end="url(#ay)"/>
 
-      <!-- Reload → Lobo (curves up-left along right lobe top) -->
-      <path d="M1000,165 C980,120 920,80 890,72" fill="none" stroke="#ffd740" stroke-width="2"
-            stroke-dasharray="8,4" class="anim-dash" style="animation-delay:0.65s" marker-end="url(#ay)"/>
+      <!-- LOBO → 2020 Reload (down-right along right edge) -->
+      <path d="M940,80 C970,150 975,300 920,400"
+            fill="none" stroke="#ffd740" stroke-width="2" stroke-dasharray="8,4" class="anim-dash" style="animation-delay:0.7s" marker-end="url(#ay)"/>
 
-      <!-- Lobo → Zion (curves left along right lobe top) -->
-      <path d="M800,55 C760,45 720,40 695,50" fill="none" stroke="#00ff41" stroke-width="2"
-            stroke-dasharray="8,4" class="anim-dash" style="animation-delay:0.8s" marker-end="url(#ag)"/>
+      <!-- 2020 → 2019 Crashed (left along bottom) -->
+      <path d="M830,480 C800,490 770,498 765,498"
+            fill="none" stroke="#ff6b6b" stroke-width="2" stroke-dasharray="8,4" class="anim-dash" style="animation-delay:0.85s" marker-end="url(#ar)"/>
 
-      <!-- Zion → 2006 (the big return: crosses back through center to left lobe top) -->
-      <path d="M605,55 C560,45 460,35 400,50 C370,58 340,65 362,70" fill="none" stroke="#ffd740" stroke-width="2.5"
-            stroke-dasharray="10,5" class="anim-reverse" opacity="0.35" marker-end="url(#ay)"/>
+      <!-- 2019 Crashed → back to 2010 center (up-left, completes the right loop) -->
+      <path d="M580,460 C550,420 510,380 500,370"
+            fill="none" stroke="#ff6b6b" stroke-width="1.8" stroke-dasharray="8,4" class="anim-dash" style="animation-delay:1s" marker-end="url(#ar)"/>
 
       <!-- ══════════════════════════════════════
-           Center faint ∞ glow
+           Faint ∞ at center
            ══════════════════════════════════════ -->
-      <text x="550" y="272" class="svg-title" fill="#00ff41" font-size="40" text-anchor="middle" opacity="0.04" filter="url(#gl2)">∞</text>
+      <text x="500" y="292" class="svg-title" fill="#00ff41" font-size="36" text-anchor="middle" opacity="0.03" filter="url(#gl2)">∞</text>
 
     </svg>
   </div>
