@@ -231,6 +231,39 @@
   </footer>
 </div>
 
-<script src="script.js"></script>
+<script>
+(function(){
+  var c = document.getElementById('matrix-rain');
+  if(!c) return;
+  c.style.opacity = '0.12';
+  var ctx = c.getContext('2d');
+  function resize(){ c.width = window.innerWidth; c.height = window.innerHeight; }
+  resize();
+  window.addEventListener('resize', resize);
+  var fs = 15;
+  var cols = Math.floor(c.width / fs);
+  var drops = [];
+  for(var i=0;i<cols;i++) drops[i] = Math.random() * c.height / fs | 0;
+  window.addEventListener('resize', function(){
+    cols = Math.floor(c.width / fs);
+    drops = [];
+    for(var i=0;i<cols;i++) drops[i] = Math.random() * c.height / fs | 0;
+  });
+  function draw(){
+    ctx.fillStyle = 'rgba(0,0,0,0.06)';
+    ctx.fillRect(0,0,c.width,c.height);
+    ctx.font = fs + 'px monospace';
+    for(var i=0;i<drops.length;i++){
+      var ch = Math.random() > 0.5 ? '1' : '0';
+      var brightness = 80 + Math.random() * 175 | 0;
+      ctx.fillStyle = 'rgba(0,' + brightness + ',65,0.9)';
+      ctx.fillText(ch, i * fs, drops[i] * fs);
+      if(drops[i] * fs > c.height && Math.random() > 0.975) drops[i] = 0;
+      drops[i]++;
+    }
+  }
+  setInterval(draw, 55);
+})();
+</script>
 </body>
 </html>
