@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Why AI Alone Isn't Enough | The Matrix</title>
+  <title>AI Model vs Orchestration | The Matrix</title>
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧩</text></svg>">
   <link rel="stylesheet" href="style.css">
   <style>
@@ -59,6 +59,17 @@
     @keyframes pulse-green { 0%,100% { box-shadow: 0 0 0 0 rgba(0,255,65,0); } 50% { box-shadow: 0 0 12px 4px rgba(0,255,65,0.15); } }
     .path-a { animation: pulse-red 4s ease infinite; border-radius: 16px; padding: 1.5rem; border: 1px solid rgba(255,107,107,0.1); margin-bottom: 1rem; }
     .path-b { animation: pulse-green 4s ease infinite; border-radius: 16px; padding: 1.5rem; border: 1px solid rgba(0,255,65,0.1); margin-bottom: 1rem; }
+
+    .diagram-wrap { padding: 2rem 1rem; text-align: center; overflow-x: auto; }
+    .diagram-wrap h2 { font-family: var(--font-display); letter-spacing: 2px; }
+    .diagram-wrap .sub { font-family: var(--font-mono); font-size: 0.8rem; color: var(--text-dim); margin-bottom: 1.5rem; }
+    .d-svg { width: 100%; max-width: 1100px; height: auto; margin: 0 auto; display: block; }
+    @keyframes dash-flow { to { stroke-dashoffset: -24; } }
+    @keyframes dash-reverse { to { stroke-dashoffset: 24; } }
+    .anim-dash { animation: dash-flow 1s linear infinite; }
+    .anim-rev { animation: dash-reverse 0.8s linear infinite; }
+    .svg-label { font-family: 'JetBrains Mono', 'Fira Code', monospace; }
+    .svg-title { font-family: 'Orbitron', 'JetBrains Mono', monospace; }
   </style>
 </head>
 <body>
@@ -76,15 +87,208 @@
 <div class="detail-page">
   <div class="d-hero">
     <div class="d-hero-icon">🧩</div>
-    <h1 class="d-hero-title">WHY AI ALONE ISN'T ENOUGH</h1>
-    <p class="d-hero-sub">Stateless genius vs. persistent orchestration</p>
+    <h1 class="d-hero-title">AI MODEL vs ORCHESTRATION</h1>
+    <p class="d-hero-sub">Same brain. Different outcomes.</p>
     <p class="d-hero-desc">Everyone thinks the AI model is the magic. It isn't. The model is a brilliant amnesiac — it forgets everything between sessions. The real power comes from what wraps around it.</p>
+  </div>
+
+  <!-- ═══════ ARCHITECTURE DIAGRAM: PATH A ═══════ -->
+  <div class="diagram-wrap">
+    <h2 style="color:#ff6b6b">PATH A — AI Model Alone</h2>
+    <p class="sub">Stateless. No memory. Every session starts from zero.</p>
+
+    <svg class="d-svg" viewBox="0 0 1100 420" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <marker id="ar" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto"><path d="M0,0 L10,3.5 L0,7" fill="#ff6b6b" opacity="0.8"/></marker>
+        <marker id="ag" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto"><path d="M0,0 L10,3.5 L0,7" fill="#00ff41" opacity="0.8"/></marker>
+        <marker id="ao" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto"><path d="M0,0 L10,3.5 L0,7" fill="#ffd740" opacity="0.8"/></marker>
+        <marker id="ab" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto"><path d="M0,0 L10,3.5 L0,7" fill="#58a6ff" opacity="0.8"/></marker>
+        <filter id="gl"><feGaussianBlur stdDeviation="2" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+      </defs>
+
+      <!-- HUMAN -->
+      <g transform="translate(40, 140)">
+        <circle cx="50" cy="50" r="48" fill="#0a1628" stroke="#00ff41" stroke-width="2.5"/>
+        <text x="50" y="38" class="svg-label" fill="#00ff41" font-size="28" text-anchor="middle">👤</text>
+        <text x="50" y="64" class="svg-title" fill="#00ff41" font-size="11" text-anchor="middle" letter-spacing="2">HUMAN</text>
+        <text x="50" y="80" class="svg-label" fill="#8b949e" font-size="8" text-anchor="middle">"build this"</text>
+      </g>
+
+      <!-- Arrow: Human → AI Model -->
+      <line x1="145" y1="190" x2="245" y2="190" stroke="#00ff41" stroke-width="2" stroke-dasharray="8,4" class="anim-dash" marker-end="url(#ag)"/>
+      <text x="195" y="178" class="svg-label" fill="#00ff41" font-size="9" text-anchor="middle">task</text>
+
+      <!-- AI MODEL (big center) -->
+      <g transform="translate(255, 120)">
+        <rect width="200" height="140" rx="16" fill="#0a1628" stroke="#ff6b6b" stroke-width="2.5"/>
+        <text x="100" y="30" class="svg-label" fill="#ff6b6b" font-size="24" text-anchor="middle">🧠</text>
+        <text x="100" y="55" class="svg-title" fill="#ff6b6b" font-size="14" text-anchor="middle" letter-spacing="2" filter="url(#gl)">AI MODEL</text>
+        <text x="100" y="75" class="svg-label" fill="#ffd740" font-size="10" text-anchor="middle">Opus 4.6</text>
+        <text x="100" y="95" class="svg-label" fill="#8b949e" font-size="9" text-anchor="middle">Stateless</text>
+        <text x="100" y="110" class="svg-label" fill="#ff6b6b" font-size="9" text-anchor="middle">No memory across sessions</text>
+        <text x="100" y="128" class="svg-label" fill="#8b949e" font-size="8" text-anchor="middle">reads context files each time</text>
+      </g>
+
+      <!-- Arrow: AI → Deploy -->
+      <line x1="465" y1="190" x2="575" y2="190" stroke="#ff6b6b" stroke-width="2" stroke-dasharray="8,4" class="anim-dash" marker-end="url(#ar)"/>
+      <text x="520" y="178" class="svg-label" fill="#ff6b6b" font-size="9" text-anchor="middle">code</text>
+
+      <!-- DEPLOY -->
+      <g transform="translate(585, 150)">
+        <rect width="120" height="80" rx="10" fill="#0a1628" stroke="#ffd740" stroke-width="2"/>
+        <text x="60" y="24" class="svg-label" fill="#ffd740" font-size="18" text-anchor="middle">🚀</text>
+        <text x="60" y="44" class="svg-title" fill="#ffd740" font-size="11" text-anchor="middle" letter-spacing="1">DEPLOY</text>
+        <text x="60" y="62" class="svg-label" fill="#8b949e" font-size="8" text-anchor="middle">"Done."</text>
+      </g>
+
+      <!-- Arrow: Deploy → Bug -->
+      <line x1="715" y1="190" x2="795" y2="190" stroke="#ffd740" stroke-width="2" stroke-dasharray="8,4" class="anim-dash" marker-end="url(#ao)"/>
+
+      <!-- BUG -->
+      <g transform="translate(805, 140)">
+        <rect width="130" height="100" rx="12" fill="#0a1628" stroke="#ff4444" stroke-width="2.5"/>
+        <text x="65" y="26" class="svg-label" fill="#ff4444" font-size="22" text-anchor="middle">🐛</text>
+        <text x="65" y="48" class="svg-title" fill="#ff4444" font-size="12" text-anchor="middle" letter-spacing="1">BUG</text>
+        <text x="65" y="65" class="svg-label" fill="#8b949e" font-size="8" text-anchor="middle">human finds it</text>
+        <text x="65" y="80" class="svg-label" fill="#ff6b6b" font-size="8" text-anchor="middle">"it's broken"</text>
+        <text x="65" y="95" class="svg-label" fill="#ff4444" font-size="8" text-anchor="middle">× 5 times</text>
+      </g>
+
+      <!-- LOOP ARROW: Bug → back to AI Model (the chaotic loop) -->
+      <path d="M870,250 Q870,340 645,360 Q420,380 355,270" fill="none" stroke="#ff4444" stroke-width="2.5" stroke-dasharray="10,5" class="anim-rev" marker-end="url(#ar)"/>
+      <text x="640" y="375" class="svg-label" fill="#ff4444" font-size="10" text-anchor="middle" font-weight="bold">fix → deploy → bug → fix → deploy → bug...</text>
+
+      <!-- VULNERABILITY (floating, late) -->
+      <g transform="translate(820, 20)">
+        <rect width="240" height="70" rx="10" fill="rgba(255,68,68,0.08)" stroke="#ff4444" stroke-width="1.5" stroke-dasharray="6,3"/>
+        <text x="120" y="22" class="svg-label" fill="#ff4444" font-size="10" text-anchor="middle" font-weight="bold">⚠️ 2 WEEKS LATER</text>
+        <text x="120" y="40" class="svg-label" fill="#ff4444" font-size="9" text-anchor="middle">CVE-2026-1847 found</text>
+        <text x="120" y="55" class="svg-label" fill="#8b949e" font-size="8" text-anchor="middle">AI didn't know — it has no memory</text>
+      </g>
+
+      <!-- Deploy counter -->
+      <g transform="translate(40, 350)">
+        <rect width="220" height="50" rx="10" fill="rgba(255,107,107,0.06)" stroke="rgba(255,107,107,0.2)" stroke-width="1"/>
+        <text x="110" y="22" class="svg-title" fill="#ff6b6b" font-size="11" text-anchor="middle" letter-spacing="1">TOTAL</text>
+        <text x="110" y="40" class="svg-label" fill="#ff6b6b" font-size="10" text-anchor="middle">6 deploys · 5 bugs · 1 CVE</text>
+      </g>
+    </svg>
+  </div>
+
+  <!-- ═══════ VS ═══════ -->
+  <div class="versus"><span>VS</span></div>
+
+  <!-- ═══════ ARCHITECTURE DIAGRAM: PATH B ═══════ -->
+  <div class="diagram-wrap">
+    <h2 style="color:#00ff41">PATH B — AI + Orchestration Framework</h2>
+    <p class="sub">Same AI model. But with persistent memory + architecture advisor in the loop.</p>
+
+    <svg class="d-svg" viewBox="0 0 1100 460" xmlns="http://www.w3.org/2000/svg">
+
+      <!-- HUMAN -->
+      <g transform="translate(40, 160)">
+        <circle cx="50" cy="50" r="48" fill="#0a1628" stroke="#00ff41" stroke-width="2.5"/>
+        <text x="50" y="38" class="svg-label" fill="#00ff41" font-size="28" text-anchor="middle">👤</text>
+        <text x="50" y="64" class="svg-title" fill="#00ff41" font-size="11" text-anchor="middle" letter-spacing="2">HUMAN</text>
+        <text x="50" y="80" class="svg-label" fill="#8b949e" font-size="8" text-anchor="middle">"build this"</text>
+      </g>
+
+      <!-- Arrow: Human → AI Model -->
+      <line x1="145" y1="210" x2="235" y2="210" stroke="#00ff41" stroke-width="2" stroke-dasharray="8,4" class="anim-dash" marker-end="url(#ag)"/>
+      <text x="190" y="198" class="svg-label" fill="#00ff41" font-size="9" text-anchor="middle">task</text>
+
+      <!-- AI MODEL -->
+      <g transform="translate(245, 145)">
+        <rect width="170" height="130" rx="16" fill="#0a1628" stroke="#ff6b6b" stroke-width="2.5"/>
+        <text x="85" y="28" class="svg-label" fill="#ff6b6b" font-size="24" text-anchor="middle">🧠</text>
+        <text x="85" y="52" class="svg-title" fill="#ff6b6b" font-size="13" text-anchor="middle" letter-spacing="2" filter="url(#gl)">AI MODEL</text>
+        <text x="85" y="72" class="svg-label" fill="#ffd740" font-size="10" text-anchor="middle">Opus 4.6</text>
+        <text x="85" y="90" class="svg-label" fill="#8b949e" font-size="8" text-anchor="middle">Still stateless</text>
+        <text x="85" y="105" class="svg-label" fill="#8b949e" font-size="8" text-anchor="middle">But now has a partner ↓</text>
+      </g>
+
+      <!-- Arrow: AI Model → Framework (ask) -->
+      <path d="M330,285 Q330,340 460,350" fill="none" stroke="#58a6ff" stroke-width="2.5" stroke-dasharray="8,4" class="anim-dash" marker-end="url(#ab)"/>
+      <text x="370" y="335" class="svg-label" fill="#58a6ff" font-size="9" text-anchor="middle">asks</text>
+
+      <!-- ORCHESTRATION FRAMEWORK (big, center-bottom) -->
+      <g transform="translate(470, 300)">
+        <rect width="280" height="140" rx="16" fill="#0a1628" stroke="#58a6ff" stroke-width="3"/>
+        <text x="140" y="28" class="svg-label" fill="#58a6ff" font-size="18" text-anchor="middle">🧩</text>
+        <text x="140" y="52" class="svg-title" fill="#58a6ff" font-size="12" text-anchor="middle" letter-spacing="2" filter="url(#gl)">ORCHESTRATION FRAMEWORK</text>
+        <text x="140" y="72" class="svg-label" fill="#00ff41" font-size="9" text-anchor="middle">✓ Persistent memory</text>
+        <text x="140" y="88" class="svg-label" fill="#00ff41" font-size="9" text-anchor="middle">✓ Past failures &amp; API knowledge</text>
+        <text x="140" y="104" class="svg-label" fill="#00ff41" font-size="9" text-anchor="middle">✓ Security advisories (CVEs)</text>
+        <text x="140" y="120" class="svg-label" fill="#00ff41" font-size="9" text-anchor="middle">✓ Architecture patterns</text>
+        <text x="140" y="135" class="svg-label" fill="#ffd740" font-size="8" text-anchor="middle">CrewAI · LangGraph · AutoGen · OpenClaw</text>
+      </g>
+
+      <!-- Arrow: Framework → AI Model (returns context) -->
+      <path d="M470,340 Q400,310 380,285" fill="none" stroke="#00ff41" stroke-width="2.5" stroke-dasharray="8,4" class="anim-dash" marker-end="url(#ag)"/>
+      <text x="400" y="300" class="svg-label" fill="#00ff41" font-size="8" text-anchor="middle">context +</text>
+      <text x="400" y="312" class="svg-label" fill="#00ff41" font-size="8" text-anchor="middle">guardrails</text>
+
+      <!-- Arrow: AI Model → Code (with context this time) -->
+      <line x1="425" y1="210" x2="555" y2="210" stroke="#ff6b6b" stroke-width="2" stroke-dasharray="8,4" class="anim-dash" marker-end="url(#ar)"/>
+      <text x="490" y="198" class="svg-label" fill="#ff6b6b" font-size="9" text-anchor="middle">informed code</text>
+
+      <!-- TEST -->
+      <g transform="translate(565, 170)">
+        <rect width="130" height="80" rx="10" fill="#0a1628" stroke="#ffd740" stroke-width="2"/>
+        <text x="65" y="22" class="svg-label" fill="#ffd740" font-size="16" text-anchor="middle">🧪</text>
+        <text x="65" y="42" class="svg-title" fill="#ffd740" font-size="11" text-anchor="middle" letter-spacing="1">TEST</text>
+        <text x="65" y="58" class="svg-label" fill="#00ff41" font-size="9" text-anchor="middle">7 scenarios</text>
+        <text x="65" y="72" class="svg-label" fill="#00ff41" font-size="9" text-anchor="middle">All pass ✓</text>
+      </g>
+
+      <!-- Arrow: Framework → Test (test checklist) -->
+      <path d="M680,300 Q660,270 660,258" fill="none" stroke="#58a6ff" stroke-width="1.5" stroke-dasharray="6,3" class="anim-dash" marker-end="url(#ab)"/>
+      <text x="700" y="280" class="svg-label" fill="#58a6ff" font-size="7" text-anchor="middle">test checklist</text>
+
+      <!-- Arrow: Test → Deploy -->
+      <line x1="705" y1="210" x2="795" y2="210" stroke="#ffd740" stroke-width="2" stroke-dasharray="8,4" class="anim-dash" marker-end="url(#ao)"/>
+
+      <!-- DEPLOY -->
+      <g transform="translate(805, 160)">
+        <rect width="130" height="100" rx="12" fill="#0a1628" stroke="#00ff41" stroke-width="2.5"/>
+        <text x="65" y="26" class="svg-label" fill="#00ff41" font-size="22" text-anchor="middle">🚀</text>
+        <text x="65" y="48" class="svg-title" fill="#00ff41" font-size="12" text-anchor="middle" letter-spacing="1">DEPLOY</text>
+        <text x="65" y="68" class="svg-label" fill="#00ff41" font-size="10" text-anchor="middle" font-weight="bold">Works.</text>
+        <text x="65" y="82" class="svg-label" fill="#00ff41" font-size="10" text-anchor="middle" font-weight="bold">Secure.</text>
+        <text x="65" y="96" class="svg-label" fill="#00ff41" font-size="10" text-anchor="middle" font-weight="bold">Done.</text>
+      </g>
+
+      <!-- NO LOOP — clean arrow to success -->
+      <g transform="translate(950, 170)">
+        <circle cx="35" cy="45" r="33" fill="rgba(0,255,65,0.06)" stroke="#00ff41" stroke-width="2"/>
+        <text x="35" y="40" class="svg-label" fill="#00ff41" font-size="22" text-anchor="middle">✅</text>
+        <text x="35" y="60" class="svg-label" fill="#00ff41" font-size="8" text-anchor="middle">1st try</text>
+      </g>
+
+      <!-- CVE shield -->
+      <g transform="translate(810, 310)">
+        <rect width="200" height="60" rx="10" fill="rgba(0,255,65,0.04)" stroke="rgba(0,255,65,0.2)" stroke-width="1"/>
+        <text x="100" y="22" class="svg-label" fill="#00ff41" font-size="10" text-anchor="middle" font-weight="bold">🛡️ CVE-2026-1847</text>
+        <text x="100" y="40" class="svg-label" fill="#00ff41" font-size="9" text-anchor="middle">Flagged BEFORE coding</text>
+        <text x="100" y="54" class="svg-label" fill="#8b949e" font-size="8" text-anchor="middle">Framework remembered it</text>
+      </g>
+
+      <!-- Deploy counter -->
+      <g transform="translate(40, 380)">
+        <rect width="220" height="50" rx="10" fill="rgba(0,255,65,0.06)" stroke="rgba(0,255,65,0.2)" stroke-width="1"/>
+        <text x="110" y="22" class="svg-title" fill="#00ff41" font-size="11" text-anchor="middle" letter-spacing="1">TOTAL</text>
+        <text x="110" y="40" class="svg-label" fill="#00ff41" font-size="10" text-anchor="middle">1 deploy · 0 bugs · 0 CVE</text>
+      </g>
+
+      <!-- Key insight text -->
+      <text x="550" y="30" class="svg-label" fill="#ffd740" font-size="11" text-anchor="middle" font-weight="bold">Same Opus 4.6 brain — but the framework provides memory, context, and security awareness</text>
+    </svg>
   </div>
 
   <!-- ═══════ THE TASK ═══════ -->
   <div class="section-wrap">
     <div class="insight-box" style="text-align:center">
-      <h3>THE TASK</h3>
+      <h3>THE TASK — A REAL EXAMPLE</h3>
       <p style="font-size:0.95rem;color:#ffd740">"Build me a flight deal finder. I give a budget like $300 — tell me the cheapest country to fly to."</p>
     </div>
   </div>
@@ -155,9 +359,6 @@
 
     </div>
   </div>
-
-  <!-- ═══════ VS ═══════ -->
-  <div class="versus"><span>VS</span></div>
 
   <!-- ═══════ PATH B: AI + FRAMEWORK ═══════ -->
   <div class="section-wrap">
@@ -297,7 +498,7 @@
   <footer>
     <div class="footer-content">
       <p><a href="index.html" style="color:var(--matrix-green);text-decoration:none">← Back to The Matrix</a></p>
-      <p class="footer-small">Why AI alone isn't enough — the case for orchestration</p>
+      <p class="footer-small">AI Model vs Orchestration — the model is the engine, the framework is the driver</p>
     </div>
   </footer>
 </div>
