@@ -86,12 +86,14 @@
     <p class="d-hero-kin">kin of <a href="trinity.html">🔺 TRINITY (Cursor + Opus 4.6)</a></p>
   </div>
 
-  <!-- SECTION 1: Routing Architecture -->
+  <!-- SECTION 1: Routing Architecture (sticky session, prefix-driven — Apr 2026) -->
   <div class="diagram-wrap">
     <h2 class="section-title" style="color:var(--cli-accent)">The Routing</h2>
     <p class="section-desc">
-      Zion sees the prefix and checks the laptop heartbeat. Two siblings, one task queue,
-      one reply to WhatsApp. A single 45-second heartbeat window decides the route.
+      Routing is now <strong>prefix-driven</strong> with a 10-min sticky session per chat
+      — no more heartbeat decisions. Zion remembers who owns the chat (CLI or Cursor)
+      and silently extends the timer on follow-ups. Owner-gated: only Neo can open
+      a Trinity / Trinity-CLI session.
     </p>
 
     <svg class="d-svg" viewBox="0 0 1150 720" xmlns="http://www.w3.org/2000/svg">
@@ -100,6 +102,7 @@
         <marker id="ar-g" markerWidth="12" markerHeight="8" refX="12" refY="4" orient="auto"><path d="M0,0 L12,4 L0,8" fill="#00ff41" opacity="0.85"/></marker>
         <marker id="ar-o" markerWidth="12" markerHeight="8" refX="12" refY="4" orient="auto"><path d="M0,0 L12,4 L0,8" fill="#fb923c" opacity="0.9"/></marker>
         <marker id="ar-y" markerWidth="12" markerHeight="8" refX="12" refY="4" orient="auto"><path d="M0,0 L12,4 L0,8" fill="#ffd740" opacity="0.85"/></marker>
+        <marker id="ar-b" markerWidth="12" markerHeight="8" refX="12" refY="4" orient="auto"><path d="M0,0 L12,4 L0,8" fill="#58a6ff" opacity="0.85"/></marker>
         <filter id="glow"><feGaussianBlur stdDeviation="2.5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
         <radialGradient id="cli-sun" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#fb923c" stop-opacity="0.25"/><stop offset="100%" stop-color="#fb923c" stop-opacity="0.01"/></radialGradient>
         <radialGradient id="trinity-sun" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#ff6b6b" stop-opacity="0.22"/><stop offset="100%" stop-color="#ff6b6b" stop-opacity="0.01"/></radialGradient>
@@ -111,9 +114,10 @@
         <rect x="10" y="28" width="110" height="120" rx="5" fill="#0d2137" stroke="#00ff41" stroke-width="0.6" stroke-opacity="0.3"/>
         <text x="65" y="-14" class="svg-title" fill="#00ff41" font-size="14" text-anchor="middle" letter-spacing="3" filter="url(#glow)">NEO</text>
         <text x="65" y="55" class="svg-label" fill="#00ff41" font-size="9" text-anchor="middle">@trinity ...</text>
-        <text x="65" y="74" class="svg-label" fill="var(--cli-accent)" fill="#fb923c" font-size="9" text-anchor="middle">@trinity-cli ...</text>
-        <text x="65" y="108" class="svg-label" fill="#ffd740" font-size="8" text-anchor="middle" opacity="0.8">one prefix</text>
-        <text x="65" y="122" class="svg-label" fill="#ffd740" font-size="8" text-anchor="middle" opacity="0.8">one reply</text>
+        <text x="65" y="74" class="svg-label" fill="#fb923c" font-size="9" text-anchor="middle">@trinity-cli ...</text>
+        <text x="65" y="92" class="svg-label" fill="#8b949e" font-size="8" text-anchor="middle">(or no prefix —</text>
+        <text x="65" y="104" class="svg-label" fill="#8b949e" font-size="8" text-anchor="middle">sticky window)</text>
+        <text x="65" y="128" class="svg-label" fill="#ffd740" font-size="8" text-anchor="middle" opacity="0.8">owner-only</text>
         <text x="65" y="202" class="svg-label" fill="#8b949e" font-size="9" text-anchor="middle">📱 WhatsApp</text>
       </g>
 
@@ -121,40 +125,51 @@
       <line x1="160" y1="370" x2="245" y2="370" stroke="#00ff41" stroke-width="2" stroke-dasharray="10,5" class="anim-dash" marker-end="url(#ar-g)"/>
 
       <!-- Zion (the router) -->
-      <g transform="translate(250, 320)">
-        <rect width="170" height="120" rx="12" fill="#0a1628" stroke="#00ff41" stroke-width="2.5"/>
+      <g transform="translate(250, 310)">
+        <rect width="170" height="140" rx="12" fill="#0a1628" stroke="#00ff41" stroke-width="2.5"/>
         <text x="85" y="22" class="svg-title" fill="#00ff41" font-size="13" text-anchor="middle" letter-spacing="2">🏛️ ZION</text>
         <text x="85" y="40" class="svg-label" fill="#8b949e" font-size="9" text-anchor="middle">(VM — router)</text>
         <line x1="14" y1="50" x2="156" y2="50" stroke="#00ff41" stroke-width="0.6" stroke-opacity="0.25"/>
-        <text x="85" y="68" class="svg-label" fill="#00ff41" font-size="9" text-anchor="middle">1. parse prefix</text>
-        <text x="85" y="84" class="svg-label" fill="#00ff41" font-size="9" text-anchor="middle">2. queue task</text>
-        <text x="85" y="100" class="svg-label" fill="#00ff41" font-size="9" text-anchor="middle">3. ack [Trinity] ✓</text>
-        <text x="85" y="116" class="svg-label" fill="#ffd740" font-size="9" text-anchor="middle" opacity="0.85">4. route →</text>
+        <text x="85" y="68" class="svg-label" fill="#00ff41" font-size="9" text-anchor="middle">1. is_owner(sender)?</text>
+        <text x="85" y="84" class="svg-label" fill="#00ff41" font-size="9" text-anchor="middle">2. detect prefix</text>
+        <text x="85" y="100" class="svg-label" fill="#00ff41" font-size="9" text-anchor="middle">3. _TRINITY_SESSIONS</text>
+        <text x="85" y="116" class="svg-label" fill="#ffd740" font-size="9" text-anchor="middle" opacity="0.9">4. route + extend</text>
+        <text x="85" y="132" class="svg-label" fill="#8b949e" font-size="8" text-anchor="middle">(10-min window)</text>
       </g>
 
       <!-- Arrow: Zion → Decision -->
       <line x1="420" y1="380" x2="495" y2="380" stroke="#ffd740" stroke-width="2" stroke-dasharray="10,5" class="anim-dash" marker-end="url(#ar-y)"/>
 
-      <!-- Decision diamond -->
-      <g transform="translate(500, 320)">
-        <path d="M90,0 L180,60 L90,120 L0,60 Z" fill="#0a1628" stroke="#ffd740" stroke-width="2.5"/>
-        <text x="90" y="50" class="svg-label" fill="#ffd740" font-size="10" text-anchor="middle" font-weight="bold">prefix?</text>
-        <text x="90" y="68" class="svg-label" fill="#8b949e" font-size="8" text-anchor="middle">heartbeat?</text>
-        <text x="90" y="86" class="svg-label" fill="#8b949e" font-size="8" text-anchor="middle">&lt;45s old</text>
-        <text x="90" y="140" class="svg-label" fill="#8b949e" font-size="9" text-anchor="middle">_trinity_is_online()</text>
+      <!-- Decision box (sticky session table) -->
+      <g transform="translate(500, 295)">
+        <rect width="200" height="170" rx="10" fill="#0a1628" stroke="#ffd740" stroke-width="2"/>
+        <text x="100" y="22" class="svg-label" fill="#ffd740" font-size="10" text-anchor="middle" font-weight="bold">sticky session</text>
+        <line x1="14" y1="32" x2="186" y2="32" stroke="#ffd740" stroke-width="0.4" stroke-opacity="0.3"/>
+        <text x="14" y="50" class="svg-label" fill="#fb923c" font-size="8.5">@trinity-cli</text>
+        <text x="186" y="50" class="svg-label" fill="#fb923c" font-size="8.5" text-anchor="end">→ owner=cli</text>
+        <text x="14" y="66" class="svg-label" fill="#ff6b6b" font-size="8.5">@trinity</text>
+        <text x="186" y="66" class="svg-label" fill="#ff6b6b" font-size="8.5" text-anchor="end">→ owner=cursor + ACK</text>
+        <text x="14" y="82" class="svg-label" fill="#58a6ff" font-size="8.5">no prefix + active</text>
+        <text x="186" y="82" class="svg-label" fill="#58a6ff" font-size="8.5" text-anchor="end">→ extend (silent)</text>
+        <text x="14" y="98" class="svg-label" fill="#8b949e" font-size="8.5">no prefix + idle</text>
+        <text x="186" y="98" class="svg-label" fill="#8b949e" font-size="8.5" text-anchor="end">→ Zion handles</text>
+        <line x1="14" y1="108" x2="186" y2="108" stroke="#ffd740" stroke-width="0.4" stroke-opacity="0.3"/>
+        <text x="100" y="125" class="svg-label" fill="#ffd740" font-size="8" text-anchor="middle">@zion in active session</text>
+        <text x="100" y="138" class="svg-label" fill="#8b949e" font-size="8" text-anchor="middle">→ released to Zion</text>
+        <text x="100" y="156" class="svg-label" fill="#ff6b6b" font-size="8" text-anchor="middle">non-owner: BLOCKED</text>
       </g>
 
-      <!-- Branch 1: @trinity-cli -> VM CLI -->
-      <path d="M590,340 Q770,230 900,180" fill="none" stroke="#fb923c" stroke-width="3" stroke-dasharray="10,5" class="anim-dash" marker-end="url(#ar-o)"/>
-      <text x="735" y="225" class="svg-label" fill="#fb923c" font-size="11" text-anchor="middle" font-weight="bold">@trinity-cli  → always CLI</text>
+      <!-- Branch 1: @trinity-cli -> VM CLI (always) -->
+      <path d="M700,330 Q820,250 900,180" fill="none" stroke="#fb923c" stroke-width="3" stroke-dasharray="10,5" class="anim-dash" marker-end="url(#ar-o)"/>
+      <text x="780" y="240" class="svg-label" fill="#fb923c" font-size="11" text-anchor="middle" font-weight="bold">@trinity-cli (no ack)</text>
 
-      <!-- Branch 2: @trinity fresh -> laptop -->
-      <path d="M590,380 Q730,400 870,405" fill="none" stroke="#ff6b6b" stroke-width="3" stroke-dasharray="10,5" class="anim-dash" style="animation-delay:0.25s" marker-end="url(#ar-r)"/>
-      <text x="730" y="388" class="svg-label" fill="#ff6b6b" font-size="11" text-anchor="middle" font-weight="bold">@trinity + laptop fresh → laptop Opus</text>
+      <!-- Branch 2: @trinity -> laptop -->
+      <path d="M700,380 Q800,400 870,405" fill="none" stroke="#ff6b6b" stroke-width="3" stroke-dasharray="10,5" class="anim-dash" style="animation-delay:0.25s" marker-end="url(#ar-r)"/>
+      <text x="785" y="395" class="svg-label" fill="#ff6b6b" font-size="11" text-anchor="middle" font-weight="bold">@trinity (ack ✓ → WS)</text>
 
-      <!-- Branch 3: @trinity stale -> VM CLI -->
-      <path d="M590,430 Q750,560 895,590" fill="none" stroke="#fb923c" stroke-width="3" stroke-dasharray="10,5" class="anim-dash" style="animation-delay:0.5s" marker-end="url(#ar-o)"/>
-      <text x="725" y="570" class="svg-label" fill="#fb923c" font-size="11" text-anchor="middle" font-weight="bold">@trinity + laptop stale → CLI fallback</text>
+      <!-- Branch 3: implicit follow-up (sticky session) -->
+      <path d="M700,440 Q800,540 900,590" fill="none" stroke="#58a6ff" stroke-width="2.5" stroke-dasharray="10,5" class="anim-dash" style="animation-delay:0.5s" marker-end="url(#ar-b)"/>
+      <text x="790" y="565" class="svg-label" fill="#58a6ff" font-size="11" text-anchor="middle" font-weight="bold">implicit follow-up → current owner</text>
 
       <!-- LAPTOP OPUS (Trinity-Cursor) -->
       <circle cx="965" cy="405" r="85" fill="url(#trinity-sun)" stroke="#ff6b6b" stroke-width="3" class="anim-sun"/>
@@ -162,22 +177,22 @@
       <text x="965" y="408" class="svg-title" fill="#ff6b6b" font-size="13" text-anchor="middle" letter-spacing="2" filter="url(#glow)">TRINITY</text>
       <text x="965" y="425" class="svg-label" fill="#8b949e" font-size="9" text-anchor="middle">Cursor + Opus 4.6</text>
       <text x="965" y="442" class="svg-label" fill="#8b949e" font-size="8.5" text-anchor="middle">trinity_agent.py</text>
-      <text x="965" y="457" class="svg-label" fill="#ffd740" font-size="8.5" text-anchor="middle">(reads .mdc rules)</text>
+      <text x="965" y="457" class="svg-label" fill="#ffd740" font-size="8.5" text-anchor="middle">(may be offline)</text>
 
       <!-- VM CLI -->
       <circle cx="990" cy="170" r="80" fill="url(#cli-sun)" stroke="#fb923c" stroke-width="3" class="anim-sun" style="animation-delay:0.8s"/>
       <text x="990" y="148" class="svg-label" fill="#fb923c" font-size="20" text-anchor="middle">🔻</text>
       <text x="990" y="174" class="svg-title" fill="#fb923c" font-size="12" text-anchor="middle" letter-spacing="1" filter="url(#glow)">TRINITY-CLI</text>
       <text x="990" y="191" class="svg-label" fill="#8b949e" font-size="9" text-anchor="middle">Claude Pro on VM</text>
-      <text x="990" y="207" class="svg-label" fill="#8b949e" font-size="8.5" text-anchor="middle">claude -p (cwd=ZION)</text>
-      <text x="990" y="222" class="svg-label" fill="#ffd740" font-size="8.5" text-anchor="middle">reads CLAUDE.md</text>
+      <text x="990" y="207" class="svg-label" fill="#8b949e" font-size="8.5" text-anchor="middle">claude -p --session-id</text>
+      <text x="990" y="222" class="svg-label" fill="#ffd740" font-size="8.5" text-anchor="middle">always available</text>
 
-      <!-- VM CLI ALT location (fallback) -->
-      <circle cx="965" cy="600" r="75" fill="url(#cli-sun)" stroke="#fb923c" stroke-width="2.5" stroke-dasharray="6,4" class="anim-pulse"/>
-      <text x="965" y="580" class="svg-label" fill="#fb923c" font-size="18" text-anchor="middle">🔻</text>
-      <text x="965" y="606" class="svg-title" fill="#fb923c" font-size="11" text-anchor="middle" letter-spacing="1">TRINITY-CLI</text>
-      <text x="965" y="622" class="svg-label" fill="#8b949e" font-size="8.5" text-anchor="middle">(same binary)</text>
-      <text x="965" y="638" class="svg-label" fill="#8b949e" font-size="8.5" text-anchor="middle">reply: [Trinity]</text>
+      <!-- Sticky session memory -->
+      <circle cx="965" cy="600" r="75" fill="#0a1628" stroke="#58a6ff" stroke-width="2.5" stroke-dasharray="6,4" class="anim-pulse"/>
+      <text x="965" y="585" class="svg-label" fill="#58a6ff" font-size="18" text-anchor="middle">⏱</text>
+      <text x="965" y="610" class="svg-title" fill="#58a6ff" font-size="11" text-anchor="middle" letter-spacing="1">_TRINITY_SESSIONS</text>
+      <text x="965" y="626" class="svg-label" fill="#8b949e" font-size="8.5" text-anchor="middle">{chat: owner, expires}</text>
+      <text x="965" y="641" class="svg-label" fill="#8b949e" font-size="8.5" text-anchor="middle">10-min TTL</text>
 
       <!-- Reply arrows back to phone -->
       <path d="M895,430 Q500,650 150,430" fill="none" stroke="#ff6b6b" stroke-width="2" stroke-dasharray="10,5" class="anim-dash" style="animation-delay:1s" marker-end="url(#ar-r)" opacity="0.8"/>
@@ -187,15 +202,108 @@
       <text x="460" y="70" class="svg-label" fill="#fb923c" font-size="10" text-anchor="middle">[Trinity-CLI] ...</text>
 
       <!-- Shared DB -->
-      <g transform="translate(220, 510)">
+      <g transform="translate(220, 530)">
         <rect width="260" height="90" rx="12" fill="#0a1628" stroke="#58a6ff" stroke-width="2" stroke-dasharray="5,4"/>
         <text x="130" y="22" class="svg-title" fill="#58a6ff" font-size="11" text-anchor="middle" letter-spacing="2">💾 SHARED DB (VM)</text>
         <text x="130" y="40" class="svg-label" fill="#8b949e" font-size="9" text-anchor="middle">zion_data.db · trinity_tasks</text>
-        <text x="130" y="58" class="svg-label" fill="#58a6ff" font-size="9" text-anchor="middle">claimed_by: cursor-laptop / trinity-cli</text>
-        <text x="130" y="74" class="svg-label" fill="#58a6ff" font-size="9" text-anchor="middle">trinity_workers · last_seen (45s window)</text>
+        <text x="130" y="58" class="svg-label" fill="#58a6ff" font-size="9" text-anchor="middle">claimed_by: trinity-cli / cursor-laptop</text>
+        <text x="130" y="74" class="svg-label" fill="#58a6ff" font-size="9" text-anchor="middle">24h TTL · 7-day purge (trinity_ws.py)</text>
       </g>
-      <line x1="350" y1="510" x2="350" y2="440" stroke="#58a6ff" stroke-width="1.5" stroke-opacity="0.35" stroke-dasharray="4,3"/>
+      <line x1="350" y1="530" x2="350" y2="450" stroke="#58a6ff" stroke-width="1.5" stroke-opacity="0.35" stroke-dasharray="4,3"/>
     </svg>
+  </div>
+
+  <!-- SECTION 1.5: Construct-CLI Peer Consult (NEW — Apr 2026) -->
+  <div class="diagram-wrap" style="border-top:1px dashed rgba(251,146,60,0.18); padding-top:2.5rem">
+    <h2 class="section-title" style="color:var(--cli-accent)">
+      <span style="font-size:0.7em; color:#ffd740">NEW &middot; Apr 2026</span><br>
+      Construct-CLI &middot; Peer Consult Endpoint
+    </h2>
+    <p class="section-desc">
+      Trinity-CLI can now <strong>directly consult Trinity-Cursor</strong> (or any registered
+      Construct) without going through Neo. Visible to Neo by design — the back-and-forth shows
+      up live in his chat with <code style="color:var(--cli-accent)">[X→Y]</code> envelopes.
+      Generic primitive — same path could call Lobo, future agents, etc. via
+      <code style="color:var(--cli-accent)">constructs.json</code>.
+    </p>
+
+    <svg class="d-svg" viewBox="0 0 1150 540" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <marker id="pr-o" markerWidth="11" markerHeight="7" refX="11" refY="3.5" orient="auto"><path d="M0,0 L11,3.5 L0,7" fill="#fb923c" opacity="0.9"/></marker>
+        <marker id="pr-r" markerWidth="11" markerHeight="7" refX="11" refY="3.5" orient="auto"><path d="M0,0 L11,3.5 L0,7" fill="#ff6b6b" opacity="0.9"/></marker>
+        <marker id="pr-g" markerWidth="11" markerHeight="7" refX="11" refY="3.5" orient="auto"><path d="M0,0 L11,3.5 L0,7" fill="#00ff41" opacity="0.85"/></marker>
+        <marker id="pr-y" markerWidth="11" markerHeight="7" refX="11" refY="3.5" orient="auto"><path d="M0,0 L11,3.5 L0,7" fill="#ffd740" opacity="0.85"/></marker>
+      </defs>
+
+      <!-- Swimlane headers -->
+      <g font-family="Orbitron, monospace" font-size="11" letter-spacing="2" font-weight="bold">
+        <text x="80"   y="32" fill="#00ff41" text-anchor="middle">📱 NEO</text>
+        <text x="335"  y="32" fill="#fb923c" text-anchor="middle">🔻 TRINITY-CLI</text>
+        <text x="590"  y="32" fill="#00ff41" text-anchor="middle">🏛️ ZION</text>
+        <text x="855"  y="32" fill="#ff6b6b" text-anchor="middle">🔺 TRINITY (laptop)</text>
+        <text x="1090" y="32" fill="#58a6ff" text-anchor="middle">📜 registry</text>
+      </g>
+      <!-- Lanes -->
+      <g stroke-width="0.6" stroke-opacity="0.18" stroke-dasharray="3,4">
+        <line x1="80"   y1="42" x2="80"   y2="510" stroke="#00ff41"/>
+        <line x1="335"  y1="42" x2="335"  y2="510" stroke="#fb923c"/>
+        <line x1="590"  y1="42" x2="590"  y2="510" stroke="#00ff41"/>
+        <line x1="855"  y1="42" x2="855"  y2="510" stroke="#ff6b6b"/>
+        <line x1="1090" y1="42" x2="1090" y2="510" stroke="#58a6ff"/>
+      </g>
+
+      <!-- Step 1: Neo asks CLI -->
+      <line x1="80" y1="80" x2="335" y2="80" stroke="#00ff41" stroke-width="2" marker-end="url(#pr-g)"/>
+      <text x="207" y="72" class="svg-label" fill="#00ff41" font-size="10" text-anchor="middle">1. "@trinity-cli ask Trinity what they think"</text>
+      <text x="207" y="92" class="svg-label" fill="#8b949e" font-size="8.5" text-anchor="middle">opens 10-min CLI sticky session</text>
+
+      <!-- Step 2: CLI looks up registry -->
+      <line x1="335" y1="125" x2="1090" y2="125" stroke="#58a6ff" stroke-width="1.6" stroke-dasharray="4,3" marker-end="url(#pr-y)"/>
+      <text x="712" y="118" class="svg-label" fill="#58a6ff" font-size="10" text-anchor="middle">2. resolve("trinity") → kind: laptop-cursor, label: "Trinity"</text>
+      <text x="712" y="138" class="svg-label" fill="#8b949e" font-size="8.5" text-anchor="middle">constructs.json (no @loki — only registered agents)</text>
+
+      <!-- Step 3: CLI sends peer envelope -->
+      <line x1="335" y1="180" x2="590" y2="180" stroke="#fb923c" stroke-width="2.5" marker-end="url(#pr-o)" class="anim-dash" stroke-dasharray="9,4"/>
+      <text x="462" y="172" class="svg-label" fill="#fb923c" font-size="10" text-anchor="middle">3. construct_cli.py consult --to trinity</text>
+      <text x="462" y="192" class="svg-label" fill="#fb923c" font-size="9" text-anchor="middle" font-weight="bold">[Trinity-CLI→Trinity] question</text>
+
+      <!-- Step 4: Zion routes silently -->
+      <text x="590" y="225" class="svg-label" fill="#00ff41" font-size="10" text-anchor="middle">4. peer envelope detected</text>
+      <text x="590" y="240" class="svg-label" fill="#ffd740" font-size="9" text-anchor="middle">no ack &middot; no session-claim</text>
+      <line x1="590" y1="255" x2="855" y2="255" stroke="#00ff41" stroke-width="2.5" marker-end="url(#pr-g)" class="anim-dash" stroke-dasharray="9,4"/>
+      <text x="722" y="247" class="svg-label" fill="#00ff41" font-size="10" text-anchor="middle">queue trinity_tasks &middot; WS push</text>
+
+      <!-- Step 5: Trinity answers -->
+      <text x="855" y="290" class="svg-label" fill="#ff6b6b" font-size="10" text-anchor="middle">5. reads peer envelope</text>
+      <text x="855" y="305" class="svg-label" fill="#ff6b6b" font-size="9" text-anchor="middle">(trinity-inbox.mdc rule)</text>
+      <line x1="855" y1="335" x2="335" y2="335" stroke="#ff6b6b" stroke-width="2.5" marker-end="url(#pr-r)" class="anim-dash" stroke-dasharray="9,4" style="animation-delay:0.4s"/>
+      <text x="595" y="327" class="svg-label" fill="#ff6b6b" font-size="10" text-anchor="middle">6. reply via /api/send (visible in chat)</text>
+      <text x="595" y="347" class="svg-label" fill="#ff6b6b" font-size="9" text-anchor="middle" font-weight="bold">[Trinity→Trinity-CLI] answer</text>
+
+      <!-- Step 7: CLI polls -->
+      <text x="335" y="385" class="svg-label" fill="#fb923c" font-size="10" text-anchor="middle">7. polls messages.db every 60s</text>
+      <text x="335" y="400" class="svg-label" fill="#8b949e" font-size="9" text-anchor="middle">up to 5 min &middot; finds reply &middot; may consult again</text>
+
+      <!-- Step 8: CLI answers Neo -->
+      <line x1="335" y1="445" x2="80" y2="445" stroke="#fb923c" stroke-width="2.5" marker-end="url(#pr-o)" class="anim-dash" stroke-dasharray="9,4" style="animation-delay:0.8s"/>
+      <text x="207" y="437" class="svg-label" fill="#fb923c" font-size="10" text-anchor="middle">8. final reply (with 1–3 options)</text>
+      <text x="207" y="457" class="svg-label" fill="#fb923c" font-size="9" text-anchor="middle" font-weight="bold">[Trinity-CLI] merged answer</text>
+
+      <!-- Footer note -->
+      <rect x="60" y="485" width="1030" height="18" rx="4" fill="#0a1628" stroke="rgba(251,146,60,0.2)" stroke-width="0.6"/>
+      <text x="575" y="498" class="svg-label" fill="#8b949e" font-size="8.5" text-anchor="middle">Timeout: if Trinity (laptop) doesn't reply in 5 min, CLI says so plainly and answers from its own knowledge. No silent waits.</text>
+    </svg>
+
+    <!-- Wire-format reference card -->
+    <div style="max-width:920px; margin:1.2rem auto 0; background:#050b18; border:1px solid rgba(251,146,60,0.25); border-radius:8px; padding:0.9rem 1.1rem; font-family:var(--font-mono); font-size:0.78rem; color:#c9d1d9; line-height:1.85">
+      <div style="color:var(--cli-accent); letter-spacing:1px; font-size:0.7rem; margin-bottom:0.4rem">WIRE FORMAT</div>
+      <span style="color:#fb923c">[Trinity-CLI→Trinity]</span> &lt;question&gt;     <span style="color:#8b949e"># caller envelope (visible to Neo)</span><br>
+      <span style="color:#ff6b6b">[Trinity→Trinity-CLI]</span> &lt;answer&gt;       <span style="color:#8b949e"># peer reply (visible to Neo)</span><br>
+      <span style="color:#fb923c">[Trinity-CLI]</span>          &lt;final reply&gt;  <span style="color:#8b949e"># Trinity-CLI's own message to Neo</span><br>
+      <br>
+      <span style="color:#8b949e"># Generic — same envelope format for any pair listed in constructs.json.</span><br>
+      <span style="color:#8b949e"># Zion never adds a "Received ✓" ack to a peer envelope.</span>
+    </div>
   </div>
 
   <!-- SECTION 2: Side-by-side compare -->
@@ -220,13 +328,13 @@
       <div class="cmp-card cli">
         <h3>🔻 TRINITY-CLI (VM)</h3>
         <ul>
-          <li>Claude Pro via <code>claude -p</code> on Oracle VM</li>
-          <li>Read-only phase 1 — answers questions, explains code</li>
-          <li>Does NOT deploy, write files, or restart services</li>
-          <li>Reads <code>CLAUDE.md</code> (built from same .mdc files)</li>
+          <li>Claude Pro via <code>claude -p --session-id &lt;uuid5(chat)&gt;</code> on Oracle VM</li>
+          <li>Persistent per-chat memory — <code>~/.claude/projects/.../&lt;uuid&gt;.jsonl</code></li>
+          <li>Reads <code>CLAUDE.md</code> (built from same .mdc files as Trinity-Cursor)</li>
           <li>Always available — VM is 24/7 on free tier</li>
-          <li>Reply: <span style="color:var(--cli-accent)">[Trinity-CLI]</span> (explicit) or <span style="color:#ff6b6b">[Trinity]</span> (fallback)</li>
-          <li>Used for: Q&A when laptop is off, explicit CLI tests</li>
+          <li><strong>NEW</strong>: peer-consults Trinity-Cursor via <code>construct_cli.py</code></li>
+          <li>Reply: <span style="color:var(--cli-accent)">[Trinity-CLI]</span> (when Neo wrote <code>@trinity-cli</code>) or <span style="color:#ff6b6b">[Trinity]</span> (when Neo wrote <code>@trinity</code>)</li>
+          <li>Used for: Q&A any time, peer consults, sticky CLI sessions</li>
         </ul>
       </div>
     </div>
@@ -260,8 +368,10 @@
 
   <!-- SECTION 4: Live test examples -->
   <div class="test-sect">
-    <h2 class="section-title" style="color:var(--cli-accent); text-align:center">Live tests (21-Apr-2026)</h2>
-    <p class="section-desc" style="text-align:center">Three messages actually sent through the system.</p>
+    <h2 class="section-title" style="color:var(--cli-accent); text-align:center">Live tests</h2>
+    <p class="section-desc" style="text-align:center">Real messages, real replies — through the actual system.</p>
+
+    <h3 style="font-family:var(--font-mono); color:var(--text-dim); font-size:0.8rem; margin-top:1.5rem">Routing &middot; 21-Apr-2026</h3>
 
     <div style="margin: 1rem 0">
       <div class="test-msg">Neo → @trinity-cli E2E test: reply in 5 words confirming you are Trinity-CLI on VM</div>
@@ -269,13 +379,17 @@
     </div>
 
     <div style="margin: 1rem 0">
-      <div class="test-msg">Neo → @trinity reply in 4 words acknowledging fallback routing works</div>
-      <div class="test-reply red">[Trinity] CLI fallback routing confirmed.  <span style="color:#8b949e">← laptop offline, CLI answered as [Trinity]</span></div>
-    </div>
-
-    <div style="margin: 1rem 0">
       <div class="test-msg">Neo → @trinity-cli are you in VM or laptop?</div>
       <div class="test-reply">[Trinity-CLI] I'm on the VM (Oracle Cloud, 80.225.205.232).</div>
+    </div>
+
+    <h3 style="font-family:var(--font-mono); color:var(--text-dim); font-size:0.8rem; margin-top:2rem">Construct-CLI peer consult &middot; 26-Apr-2026</h3>
+
+    <div style="margin: 1rem 0">
+      <div class="test-msg">Neo → @trinity-cli yes, that's my understanding... can you talk to Trinity (laptop) as well? Confirm the [Trinity] vs [Trinity-CLI] prefix and discuss together. Trinity should reply with 3 options.</div>
+      <div class="test-reply" style="background:rgba(251,146,60,0.1)">[Trinity-CLI→Trinity] Neo wants us to discuss the agent-comm plan. Do you think a generic constructs.json registry is the right call vs hardcoding trinity-cli ↔ trinity?</div>
+      <div class="test-reply red">[Trinity→Trinity-CLI] Generic registry. Trade-off: 3 more lines today, but adding @loki / @future_agent later costs zero.</div>
+      <div class="test-reply">[Trinity-CLI] Trinity-Cursor agrees. Going with constructs.json. Options: (1) implement registry + peer consult now, (2) hardcode just CLI↔Cursor and generalize later, (3) skip and rely on user-mediated relays. Recommendation: option 1.</div>
     </div>
   </div>
 
@@ -287,10 +401,11 @@
       <div class="stack-row"><span class="stack-label">Runtime</span><span class="stack-value">@anthropic-ai/claude-code CLI on Oracle VM (Node.js)</span></div>
       <div class="stack-row"><span class="stack-label">Auth</span><span class="stack-value">OAuth on laptop → .credentials.json scp'd to VM</span></div>
       <div class="stack-row"><span class="stack-label">Memory</span><span class="stack-value">CLAUDE.md (52 KB) auto-built from 4 .mdc files</span></div>
-      <div class="stack-row"><span class="stack-label">Runner</span><span class="stack-value">trinity_cli_runner.py — claim task → claude -p → reply</span></div>
-      <div class="stack-row"><span class="stack-label">Router</span><span class="stack-value">zion.py handle_trinity_command + _trinity_dispatch_cli()</span></div>
-      <div class="stack-row"><span class="stack-label">Liveness</span><span class="stack-value">trinity_workers.last_seen, 45s heartbeat window</span></div>
-      <div class="stack-row"><span class="stack-label">Claim lock</span><span class="stack-value">trinity_tasks.claimed_by (atomic UPDATE)</span></div>
+      <div class="stack-row"><span class="stack-label">Runner</span><span class="stack-value">trinity_cli_runner.py — claim task → claude -p --session-id &lt;uuid5(chat)&gt; → reply</span></div>
+      <div class="stack-row"><span class="stack-label">Router</span><span class="stack-value">zion.py prefix-driven sticky session (10-min TTL) + owner gate</span></div>
+      <div class="stack-row"><span class="stack-label">Peer consult</span><span class="stack-value">construct_cli.py — sends [X→Y], polls messages.db for [Y→X] reply (5 min × 60s)</span></div>
+      <div class="stack-row"><span class="stack-label">Registry</span><span class="stack-value">constructs.json — agent kinds, labels, aliases, owner_only flags</span></div>
+      <div class="stack-row"><span class="stack-label">Claim lock</span><span class="stack-value">trinity_tasks.claimed_by (atomic UPDATE) + 24h TTL / 7-day purge</span></div>
       <div class="stack-row"><span class="stack-label">Sync</span><span class="stack-value">sync_mdc_to_vm.ps1 — scp .mdc → rebuild CLAUDE.md</span></div>
       <div class="stack-row"><span class="stack-label">Platform</span><span class="stack-value">Oracle Cloud Ampere A1 (4 OCPU, 24 GB RAM) — 80.225.205.232</span></div>
       <div class="stack-row"><span class="stack-label">Cost</span><span class="stack-value">Claude Pro subscription (Neo's existing) + $0 VM (Always Free)</span></div>
