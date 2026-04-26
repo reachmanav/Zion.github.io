@@ -275,15 +275,15 @@
     <p class="section-desc" style="font-family:var(--font-mono);font-size:0.85rem;color:var(--text-dim);text-align:center">Open WhatsApp. Send a message. Watch the AI reply in real-time.</p>
 
     <div class="try-grid">
-      <!-- Left: QR Code + Number -->
+      <!-- Left: Demo on request (number intentionally not shown) -->
       <div class="try-card">
-        <h3>SCAN OR TAP</h3>
+        <h3>LIVE DEMO</h3>
         <div class="qr-box">
           <canvas id="qr-canvas"></canvas>
         </div>
-        <div class="phone-num">+91 98677 82241</div>
-        <p style="margin:0.5rem 0;color:#8b949e;font-size:0.75rem">Neo's WhatsApp — Zion is listening 24/7</p>
-        <a href="https://wa.me/919867782241?text=Hi%20Zion!" class="wa-link">💬 Open WhatsApp</a>
+        <div class="phone-num">BY REQUEST</div>
+        <p style="margin:0.5rem 0;color:#8b949e;font-size:0.75rem">The live WhatsApp endpoint is no longer public. Open an issue on the repo to request a private demo session.</p>
+        <a href="https://github.com/reachmanav/Zion/issues/new?title=Demo+request&body=Hi%2C+I%27d+like+a+private+demo+of+The+Matrix.+I%27m+...+and+a+good+time+for+me+is+..." class="wa-link" target="_blank" rel="noopener">📨 Request a demo</a>
       </div>
 
       <!-- Right: Commands to Try -->
@@ -354,7 +354,7 @@
     img.src = `https://api.qrserver.com/v1/create-qr-code/?size=${size}x${size}&data=${encodeURIComponent(text)}&bgcolor=ffffff&color=000000&margin=1`;
   }
   const c = document.getElementById('qr-canvas');
-  if (c) qrGenerate(c, 'https://wa.me/919867782241?text=Hi%20Zion!', 180);
+  if (c) qrGenerate(c, 'https://github.com/reachmanav/Zion', 180);
 })();
 
 var progressSteps = [
@@ -453,10 +453,13 @@ async function sendToTrinity() {
   status.innerHTML = '<span style="color:#ffd740">Sending to WhatsApp...</span>';
 
   try {
+    // Recipient intentionally NOT in this body — the local relay
+    // (demo_relay_local.py) holds the target JID privately, sourced from an
+    // env var. This page must never expose Neo's WhatsApp number.
     var resp = await fetch('http://localhost:8889/', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ recipient: '919867782241@s.whatsapp.net', message: fullMsg })
+      body: JSON.stringify({ message: fullMsg })
     });
     var data = await resp.json();
     if (data.success) {

@@ -9,7 +9,13 @@ SEND on demo.html -> relay does:
 To Zion and Trinity, this is indistinguishable from typing @trinity in WhatsApp.
 
 Start before the meeting:
-    python demo_relay_local.py
+    # Windows PowerShell:
+    $env:NEO_DEMO_JID="9198XXXXXXXX@s.whatsapp.net"; $env:NEO_DEMO_SENDER="9198XXXXXXXX"; python demo_relay_local.py
+    # bash:
+    NEO_DEMO_JID=9198XXXXXXXX@s.whatsapp.net NEO_DEMO_SENDER=9198XXXXXXXX python demo_relay_local.py
+
+Why env vars: the public GitHub repo must NOT contain Neo's WhatsApp number.
+This file is committed; the values are not.
 """
 
 import http.server
@@ -17,13 +23,29 @@ import json
 import subprocess
 import os
 import re
+import sys
 import tempfile
 
 PORT = 8889
 VM = "opc@80.225.205.232"
 KEY = os.path.expanduser("~") + "\\.ssh\\oracle_cloud_nopass"
-CHAT_JID = "919867782241@s.whatsapp.net"
-SENDER = "919867782241"
+
+# WhatsApp identity is read from environment. NEVER hard-code it here — this
+# file is public on GitHub and any number in source becomes a target for
+# spammers and social-engineering attacks.
+CHAT_JID = os.environ.get("NEO_DEMO_JID", "").strip()
+SENDER = os.environ.get("NEO_DEMO_SENDER", "").strip()
+if not CHAT_JID or not SENDER:
+    print(
+        "[RELAY] FATAL: set NEO_DEMO_JID and NEO_DEMO_SENDER env vars before "
+        "running. They hold Neo's private WhatsApp identity and must never be "
+        "checked into the repo. Example:\n"
+        '  $env:NEO_DEMO_JID="9198XXXXXXXX@s.whatsapp.net"\n'
+        '  $env:NEO_DEMO_SENDER="9198XXXXXXXX"',
+        file=sys.stderr,
+    )
+    sys.exit(2)
+
 SITE_DIR = os.path.dirname(os.path.abspath(__file__))
 TMP_SCRIPT = os.path.join(tempfile.gettempdir(), "demo_action.py")
 
